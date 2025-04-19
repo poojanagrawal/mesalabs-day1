@@ -1,38 +1,46 @@
-! inlist to evolve a 15 solar mass star
-
-! For the sake of future readers of this file (yourself included),
-! ONLY include the controls you are actually using.  DO NOT include
-! all of the other controls that simply have their default values.
-
 &star_job
   ! see star/defaults/star_job.defaults
 
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
+  ! reducing the number of relaxation steps to decrease computation time
+    pre_ms_relax_num_steps = 100
 
-  ! save a model at the end of the run
-    save_model_when_terminate = .false.
-    save_model_filename = '15M_at_TAMS.mod'
+  ! save a model and photo at the end of the run
+    save_model_when_terminate = .true.
+    save_model_filename = 'M5_Z0.014_f0.020_f00.001_TAMS.mod'
+    save_photo_when_terminate = .true.
 
   ! display on-screen plots
     pgstar_flag = .true.
 
+  ! Show which isotopes are included in the model
+  ! To keep computation time to a minimum, we use an unrealistically small net
+    show_net_species_info = .true.
+
+  ! Initial metal fractions of Asplund (2009)
+    initial_zfracs = 6
+
+  ! Whether to wait for the user to confirm before closing the run and the pgstar window(s)
+    pause_before_terminate = .false.
 / ! end of star_job namelist
 
 
 &eos
   ! eos options
   ! see eos/defaults/eos.defaults
-
 / ! end of eos namelist
 
 
 &kap
-  ! kap options
-  ! see kap/defaults/kap.defaults
-  use_Type2_opacities = .true.
-  Zbase = 0.02
+    ! kap options
+    ! see kap/defaults/kap.defaults
+    kap_file_prefix = 'OP_a09_nans_removed_by_hand'
+    kap_CO_prefix = 'a09_co'
+    kap_lowT_prefix = 'lowT_fa05_a09p'
 
+    use_Type2_opacities = .true.
+    Zbase = 0.014
 / ! end of kap namelist
 
 
@@ -40,22 +48,27 @@
   ! see star/defaults/controls.defaults
 
   ! starting specifications
-    initial_mass = 15 ! in Msun units
-    initial_z = 0.02
+    initial_mass = 5 ! in Msun units
+    initial_z = 0.014 ! initial metal mass fraction
 
   ! when to stop
-
-    ! stop when the star nears ZAMS (Lnuc/L > 0.99)
+    ! whether to stop when the star nears ZAMS (Lnuc/L > 0.99)
+    stop_near_zams = .false.
     Lnuc_div_L_zams_limit = 0.99d0
-    stop_near_zams = .true.
 
     ! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
     xa_central_lower_limit(1) = 1d-3
 
   ! wind
+    hot_wind_scheme = 'Vink'
+    Vink_scaling_factor = 0.3d0 ! --> Puls, J., (2015, IAU3017 proceeding), Bjorklund et al. 2020
 
   ! atmosphere
+    ! Basic atmospheric settings, suitable for massive stars on the main sequence
+    atm_option = 'T_tau'
+    atm_table = 'Eddington'
+    atm_T_tau_opacity = 'varying'
 
   ! rotation
 
@@ -64,10 +77,24 @@
   ! mlt
 
   ! mixing
+     overshoot_scheme(1) = 'exponential'
+     overshoot_zone_type(1) = 'any'
+     overshoot_zone_loc(1) = 'core'
+     overshoot_bdy_loc(1) = 'top'
+     overshoot_f(1) = 0.020
+     overshoot_f0(1) = 0.001
+
+     ! Conv. boundaries: Use Ledoux criterion and do premixing.
+     use_Ledoux_criterion = .true.
+     do_conv_premix = .true.
 
   ! timesteps
+     ! Keep the default temporal resolution
+     time_delta_coeff = 1.0d0
 
   ! mesh
+     ! Roughly doubling the spatial resolution
+     mesh_delta_coeff = 0.5
 
   ! solver
      ! options for energy conservation (see MESA V, Section 3)
@@ -75,5 +102,7 @@
      use_gold_tolerances = .true.
 
   ! output
+    ! Keep track of the history data of every step
+    history_interval = 1
 
 / ! end of controls namelist

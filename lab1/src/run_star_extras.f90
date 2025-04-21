@@ -152,6 +152,8 @@
 
          ! Check if star doing blue loop
          ask_blue_loop = .true.
+
+         call set_composition(id, s% initial_z  , ierr)
       end subroutine extras_startup
 
 
@@ -221,7 +223,6 @@
          ! the history_columns.list is only for the built-in history column options.
          ! it must not include the new column names you are adding here.
 
-
       end subroutine data_for_extra_history_columns
 
 
@@ -250,13 +251,6 @@
          ! note: do NOT add the extra names to profile_columns.list
          ! the profile_columns.list is only for the built-in profile column options.
          ! it must not include the new column names you are adding here.
-
-         ! here is an example for adding a profile column
-         !if (n /= 1) stop 'data_for_extra_profile_columns'
-         !names(1) = 'beta'
-         !do k = 1, nz
-         !   vals(k,1) = s% Pgas(k)/s% P(k)
-         !end do
 
       end subroutine data_for_extra_profile_columns
 
@@ -557,5 +551,38 @@
          end do
 
       end subroutine other_mesh_delta_coeff_factor
+
+
+      ! Set the composition according to the
+      subroutine set_composition(id, Z_ini, ierr)
+        integer, intent(in) :: id
+        real(dp),intent(in) :: Z_ini
+        integer, intent(out) :: ierr
+        type (star_info), pointer :: s
+        real(dp), parameter :: ratio_h2_to_h1 = 2.7556428657d-5/7.0945477357d-1, &
+                             ratio_he3_to_he4 = 8.4641515456d-5/2.7501644504d-1
+        real(dp), parameter :: Yp = 0.2453d0, &
+                            dY_dZ = 2.193d0
+        real(dp) :: Y_ini, X_ini
+
+        call star_ptr(id, s, ierr)
+        if (ierr /= 0) return
+
+        ! Set initial fractions according to Galactic enrichtment law
+        ! Primordial helium abundance (Aver et al. 2021)
+        ! Galactic enrichment ratio. Calibrated by requiring that for solar (Xini, Yini, Zini) = (0.710, 0.276, 0.014), NP+12
+        Y_ini = Yp + dY_dZ*Z_ini
+        X_ini = 1 - (Z_ini + Y_ini)
+
+        s% initial_y = Y_ini
+        s% initial_he3 = Y_ini * ratio_he3_to_he4
+
+        ! What about these? MESA crashes if they are not set. But job and controls both have initial_he3.
+        s% job% initial_h1  = X_ini * (1d0 - ratio_h2_to_h1)
+        s% job% initial_h2  = X_ini * ratio_h2_to_h1
+        s% job% initial_he3 = Y_ini * ratio_he3_to_he4
+        s% job% initial_he4 = Y_ini * (1d0 - ratio_he3_to_he4)
+        s% job% dump_missing_metals_into_heaviest = .false.
+      end subroutine set_composition
 
       end module run_star_extras

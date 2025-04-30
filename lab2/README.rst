@@ -62,15 +62,11 @@ Now, we need to add lines that tell MESA to load a saved model.
 Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
-* HINT_1: Look in the *star_job* panel under *References and Defaults*
-here: `https://docs.mesastar.org/en/latest/reference/star_job.html 
-<https://docs.mesastar.org/en/latest/reference/star_job.html>`
+* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/star_job.html <https://docs.mesastar.org/en/latest/reference/star_job.html>`
 
-* HINT_2: Can you find on the website any content that is related to 
-**load** something?
+* HINT_2: Can you find on the website any content that is related to **load** something?
 
-* SOLUTION: Add to your *star_job* section in the *inlist_project* 
-the following lines::
+* SOLUTION: Add to your *star_job* section in the *inlist_project* the following lines::
 
   ! loading the pre-saved 5Msun model
     load_saved_model = .true.
@@ -102,15 +98,12 @@ want to go to the end of core helium burning (CHeB). Can you find
 a option on the MESA website that will stop the model at the 
 TACHeB? Replace the old stopping condition by the new one.
 
-* HINT_1: Look in the *controls* panel under *References and Defaults*
-here: `https://docs.mesastar.org/en/latest/reference/controls.html
-<https://docs.mesastar.org/en/latest/reference/controls.html>`
+* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`
 
-* HINT_2: Can you find on the website any content that is related to 
-**stop** at a specific **phase**?
+* HINT_2: Can you find on the website any content that is related to **stop** at a specific **phase**?
 
 * SOLUTION: Replace the lines::
-
+  
   ! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
     xa_central_lower_limit(1) = 1d-3
@@ -244,16 +237,9 @@ plot depicting how much the convective core grows in mass.
 How does the core evolve? Was it as you expected? Can you 
 figure out why the core behaves as it does?
 
-* HINT_1: Compared to the first lab, we added additional 
-physics related to mixing. Can you identify the new
-mixing regions in the Kippenhahn diagram in the lower 
-left plot? Can they have an impact on the core mass?
+* HINT_1: Compared to the first lab, we added additional physics related to mixing. Can you identify the new mixing regions in the Kippenhahn diagram in the lower left plot? Can they have an impact on the core mass?
 
-* SOLUTION: Because we include in our model thermohaline and
-semiconvective mixing, the additional helium produced 
-in the hydrogen shell burning layers can be mixed into
-the core fueling it with additional material and leading 
-to an increase in its mass.
+* SOLUTION: Because we include in our model thermohaline and semiconvective mixing, the additional helium produced in the hydrogen shell burning layers can be mixed into the core fueling it with additional material and leading to an increase in its mass.
 
 Core helium burning with weak step overshooting
 -----------------------------------------------
@@ -278,20 +264,13 @@ in *inlist_extra*. Can you figure out how we need to modify
 them to tell MESA that we want a second overshooting region
 on top of the helium burning core?
 
-* HINT_1: Since the first overshooting scheme is already used 
-in the first set ``(1)`` we need to change them to ``(2)``
-for all controls.
+* HINT_1: Since the first overshooting scheme is already used in the first set ``(1)`` we need to change them to ``(2)`` for all controls.
 
-* HINT_2: Is the overshooting zone still the correct one? Can
-you find on the website other options where to allow 
-overshooting? Check the controls for overshooting on
-`https://docs.mesastar.org/en/latest/reference/controls.html
-<https://docs.mesastar.org/en/latest/reference/controls.html>`.
+* HINT_2: Is the overshooting zone still the correct one? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`.
 
 * HINT_3: Do not forget to change the f_ov and f0_ov values.
 
-* SOLUTION: In the end you should have in the *controls* section
-of your *inlist_extra* lines that are similar to::
+* SOLUTION: In the end you should have in the *controls* section of your *inlist_extra* lines that are similar to::
 
   ! mixing
      overshoot_scheme(2) = 'step'
@@ -328,9 +307,7 @@ you can have a look at your pgstar files saved in
 ``output_no_overshoot/png``. Are the maximum masses similar
 or different and why?
 
-* SOLUTION: Overshooting is acting on much shorter timescale
-than semiconvection. Even with a small overshooting on the core
-we can let the core grow quite quickly.
+* SOLUTION: Overshooting is acting on much shorter timescale than semiconvection. Even with a small overshooting on the core we can let the core grow quite quickly.
 
 If you look at the upper right plot, showing the evolution 
 of the growing core, you should see some pulses where the core
@@ -338,10 +315,7 @@ mass grows and receeds again. That is strange. At the model
 numbers where these pulses occur, can you see something happening
 in the structure of the star in the Kippenhahn diagram?
 
-* SOLUTION: You should see that a convective region forms 
-directly on top of the overshooting region. That is strange, 
-isn't it? Lets ignore it for now and test if it still appears
-when using a more efficient overshooting.
+* SOLUTION: You should see that a convective region forms directly on top of the overshooting region. That is strange, isn't it? Lets ignore it for now and test if it still appears when using a more efficient overshooting.
 
 
 Core helium burning with strong step overshooting
@@ -379,20 +353,7 @@ Look again at the plot showing the growth of the convective
 core mass. How does it compare to to the model with the 
 weaker overshooting? Do you have an idea why?
 
-* SOLUTION: The convective core reaches a very similar 
-maximum mass as in the low overshooting case. Similar
-as before, one can see that there are weak pulses in the 
-mass growth that are linked to convection regions forming
-directly on top of the overshooting region. It seems, like
-these convective regions prevent the core to grow further.
-This is a well-known problem that is encountered during
-CHeB in low and intermediate mass stars. Here, the modelling
-of the convective boundaries is challenging and have do
-do with the Nabla_rad profile changing during the evolution
-leading to the formation of with the formation of the
-convective region forming when reaching a local minimum.
-It is not clear if this of physical or numerical nature,
-but you will learn more about this in the concluding lecture.
+* SOLUTION: The convective core reaches a very similar maximum mass as in the low overshooting case. Similar as before, one can see that there are weak pulses in the mass growth that are linked to convection regions forming directly on top of the overshooting region. It seems, like these convective regions prevent the core to grow further. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modelling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature, but you will learn more about this in the concluding lecture.
 
 Numerical methods to prevent the formation of the convective zone
 -----------------------------------------------------------------

@@ -62,7 +62,7 @@ Now, we need to add lines that tell MESA to load a saved model.
 Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
-* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/star_job.html <https://docs.mesastar.org/en/latest/reference/star_job.html>`
+* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/star_job.html <https://docs.mesastar.org/en/24.08.1/reference/star_job.html>`
 
 * HINT_2: Can you find on the website any content that is related to **load** something?
 

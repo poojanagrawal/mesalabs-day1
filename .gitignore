@@ -1,0 +1,9 @@
+*.mod
+*.png
+*.o
+*.mod
+*/photos/*
+*.data
+*.inp
+*/batch_runs/runs/*
+*/make/*

@@ -94,13 +94,11 @@ the initial conditions at the beginning of the evolution::
     
 Moreover, we should change our stopping condition. In Lab 1, we
 were only interested in the evolution until the TAMS. But now we
-want to go to the end of core helium burning (CHeB). Can you find
-a option on the MESA website that will stop the model at the 
-TACHeB? Replace the old stopping condition by the new one.
+want to go to the end of core helium burning (CHeB), which we 
+will define as core helium mass fraction < 1d-4. Replace the 
+old stopping condition by the new one.
 
 * HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`
-
-* HINT_2: Can you find on the website any content that is related to **stop** at a specific **phase**?
 
 * SOLUTION: Replace the lines::
   
@@ -109,6 +107,12 @@ TACHeB? Replace the old stopping condition by the new one.
     xa_central_lower_limit(1) = 1d-3
 
 with::
+
+  ! stop when the center mass fraction of he4 drops below this limit
+    xa_central_lower_limit_species(1) = 'he4'
+    xa_central_lower_limit(1) = 1d-4
+
+Alternatively, you can use the following shortcut:
 
   ! stop at the end of core helium burning 
     stop_at_phase_TACHeB = .true.
@@ -128,7 +132,7 @@ define the efficiency of the mixing process::
     use_Ledoux_criterion = .true.
     alpha_semiconvection = 1d0
     
-Furthermore, stars will start to burn hydrogen in their envelope,
+Furthermore, stars will start hydrogen shell-burning,
 leading to the formation of an outwards increasing mean molecular 
 weight. In stars in the regions stable to convection but with such
 a gradient, there will be some mixing in the form of thermohaline 

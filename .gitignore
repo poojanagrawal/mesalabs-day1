@@ -6,10 +6,10 @@
 *.data
 *.inp
 
-# Ignore specific directories and their contents
+# directories and their contents
 **/photos/**
 **/batch_runs/runs/**
 **/star/
 
-# Allow placeholder files to keep directory structure
+# placeholder files to keep directory structure
 !*.keep

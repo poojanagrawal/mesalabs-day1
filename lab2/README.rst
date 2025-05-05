@@ -62,7 +62,7 @@ Now, we need to add lines that tell MESA to load a saved model.
 Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
-* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/star_job.html <https://docs.mesastar.org/en/latest/reference/star_job.html>`
+* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/star_job.html <https://docs.mesastar.org/en/24.08.1/reference/star_job.html>`
 
 * HINT_2: Can you find on the website any content that is related to **load** something?
 
@@ -94,13 +94,11 @@ the initial conditions at the beginning of the evolution::
     
 Moreover, we should change our stopping condition. In Lab 1, we
 were only interested in the evolution until the TAMS. But now we
-want to go to the end of core helium burning (CHeB). Can you find
-a option on the MESA website that will stop the model at the 
-TACHeB? Replace the old stopping condition by the new one.
+want to go to the end of core helium burning (CHeB), which we 
+will define as core helium mass fraction < 1d-4. Replace the 
+old stopping condition by the new one.
 
-* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`
-
-* HINT_2: Can you find on the website any content that is related to **stop** at a specific **phase**?
+* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`
 
 * SOLUTION: Replace the lines::
   
@@ -109,6 +107,12 @@ TACHeB? Replace the old stopping condition by the new one.
     xa_central_lower_limit(1) = 1d-3
 
 with::
+
+  ! stop when the center mass fraction of he4 drops below this limit
+    xa_central_lower_limit_species(1) = 'he4'
+    xa_central_lower_limit(1) = 1d-4
+
+Alternatively, you can use the following shortcut:
 
   ! stop at the end of core helium burning 
     stop_at_phase_TACHeB = .true.
@@ -128,7 +132,7 @@ define the efficiency of the mixing process::
     use_Ledoux_criterion = .true.
     alpha_semiconvection = 1d0
     
-Furthermore, stars will start to burn hydrogen in their envelope,
+Furthermore, stars will start hydrogen shell-burning,
 leading to the formation of an outwards increasing mean molecular 
 weight. In stars in the regions stable to convection but with such
 a gradient, there will be some mixing in the form of thermohaline 
@@ -218,7 +222,7 @@ and in the *pgstar* section in the *inlist_extra*::
 Running different models until TACHeB
 =====================================
 
-Core helium burning without convection
+Core helium burning without core overshooting
 --------------------------------------
     
 Before we start running the model without core overshooting
@@ -266,7 +270,7 @@ on top of the helium burning core?
 
 * HINT_1: Since the first overshooting scheme is already used in the first set ``(1)`` we need to change them to ``(2)`` for all controls.
 
-* HINT_2: Is the overshooting zone still the correct one? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`.
+* HINT_2: Are the locations, types and boundaries of the overshooting zone still correct? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`.
 
 * HINT_3: Do not forget to change the f_ov and f0_ov values.
 

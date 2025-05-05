@@ -55,7 +55,10 @@
 
   ! when to stop
   ! stop at the end of core helium burning 
-    stop_at_phase_TACHeB = .true.
+    xa_central_lower_limit_species(1) = 'he4'
+    xa_central_lower_limit(1) = 1d-4
+
+    !stop_at_phase_TACHeB = .true.
 
   ! wind 
     hot_wind_scheme = 'Dutch'

@@ -222,7 +222,7 @@ and in the *pgstar* section in the *inlist_extra*::
 Running different models until TACHeB
 =====================================
 
-Core helium burning without convection
+Core helium burning without core overshooting
 --------------------------------------
     
 Before we start running the model without core overshooting
@@ -270,7 +270,7 @@ on top of the helium burning core?
 
 * HINT_1: Since the first overshooting scheme is already used in the first set ``(1)`` we need to change them to ``(2)`` for all controls.
 
-* HINT_2: Is the overshooting zone still the correct one? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`.
+* HINT_2: Are the locations, types and boundaries of the overshooting zone still correct? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`.
 
 * HINT_3: Do not forget to change the f_ov and f0_ov values.
 

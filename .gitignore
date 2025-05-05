@@ -1,9 +1,15 @@
+# Ignore compiled files and general binary junk
 *.mod
-*.png
+*.smod
 *.o
-*.mod
-*/photos/*
+*.png
 *.data
 *.inp
-*/batch_runs/runs/*
-*/make/*
+
+# Ignore specific directories and their contents
+**/photos/**
+**/batch_runs/runs/**
+**/star/
+
+# Allow placeholder files to keep directory structure
+!*.keep

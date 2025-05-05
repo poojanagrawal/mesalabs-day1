@@ -98,7 +98,7 @@ want to go to the end of core helium burning (CHeB). Can you find
 a option on the MESA website that will stop the model at the 
 TACHeB? Replace the old stopping condition by the new one.
 
-* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/latest/reference/controls.html <https://docs.mesastar.org/en/latest/reference/controls.html>`
+* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`
 
 * HINT_2: Can you find on the website any content that is related to **stop** at a specific **phase**?
 

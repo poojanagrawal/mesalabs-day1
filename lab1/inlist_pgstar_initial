@@ -61,7 +61,7 @@
 	History_Panels1_max_width = -1
 
 	History_Panels1_num_panels = 1
-	History_Panels1_yaxis_name(1) = 'mass_conv_core'
+	History_Panels1_yaxis_name(1) = 'star_age'
 	History_Panels1_ymin(1) = 0
 
 	History_Panels1_other_yaxis_name(1) = ''

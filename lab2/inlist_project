@@ -1,0 +1,102 @@
+&star_job
+  ! see star/defaults/star_job.defaults
+    
+  ! display on-screen plots
+    pgstar_flag = .true.
+    
+  ! loading the pre-saved 5Msun model
+	load_saved_model = .true.
+	load_model_filename = 'M5_Z0014_fov030_f0ov0005.mod'
+
+  ! Whether to wait for the user to confirm before closing the run and the pgstar window(s)
+    pause_before_terminate = .true.
+
+  ! Show which isotopes are included in the model
+  ! To keep computation time to a minimum, we use an unrealistically small net
+    show_net_species_info = .true.
+
+  ! Initial metal fractions of Asplund2009
+    initial_zfracs = 6
+
+  ! Renormalise
+    dump_missing_metals_into_heaviest = .false.
+
+  ! Our selection of only the finest history columns to include
+    history_columns_file = 'my_history_columns.list'
+    profile_columns_file = 'my_profile_columns.list'
+
+/ ! end of star_job namelist
+
+
+&eos
+  ! eos options
+  ! see eos/defaults/eos.defaults
+/ ! end of eos namelist
+
+
+&kap
+  ! kap options, see kap/defaults/kap.defaults
+  ! Pick the files describing the opacities of our model
+    kap_file_prefix = 'a09'
+    kap_CO_prefix = 'a09_co'
+    kap_lowT_prefix = 'lowT_fa05_a09p'
+
+    use_Type2_opacities = .true.
+    Zbase = 0.014
+/ ! end of kap namelist
+
+
+&controls
+  ! see star/defaults/controls.defaults
+  
+  ! initial mass and convection settings
+    read_extra_controls_inlist(1) = .true.
+    extra_controls_inlist_name(1) = 'inlist_extra'
+
+  ! when to stop
+  ! stop at the end of core helium burning 
+    xa_central_lower_limit_species(1) = 'he4'
+    xa_central_lower_limit(1) = 1d-4
+
+    !stop_at_phase_TACHeB = .true.
+
+  ! wind 
+    hot_wind_scheme = 'Dutch'
+    Dutch_scaling_factor = 1d0
+
+  ! atmosphere
+
+  ! rotation
+
+  ! element diffusion
+
+  ! mlt
+
+  ! mixing
+     overshoot_scheme(1) = 'step'
+     overshoot_zone_type(1) = 'burn_H'
+     overshoot_zone_loc(1) = 'core'
+     overshoot_bdy_loc(1) = 'top'
+     overshoot_f(1) = 0.30d0
+     overshoot_f0(1) = 0.005d0
+     
+     ! Conv. boundaries: Use Ledoux criterion and do premixing.
+     use_Ledoux_criterion = .true.
+     alpha_semiconvection = 1d0
+     thermohaline_coeff = 1d0
+     mixing_length_alpha = 1.8d0
+
+  ! timesteps
+
+  ! mesh
+
+  ! solver
+     ! options for energy conservation (see MESA V, Section 3)
+     energy_eqn_option = 'dedt'
+     use_gold_tolerances = .true.
+
+  ! output
+    ! Keep track of the history data of every step
+    history_interval = 1
+
+/ ! end of controls name

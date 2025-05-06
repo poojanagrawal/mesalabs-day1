@@ -9,7 +9,6 @@
 # directories and their contents
 **/photos/**
 **/batch_runs/runs/**
-**/star/
 
 # placeholder files to keep directory structure
 !*.keep

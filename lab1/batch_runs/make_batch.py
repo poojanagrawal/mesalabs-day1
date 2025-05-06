@@ -19,6 +19,10 @@ def create_batch_inlists(csv_file):
     # Create batch directory if it doesn't exist
     os.makedirs(batch_dir, exist_ok=True)
     
+    # Ask user about pgstar settings
+    enable_pgstar = input("Do you want to enable pgstar for batch runs? (yes/no): ").lower()
+    pgstar_setting = "pgstar_flag = .true." if enable_pgstar.startswith('y') else "pgstar_flag = .false."
+    
     # Read CSV file, skipping header
     with open(csv_file, 'r', newline='') as f:
         reader = csv.reader(f)
@@ -61,6 +65,7 @@ def create_batch_inlists(csv_file):
             content = re.sub(r'initial_mass = [0-9]*(\.[0-9]*)?', f'initial_mass = {mass}', content)
             content = re.sub(r'initial_z = [0-9]*(\.[0-9]*)?', f'initial_z = {metallicity}', content)
             content = re.sub(r'Zbase = [0-9]*(\.[0-9]*)?', f'Zbase = {metallicity}', content)
+            content = re.sub(r'pgstar_flag = \.(true|false)\.', pgstar_setting, content)
             
             # Handle save_model_filename
             model_filename = f"M{mass}_Z{metallicity}"
@@ -88,6 +93,7 @@ def create_batch_inlists(csv_file):
                 content = re.sub(r'!*\s*overshoot_bdy_loc\(1\) = .*', f'     overshoot_bdy_loc(1) = \'top\'', content)
                 content = re.sub(r'!*\s*overshoot_f\(1\) = .*', f'     overshoot_f(1) = {fov}', content)
                 content = re.sub(r'!*\s*overshoot_f0\(1\) = .*', f'     overshoot_f0(1) = {f0}', content)
+            
             # Write updated content
             with open(outfile, 'w') as f:
                 f.write(content)

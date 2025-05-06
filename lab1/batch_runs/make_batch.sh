@@ -14,6 +14,14 @@ TEMPLATE_INLIST="../inlist_project"
 # Create batch directory if it doesn't exist
 mkdir -p "$BATCH_DIR"
 
+# Ask user about pgstar settings
+read -p "Do you want to enable pgstar for batch runs? (yes/no): " enable_pgstar
+if [[ "$enable_pgstar" =~ ^[Yy][Ee]?[Ss]?$ ]]; then
+    pgstar_setting="pgstar_flag = .true."
+else
+    pgstar_setting="pgstar_flag = .false."
+fi
+
 # Skip header line and process each row
 tail -n +2 "$CSV_FILE" | while IFS=, read -r name mass metallicity scheme fov f0 rest; do
     # Skip empty lines or lines with missing data
@@ -46,6 +54,7 @@ tail -n +2 "$CSV_FILE" | while IFS=, read -r name mass metallicity scheme fov f0
     sed -i "s/initial_mass = [0-9]*\(\.[0-9]*\)\{0,1\}/initial_mass = $mass/" "$OUTFILE"
     sed -i "s/initial_z = [0-9]*\(\.[0-9]*\)\{0,1\}/initial_z = $metallicity/" "$OUTFILE"
     sed -i "s/Zbase = [0-9]*\(\.[0-9]*\)\{0,1\}/Zbase = $metallicity/" "$OUTFILE"
+    sed -i "s/pgstar_flag = \.[a-z]\+\./$pgstar_setting/" "$OUTFILE"
     
     # Handle save_model_filename
     model_filename="M${mass}_Z${metallicity}"

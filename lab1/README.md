@@ -93,6 +93,8 @@ automatically write parameter values into your inlist and runs different
 sets of parameters sequentially.
 
 
+# SESSION 1
+
 ### Setting up your MESA work directory
 
 1. We will start from the mostly empty default MESA work directory and
@@ -496,19 +498,29 @@ working as intended.
 **HINT**: [click here to reveal] [TO DO] In step 7, you reduced
 the number of pre-main-sequence relaxation steps from 300 to 100.
 You also set the initial timestep to 1 year, which should be
-reflected in the ``log_dt_years`` value of the first few steps.
-The ```` of the first steps should also show your new value for
-``initial_y``. You could also compare the values of some metals
-with your first run if you haven't removed that terminal output
-yet. 
+reflected in the ``lg_dt_years`` value of the first few steps.
+The ``He_cntr`` of the first steps should
+also show your new value for ``initial_y``. You could also
+compare the values of some metals with your first run if you
+haven't removed that terminal output yet. Finally, you should
+see the total mass of your model decreasing slightly.
 </span>
 <br>
 <br>
 
+Despite how much you already added into your *inlist_project*,
+there are still many empty headers. Indeed, when building
+an inlist for your real science cases, you should still look
+into your atmosphere settings, equation of state tables,
+spatial and temporal resolution, and much more besides.
+However, for the sake of time and not making this lab too
+repetitive, we'll stop here and move on to adapting MESA's
+output and tracking the model's evolution using PGPLOT.
+
 
 ### Customising output
 
-12. Now let's turn to these animated plots, often called
+13. Now let's turn to these animated plots, often called
 the pgstar plots. These are incredible useful in understanding what
 is going on in your model while its running, helping you spot
 potential problems early. Therefore, it is worthwhile to customise
@@ -544,7 +556,7 @@ and it will immediately update your plots.
 <br>
 
 
-13. We have merged all the plots in one panel for a better overview.
+14. We have merged all the plots in one panel for a better overview.
 We also included some key quantities at the top, similar to MESA's
 terminal output.
 The plots are the HRD, a plot relating the star's age to the
@@ -574,7 +586,7 @@ but there are a plethora of other processes MESA can include.
 <br>
 
 
-14. So far, so good! Now let's think about the age plot. This is an example
+15. So far, so good! Now let's think about the age plot. This is an example
 of a history panel, where we plot two history quantities, i.e.
 quantities that vary over time. Since we will explore the effect of
 overshooting on the core in the second half of this lab, it would be
@@ -645,7 +657,7 @@ _my_history_columns.list_ under ``&star_job`` :
     ``history_columns_file = 'my_history_columns.list'``
 
 
-15. Now we can finally turn back to the pgstar history plot. Open up
+16. Now we can finally turn back to the pgstar history plot. Open up
 *inlist_pgstar* and navigate to the section where the history panel
 is defined. Change the left y-axis to the default quantity of the
 convective core mass.  
@@ -690,7 +702,7 @@ Your pgstar window should now include fully functional panels. Briefly
 run your model again to double check everything works as it should.
 
 
-16. The history files tell you how chosen quantities vary over time. But
+17. The history files tell you how chosen quantities vary over time. But
 what about quantities that vary over the star's radius? Those are
 described by the files _profile{i}.data_ in the LOGS folder. As with
 the history, let's check study what is included by default and add
@@ -736,37 +748,100 @@ in your inlist's ``&controls`` section. You could also set
 <br>
 
 
-17. In the other labs today, you will learn how to run models that continue
+18. In the other labs today, you will learn how to run models that continue
 after the main-sequence evolution. When doing so, it is quite annoying to
 have to simulate the main-sequence again every time you tweak something in
 your inlist. Instead, we can tell MESA to save a model at the end of a
 main-sequence run so we can load that model in next lab. Add this to your
 ``%star_job`` and name your model:
 
-    save_model_when_terminate = .true.
-    save_photo_when_terminate = .true.
-    ! Give a name to the model file to be saved including your parameter values, e.g.
-    ! 'M{your_M}_Z{your_Z}_fov{your_f_overshoot}_f0ov{your_f0_overshoot}.mod'
-    save_model_filename = ! Add your name here
+    ``save_model_when_terminate = .true.``
+    ``save_photo_when_terminate = .true.``
+    ``! Give a name to the model file to be saved including your parameter values, e.g.``
+    ``! 'M{your_M}_Z{your_Z}_fov{your_f_overshoot}_f0ov{your_f0_overshoot}.mod'``
+    ``save_model_filename = ! Add your name here``
 
 
-18. Now let's run the model all the way to the end.
+19. Now let's run the model all the way to the end.
 As the model runs, keep an eye on your new mixing panel in particular.
 Compare it to those of the other people at your table.
 
+# SESSION 2
 
-### Studying the output
 
-2. Go into
+### Trying different the overshoot parameters
+
+You now know how to navigate your work directory and build up a
+main-sequence model. That's great. However, so far we have
+limited ourselves to simply adding in pre-chosen parameter values,
+choices of tables etc. In real scientific applications, you should
+always consider the impact of these settings, for instance by
+trying a few different values. In particular, there are a number
+numerical schemes and poorly calibrated physical parameters for
+which you should think carefully about the appropriate value.
+You already encountered some of these today, namely the
+mixing length parameter $\alpha_{MLT}$ and the mixing by
+overshooting.
+
+In this session, we'll explore the impact of overshooting in
+your model. Through your experiments and the lecturer's
+discussion of everyone's result, you will learn how you
+can find reasonable values and settings for overshooting
+in your model. The plan is that everyone gets a unique
+set of overshooting parameters, initial mass and initial
+metallicity to try out. You will then compare the results
+of these parameter settings to the model you produced in
+lab 1. Meanwhile, we will collect some basic results from
+everyone's model and examine the correlations between
+different parameters together.
+
+
+20. Go into
 [this spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
 and put your name next to one set of parameters to claim it as yours.
-
+Modify your inlist accordingly.
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
-you should comment all the lines starting with ``overshoot_`` by
-adding an exclamation mark (``!``) in front.
+you should leave the overshoot scheme as an empty string, i.e.
 
-11. Using your favourite text editor, open the history.data file and find
+    ``overshoot_scheme(1) = ''``
+
+
+21. Before you run your model again, you should make sure you are
+not overwriting your previous results. To do so, you should first
+adapt ``save_model_filename``, ideally with some new name that
+reflects the new parameter set.
+
+Next, to not overwrite your history and profile data, you could
+tell MESA to write the history and profile data to differently
+named files. However, there is another, easier option, which
+is to simply tell MESA to save the output in another directory
+than *LOGS/*. Check the documentation or user forums to discover
+how you can do that. Like the final model name, it is generally
+recommended to use a name that reflects the settings of your
+model, rather than something generic such as *model2*.  
+
+<span style="color: #1e118d ">
+**HINT**: Since you already know what the default directory name
+is, *LOGS* you can look for the field with that default value
+using the search functionality of the documentation site.
+</span>
+<br>
+<br>
+
+<span style="color: #1e118d ">
+**HINT**: The field you need is ``log_directory`` under ``&controls``.
+</span>
+<br>
+<br>
+
+
+22. Now run your model again. Keep a close eye on your pgstar plots,
+particularly the mixing panel. Compare it with those of the
+other people at your table.
+
+
+23. Using your favourite text editor, open the history.data file and find
 the line describing the TAMS. Add the values of the following parameters
 to the second page of the spreadsheet. Take care to check your units!
 
@@ -776,10 +851,11 @@ to the second page of the spreadsheet. Take care to check your units!
  - core radius
  - age in Myr
 
-MATHIJS TO TEAM: What output would be most useful? Teff and L are no-brainers
-and the core conditions are relevant as well. What else?
+MATHIJS TO TEAM: What output would be most useful? Teff and L are no-
+brainers and the core conditions are relevant as well. What else?
 
-12. Now let's wrap up this lab by reading your MESA output in using Python
+
+24. Now let's wrap up this lab by reading your MESA output in using Python
 and making some custom plots.
 
 MATHIJS TO TEAM: What kind of plots should we have them make? One idea is

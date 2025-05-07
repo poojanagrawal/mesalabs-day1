@@ -35,9 +35,7 @@ The typical workflow for batch runs is:
 
 ### 1. Use Provided CSV File
 
-You don't need to create your own CSV file. Use the provided `MESA_Lab.csv` file or access the online spreadsheet:
-
-- [Spreadsheet Link](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
+You don't need to create your own CSV file. Use the provided `MESA_Lab.csv` file or access the [online spreadsheet] (https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
 
 This CSV file already contains the necessary columns:
 - `YOUR NAME` (your name)

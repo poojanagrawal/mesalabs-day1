@@ -55,7 +55,7 @@ def extract_core_radius(history, tams_idx):
         return history.conv_mx1_top_r[tams_idx]
     return "NA"
 
-def load_runtime_data(timings_file="batch_runs/run_timings.csv"):
+def load_runtime_data(timings_file="run_timings.csv"):
     """Load runtime data from the CSV file created by batch runners."""
     runtimes = {}
     if not os.path.exists(timings_file):
@@ -75,10 +75,11 @@ def load_runtime_data(timings_file="batch_runs/run_timings.csv"):
                         runtime_minutes = float(runtime_seconds) / 60.0
                         runtimes[inlist_name] = {
                             'runtime_minutes': round(runtime_minutes, 2),
+                            'runtime_seconds': runtime_seconds,
                             'status': completion_status
                         }
                     except (ValueError, TypeError):
-                        pass
+                        print('aaa')
         
         print(f"Loaded runtime data for {len(runtimes)} models.")
     except Exception as e:
@@ -86,7 +87,7 @@ def load_runtime_data(timings_file="batch_runs/run_timings.csv"):
     
     return runtimes
 
-def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings_file="batch_runs/run_timings.csv"):
+def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings_file="run_timings.csv"):
     # Load runtime data
     runtimes = load_runtime_data(timings_file)
     
@@ -95,7 +96,7 @@ def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings
         "YOUR NAME", "initial mass  [Msol]", "initial metallicity", 
         "overshoot scheme", "overshoot parameter (f_ov)", "overshoot f0", 
         "", "log_Teff [K]", "log_L [Lsol]", "Core mass [Msol]", 
-        "Core radius [Rsol]", "Age [Myr]", "Runtime [min]", "Status"
+        "Core radius [Rsol]", "Age [Myr]", "Runtime [s]", "Status"
     ]
     
     run_dirs = [d for d in glob.glob(os.path.join(base_dir, "*")) if os.path.isdir(d)]
@@ -127,12 +128,16 @@ def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings
                 core_radius = extract_core_radius(history, tams_idx)
                 
                 # Get runtime data if available
-                runtime_minutes = ""
+                runtime_seconds = ""
                 status = ""
                 if run_name in runtimes:
-                    runtime_minutes = runtimes[run_name]['runtime_minutes']
+                    runtime_seconds = runtimes[run_name]['runtime_seconds']
                     status = runtimes[run_name]['status']
-                
+                else:
+                    runtime_seconds = ''
+                    status = 'not_completed'
+
+
                 # Format values for output
                 writer.writerow({
                     "YOUR NAME": "",  # Leave blank for manual entry
@@ -147,7 +152,7 @@ def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings
                     "Core mass [Msol]": round(he_core_mass, 5) if isinstance(he_core_mass, float) else "",
                     "Core radius [Rsol]": round(core_radius, 5) if isinstance(core_radius, (float, int)) and core_radius != "NA" else "",
                     "Age [Myr]": round(age, 2) if isinstance(age, float) else "",
-                    "Runtime [min]": runtime_minutes,
+                    "Runtime [s]": runtime_seconds,
                     "Status": status
                 })
                 

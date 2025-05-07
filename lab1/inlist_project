@@ -9,7 +9,7 @@
   ! save a model and photo at the end of the run
     save_model_when_terminate = .true.
     save_photo_when_terminate = .true.
-    save_model_filename = 'M2_Z0.014_exponential_fov0.03_f00.01.mod'
+    save_model_filename = 'M2_Z0.014_step_fov0.3_f00.001.mod'
 
   ! display on-screen plots
     pgstar_flag = .false.
@@ -88,12 +88,12 @@
   ! mlt
 
   ! mixing
-     overshoot_scheme(1) = 'exponential'
+     overshoot_scheme(1) = 'step'
      overshoot_zone_type(1) = 'any'
      overshoot_zone_loc(1) = 'core'
      overshoot_bdy_loc(1) = 'top'
-     overshoot_f(1) = 0.03
-     overshoot_f0(1) = 0.01
+     overshoot_f(1) = 0.3
+     overshoot_f0(1) = 0.001
 
      ! Conv. boundaries: Use Ledoux criterion and do premixing.
      use_Ledoux_criterion = .true.

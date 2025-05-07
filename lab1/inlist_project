@@ -9,10 +9,10 @@
   ! save a model and photo at the end of the run
     save_model_when_terminate = .true.
     save_photo_when_terminate = .true.
-    save_model_filename = 'M5_Z0.0140_step_fov0.30_f00.01.mod'
+    save_model_filename = 'M15_Z0.014_exponential_fov0.1_f00.005.mod'
 
   ! display on-screen plots
-    pgstar_flag = .true.
+    pgstar_flag = .false.
 
   ! Whether to wait for the user to confirm before closing the run and the pgstar window(s)
     pause_before_terminate = .true.
@@ -52,7 +52,7 @@
     kap_lowT_prefix = 'lowT_fa05_a09p'
 
     use_Type2_opacities = .true.
-    Zbase = 0.0140
+    Zbase = 0.014
 / ! end of kap namelist
 
 
@@ -60,12 +60,12 @@
   ! see star/defaults/controls.defaults
 
   ! starting specifications
-    initial_mass = 5 ! in Msun units
+    initial_mass = 15 ! in Msun units
 
     ! Set initial fractions according to Galactic enrichtment law
     ! Primordial helium abundance (Aver et al. 2021)
     ! Galactic enrichment ratio. Calibrated by requiring that for solar (Xini, Yini, Zini) = (0.710, 0.276, 0.014), NP+12
-    initial_z = 0.0140 ! initial metal mass fraction
+    initial_z = 0.014 ! initial metal mass fraction
     initial_y = 0.276002 ! = 0.2453d0 + 2.193d0 * initial_z
 
   ! when to stop
@@ -88,12 +88,12 @@
   ! mlt
 
   ! mixing
-     overshoot_scheme(1) = 'step'
+     overshoot_scheme(1) = 'exponential'
      overshoot_zone_type(1) = 'any'
      overshoot_zone_loc(1) = 'core'
      overshoot_bdy_loc(1) = 'top'
-     overshoot_f(1) = 0.30
-     overshoot_f0(1) = 0.01
+     overshoot_f(1) = 0.1
+     overshoot_f0(1) = 0.005
 
      ! Conv. boundaries: Use Ledoux criterion and do premixing.
      use_Ledoux_criterion = .true.

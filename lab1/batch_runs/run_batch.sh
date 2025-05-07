@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MESA Batch Runner for Unix/Linux/macOS
+# MESA Batch Runner
 # This script will run MESA for each inlist in batch_runs/batch_inlists
 
 echo "Checking environment..."
@@ -20,6 +20,7 @@ fi
 
 BATCH_DIR="batch_runs/batch_inlists"
 OUTPUT_DIR="batch_runs/runs"
+TIMING_FILE="batch_runs/run_timings.csv"
 
 # Check if batch inlists exist
 if [ ! -d "$BATCH_DIR" ]; then
@@ -42,11 +43,6 @@ echo "Found $TOTAL inlist files in $BATCH_DIR"
 if [ "$1" != "--force" ]; then
     echo
     echo "You are about to run $TOTAL MESA simulations."
-    echo "This might take a significant amount of time and computational resources."
-    if [ $TOTAL -gt 10 ]; then
-        echo "WARNING: Running $TOTAL simulations could take hours or even days!"
-    fi
-    echo
     read -p "Do you want to continue? (yes/no): " response
     
     if [[ ! "$response" =~ ^[Yy][Ee]?[Ss]?$ ]]; then
@@ -57,6 +53,11 @@ fi
 
 # Create output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
+
+# Initialize timing file with header if it doesn't exist
+if [ ! -f "$TIMING_FILE" ]; then
+    echo "inlist_name,runtime_seconds,completion_status" > "$TIMING_FILE"
+fi
 
 # Process each inlist
 CURRENT=0
@@ -80,10 +81,19 @@ for inlist_file in "$BATCH_DIR"/*.inp; do
     start_time=$(date +%s)
     
     ./star > "$run_dir/run.log" 2>&1
+    run_status=$?
     
     end_time=$(date +%s)
     elapsed=$((end_time - start_time))
-    echo "Run completed in $elapsed seconds."
+    completion_status="completed"
+    if [ $run_status -ne 0 ]; then
+        completion_status="failed"
+    fi
+    
+    # Record timing in the CSV file
+    echo "$inlist_name,$elapsed,$completion_status" >> "$TIMING_FILE"
+    
+    echo "Run completed in $elapsed seconds (Status: $completion_status)."
     
     # Copy results
     if [ -d "LOGS" ]; then
@@ -101,7 +111,7 @@ for inlist_file in "$BATCH_DIR"/*.inp; do
     fi
     
     # Find and copy model file if it exists
-    model_file=$(grep "save_model_filename" "$inlist_file" | sed "s/.*save_model_filename = '\([^']*\)'.*//")
+    model_file=$(grep "save_model_filename" "$inlist_file" | sed "s/.*save_model_filename = '\([^']*\)'.*/\1/")
     if [ -f "$model_file" ]; then
         cp -f "$model_file" "$run_dir/"
     fi
@@ -111,4 +121,5 @@ for inlist_file in "$BATCH_DIR"/*.inp; do
 done
 
 echo "All batch runs completed!"
+echo "Timing information saved to $TIMING_FILE"
 echo

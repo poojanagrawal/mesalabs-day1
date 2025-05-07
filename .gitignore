@@ -5,7 +5,9 @@
 *.png
 *.data
 *.inp
-
+*.csv
+*.data
+*star
 # directories and their contents
 **/photos/**
 **/batch_runs/runs/**

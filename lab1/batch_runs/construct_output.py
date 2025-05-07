@@ -55,13 +55,47 @@ def extract_core_radius(history, tams_idx):
         return history.conv_mx1_top_r[tams_idx]
     return "NA"
 
-def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs"):
-    # Use the exact column headers from the spreadsheet
+def load_runtime_data(timings_file="batch_runs/run_timings.csv"):
+    """Load runtime data from the CSV file created by batch runners."""
+    runtimes = {}
+    if not os.path.exists(timings_file):
+        print(f"Warning: Timing file {timings_file} not found. Runtime data will not be included.")
+        return runtimes
+    
+    try:
+        with open(timings_file, 'r', newline='') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                inlist_name = row.get('inlist_name', '')
+                runtime_seconds = row.get('runtime_seconds', '')
+                completion_status = row.get('completion_status', '')
+                
+                if inlist_name and runtime_seconds:
+                    try:
+                        runtime_minutes = float(runtime_seconds) / 60.0
+                        runtimes[inlist_name] = {
+                            'runtime_minutes': round(runtime_minutes, 2),
+                            'status': completion_status
+                        }
+                    except (ValueError, TypeError):
+                        pass
+        
+        print(f"Loaded runtime data for {len(runtimes)} models.")
+    except Exception as e:
+        print(f"Error loading runtime data: {e}")
+    
+    return runtimes
+
+def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs", timings_file="batch_runs/run_timings.csv"):
+    # Load runtime data
+    runtimes = load_runtime_data(timings_file)
+    
+    # Use the exact column headers from the spreadsheet plus the new runtime column
     fieldnames = [
         "YOUR NAME", "initial mass  [Msol]", "initial metallicity", 
         "overshoot scheme", "overshoot parameter (f_ov)", "overshoot f0", 
         "", "log_Teff [K]", "log_L [Lsol]", "Core mass [Msol]", 
-        "Core radius [Rsol]", "Age [Myr]"
+        "Core radius [Rsol]", "Age [Myr]", "Runtime [min]", "Status"
     ]
     
     run_dirs = [d for d in glob.glob(os.path.join(base_dir, "*")) if os.path.isdir(d)]
@@ -92,6 +126,13 @@ def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs"):
                 age, log_Teff, log_L, he_core_mass, tams_idx = extract_tams_values(history)
                 core_radius = extract_core_radius(history, tams_idx)
                 
+                # Get runtime data if available
+                runtime_minutes = ""
+                status = ""
+                if run_name in runtimes:
+                    runtime_minutes = runtimes[run_name]['runtime_minutes']
+                    status = runtimes[run_name]['status']
+                
                 # Format values for output
                 writer.writerow({
                     "YOUR NAME": "",  # Leave blank for manual entry
@@ -105,7 +146,9 @@ def write_summary_csv(output_csv="filled_MESA_Lab.csv", base_dir="runs"):
                     "log_L [Lsol]": round(log_L, 3) if isinstance(log_L, float) else "",
                     "Core mass [Msol]": round(he_core_mass, 5) if isinstance(he_core_mass, float) else "",
                     "Core radius [Rsol]": round(core_radius, 5) if isinstance(core_radius, (float, int)) and core_radius != "NA" else "",
-                    "Age [Myr]": round(age, 2) if isinstance(age, float) else ""
+                    "Age [Myr]": round(age, 2) if isinstance(age, float) else "",
+                    "Runtime [min]": runtime_minutes,
+                    "Status": status
                 })
                 
                 print(f"Processed: {run_name}")

@@ -263,8 +263,8 @@ def create_unified_hydrogen_profile_plot(model_data, plots_dir):
     
     # Set up axes
     plt.grid(alpha=0.3)
-    plt.xlim(0, 0.5)  # Focus on inner half of star where H changes
-    plt.ylim(0, 0.8)
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
     
     # Set labels
     plt.xlabel('Mass Coordinate (m/M$_{\\rm star}$)', fontsize=14)

@@ -128,7 +128,7 @@
       mx2_bot
 
       ! radius -- values are radii in Rsun units
-      !conv_mx1_top_r
+      conv_mx1_top_r
       !conv_mx1_bot_r
       !conv_mx2_top_r
       !conv_mx2_bot_r
@@ -1064,4 +1064,4 @@
       !num_hydro_splits
 
    !## timing
-      !elapsed_time ! time since start of run (seconds)
+      elapsed_time ! time since start of run (seconds)

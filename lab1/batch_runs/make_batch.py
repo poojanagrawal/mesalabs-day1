@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 make_batch.py - Python script to create batch inlists from a CSV file of parameters.
-Cross-platform replacement for make_batch.sh.
+Cross-platform replacement for make_batch.sh with improved robustness.
 """
 
 import os
@@ -34,7 +34,7 @@ def create_batch_inlists(csv_file):
                 continue
                 
             name = row[0].strip()
-            mass = row[1].strip()
+            mass = int(float(row[1].strip()))
             metallicity = row[2].strip()
             scheme = row[3].strip()
             fov = row[4].strip()
@@ -61,11 +61,50 @@ def create_batch_inlists(csv_file):
             with open(outfile, 'r') as f:
                 content = f.read()
             
-            # Update parameters in the inlist file
-            content = re.sub(r'initial_mass = [0-9]*(\.[0-9]*)?', f'initial_mass = {mass}', content)
-            content = re.sub(r'initial_z = [0-9]*(\.[0-9]*)?', f'initial_z = {metallicity}', content)
-            content = re.sub(r'Zbase = [0-9]*(\.[0-9]*)?', f'Zbase = {metallicity}', content)
-            content = re.sub(r'pgstar_flag = \.(true|false)\.', pgstar_setting, content)
+            # Handle parameters that might not exist
+            # For initial_mass
+            if re.search(r'initial_mass\s*=', content):
+                content = re.sub(r'initial_mass\s*=\s*[0-9]*(\.[0-9]*)?', f'initial_mass = {mass}', content)
+            else:
+                # Add it to the starting specifications section if it exists
+                if '! starting specifications' in content:
+                    content = re.sub(r'! starting specifications\n', f'! starting specifications\n    initial_mass = {mass} ! in Msun units\n', content)
+                else:
+                    # Otherwise add it at the beginning of the &controls section
+                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_mass = {mass} ! in Msun units', content)
+            
+            # For initial_z
+            if re.search(r'initial_z\s*=', content):
+                content = re.sub(r'initial_z\s*=\s*[0-9]*(\.[0-9]*)?', f'initial_z = {metallicity}', content)
+            else:
+                # Add it after initial_mass if it exists
+                if re.search(r'initial_mass\s*=', content):
+                    content = re.sub(r'(initial_mass\s*=.+)', f'\\1\n    initial_z = {metallicity} ! initial metal mass fraction', content)
+                else:
+                    # Otherwise add it at the beginning of the &controls section
+                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_z = {metallicity} ! initial metal mass fraction', content)
+            
+            # For Zbase in the &kap section
+            if re.search(r'Zbase\s*=', content):
+                content = re.sub(r'Zbase\s*=\s*[0-9]*(\.[0-9]*)?', f'Zbase = {metallicity}', content)
+            else:
+                # Add it to the &kap section if it exists
+                if '&kap' in content:
+                    content = re.sub(r'&kap\n', f'&kap\n    Zbase = {metallicity}\n', content)
+                else:
+                    # Otherwise add a new &kap section before &controls
+                    content = re.sub(r'&controls', f'&kap\n    ! kap options\n    Zbase = {metallicity}\n/ ! end of kap namelist\n\n&controls', content)
+            
+            # For pgstar_flag
+            if re.search(r'pgstar_flag\s*=\s*\.', content):
+                content = re.sub(r'pgstar_flag\s*=\s*\.(true|false)\.', pgstar_setting, content)
+            else:
+                # Add it to the &star_job section if it exists
+                if '&star_job' in content:
+                    content = re.sub(r'&star_job\n', f'&star_job\n    {pgstar_setting}\n', content)
+                else:
+                    # Otherwise add a new &star_job section at the beginning of the file
+                    content = f'&star_job\n    {pgstar_setting}\n/ ! end of star_job namelist\n\n' + content
             
             # Handle save_model_filename
             model_filename = f"M{mass}_Z{metallicity}"
@@ -74,25 +113,71 @@ def create_batch_inlists(csv_file):
             else:
                 model_filename = f"{model_filename}_noovs"
                 
-            content = re.sub(r"save_model_filename = '.*'", f"save_model_filename = '{model_filename}.mod'", content)
+            if re.search(r'save_model_filename\s*=', content):
+                content = re.sub(r"save_model_filename\s*=\s*'.*'", f"save_model_filename = '{model_filename}.mod'", content)
+            else:
+                # Add save model options to &star_job
+                save_model_options = f"    save_model_when_terminate = .true.\n    save_model_filename = '{model_filename}.mod'"
+                if '&star_job' in content:
+                    content = re.sub(r'(&star_job\n)', f'\\1{save_model_options}\n', content)
+                else:
+                    # Otherwise add a new &star_job section at the beginning of the file
+                    content = f'&star_job\n{save_model_options}\n/ ! end of star_job namelist\n\n' + content
             
             # Handle overshoot parameters
+            overshoot_section = ""
             if ovs_option == "none":
-                # Comment out all overshoot lines
-                content = re.sub(r'^(\s*overshoot_scheme)', r'!\1', content, flags=re.MULTILINE)
-                content = re.sub(r'^(\s*overshoot_zone_type)', r'!\1', content, flags=re.MULTILINE)
-                content = re.sub(r'^(\s*overshoot_zone_loc)', r'!\1', content, flags=re.MULTILINE)
-                content = re.sub(r'^(\s*overshoot_bdy_loc)', r'!\1', content, flags=re.MULTILINE)
-                content = re.sub(r'^(\s*overshoot_f\()', r'!\1', content, flags=re.MULTILINE)
-                content = re.sub(r'^(\s*overshoot_f0\()', r'!\1', content, flags=re.MULTILINE)
+                # No overshoot parameters needed
+                pass
             else:
-                # Update overshoot parameters
-                content = re.sub(r'!*\s*overshoot_scheme\(1\) = .*', f'     overshoot_scheme(1) = \'{scheme}\'', content)
-                content = re.sub(r'!*\s*overshoot_zone_type\(1\) = .*', f'     overshoot_zone_type(1) = \'any\'', content)
-                content = re.sub(r'!*\s*overshoot_zone_loc\(1\) = .*', f'     overshoot_zone_loc(1) = \'core\'', content)
-                content = re.sub(r'!*\s*overshoot_bdy_loc\(1\) = .*', f'     overshoot_bdy_loc(1) = \'top\'', content)
-                content = re.sub(r'!*\s*overshoot_f\(1\) = .*', f'     overshoot_f(1) = {fov}', content)
-                content = re.sub(r'!*\s*overshoot_f0\(1\) = .*', f'     overshoot_f0(1) = {f0}', content)
+                # Create overshoot parameters section
+                overshoot_section = f"""
+    ! mixing
+    overshoot_scheme(1) = '{scheme}'
+    overshoot_zone_type(1) = 'any'
+    overshoot_zone_loc(1) = 'core'
+    overshoot_bdy_loc(1) = 'top'
+    overshoot_f(1) = {fov}
+    overshoot_f0(1) = {f0}
+"""
+            
+            # Check if mixing section exists
+            if '! mixing' in content:
+                # If overshoot parameters already exist, update them
+                if re.search(r'overshoot_scheme\(1\)', content) or re.search(r'!+\s*overshoot_scheme\(1\)', content):
+                    if ovs_option == "none":
+                        # Comment out all overshoot lines
+                        content = re.sub(r'^(\s*overshoot_scheme)', r'!\1', content, flags=re.MULTILINE)
+                        content = re.sub(r'^(\s*overshoot_zone_type)', r'!\1', content, flags=re.MULTILINE)
+                        content = re.sub(r'^(\s*overshoot_zone_loc)', r'!\1', content, flags=re.MULTILINE)
+                        content = re.sub(r'^(\s*overshoot_bdy_loc)', r'!\1', content, flags=re.MULTILINE)
+                        content = re.sub(r'^(\s*overshoot_f\()', r'!\1', content, flags=re.MULTILINE)
+                        content = re.sub(r'^(\s*overshoot_f0\()', r'!\1', content, flags=re.MULTILINE)
+                    else:
+                        # Update existing overshoot parameters
+                        content = re.sub(r'!*\s*overshoot_scheme\(1\)\s*=\s*.*', f'     overshoot_scheme(1) = \'{scheme}\'', content)
+                        content = re.sub(r'!*\s*overshoot_zone_type\(1\)\s*=\s*.*', f'     overshoot_zone_type(1) = \'any\'', content)
+                        content = re.sub(r'!*\s*overshoot_zone_loc\(1\)\s*=\s*.*', f'     overshoot_zone_loc(1) = \'core\'', content)
+                        content = re.sub(r'!*\s*overshoot_bdy_loc\(1\)\s*=\s*.*', f'     overshoot_bdy_loc(1) = \'top\'', content)
+                        content = re.sub(r'!*\s*overshoot_f\(1\)\s*=\s*.*', f'     overshoot_f(1) = {fov}', content)
+                        content = re.sub(r'!*\s*overshoot_f0\(1\)\s*=\s*.*', f'     overshoot_f0(1) = {f0}', content)
+                else:
+                    # Add new overshoot parameters to existing mixing section
+                    if ovs_option != "none":
+                        content = re.sub(r'! mixing\n', f'! mixing\n{overshoot_section}', content)
+            else:
+                # Add new mixing section with overshoot parameters if needed
+                if ovs_option != "none":
+                    # Find a good place to add it in &controls section
+                    if re.search(r'! timesteps', content):
+                        content = re.sub(r'! timesteps', f'! mixing\n{overshoot_section}\n\n  ! timesteps', content)
+                    elif re.search(r'! mesh', content):
+                        content = re.sub(r'! mesh', f'! mixing\n{overshoot_section}\n\n  ! mesh', content)
+                    elif re.search(r'! solver', content):
+                        content = re.sub(r'! solver', f'! mixing\n{overshoot_section}\n\n  ! solver', content)
+                    else:
+                        # Add before end of controls
+                        content = re.sub(r'/ ! end of controls namelist', f'  ! mixing\n{overshoot_section}\n\n/ ! end of controls namelist', content)
             
             # Write updated content
             with open(outfile, 'w') as f:

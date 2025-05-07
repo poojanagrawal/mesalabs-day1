@@ -33,25 +33,21 @@ The typical workflow for batch runs is:
 
 ## Detailed Steps
 
-### 1. Prepare CSV File
+### 1. Use Provided CSV File
 
-Create a CSV file with the following columns:
-- `YOUR NAME` (optional)
+You don't need to create your own CSV file. Use the provided `MESA_Lab.csv` file or access the online spreadsheet:
+
+- [Spreadsheet Link](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
+
+This CSV file already contains the necessary columns:
+- `YOUR NAME` (your name)
 - `initial mass [Msol]` (stellar mass in solar masses)
 - `initial metallicity` (Z value)
 - `overshoot scheme` ("no overshooting", "exponential", or "step")
 - `overshoot parameter (f_ov)` (overshooting parameter)
 - `overshoot f0` (f0 parameter for overshooting)
 
-Example of a few rows:
-```
-YOUR NAME,initial mass  [Msol],initial metallicity,overshoot scheme,overshoot parameter (f_ov),overshoot f0
-,2,0.014,no overshooting,0,0
-,2,0.014,exponential,0.01,0.001
-,2,0.014,step,0.1,0.005
-```
-
-The example file `MESA_Lab.csv` is provided as a template.
+The online spreadsheet and the provided `MESA_Lab.csv` file contain the same parameter combinations.
 
 ### 2. Generate Inlists
 

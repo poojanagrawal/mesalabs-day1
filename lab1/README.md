@@ -138,7 +138,7 @@ overshooting should take place. Go into
 What other values are available? Meanwhile, `overshoot_scheme` describes what shape the  
 overshoot mixing profile should take. Again, what are the alternatives to our 'step'?
 
-**Answer (click to reveal)**  
+**Answer **  
 <details>
 <summary>Show answer</summary>
 
@@ -155,7 +155,7 @@ overshoot mixing profile should take. Again, what are the alternatives to our 's
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
 
-**Answer (click to reveal)**  
+**Answer **  
 <details>
 <summary>Show answer</summary>
 
@@ -170,7 +170,7 @@ the model should switch from mixing by convection to overshooting.
 
 **Question**: Where should you add these fields?
 
-**Answer (click to reveal)**  
+**Answer **  
 <details>
 <summary>Show answer</summary>
 
@@ -187,7 +187,7 @@ As such, we recommend adding these new fields under `! mixing`.
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
 
-**Answer (click to reveal)**  
+**Answer **  
 <details>
 <summary>Show answer</summary>
 

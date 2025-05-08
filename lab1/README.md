@@ -235,8 +235,7 @@ For the sake of simplicity, we'll stick to this easy definition today.
 </details>
 
 
-5.
-Run your model by cleaning any executables in your work directory using
+5. Run your model by cleaning any executables in your work directory using
 
 ```bash
 ./clean

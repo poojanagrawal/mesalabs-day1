@@ -48,7 +48,7 @@ jobs:
           
       - name: Move PDFs to docs directory
         run: |
-          mkdir -p docs
+          mkdir -p pdf
           mv lab1/README.pdf lab1/pdf/ || echo "Main README PDF not found"
           
       - name: Commit and push if changed

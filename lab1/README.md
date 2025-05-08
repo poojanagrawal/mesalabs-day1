@@ -138,7 +138,7 @@ overshooting should take place. Go into
 What other values are available? Meanwhile, `overshoot_scheme` describes what shape the  
 overshoot mixing profile should take. Again, what are the alternatives to our 'step'?
 
-**Answer**  
+  
 <details>
 <summary>Show answer</summary>
 
@@ -154,7 +154,7 @@ overshoot mixing profile should take. Again, what are the alternatives to our 's
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
 
-**Answer**  
+  
 <details>
 <summary>Show answer</summary>
 
@@ -168,7 +168,7 @@ the model should switch from mixing by convection to overshooting.
 
 **Question**: Where should you add these fields?
 
-**Answer**  
+  
 <details>
 <summary>Show answer</summary>
 
@@ -184,7 +184,7 @@ As such, we recommend adding these new fields under `! mixing`.
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
 
-**Answer**  
+  
 <details>
 <summary>Show answer</summary>
 
@@ -224,7 +224,7 @@ you want to define it.
 
 **Question**: How does the default *inlist\_project* define the TAMS?
 
-**Answer**
+
 
 <details>
 <summary>Show answer</summary>
@@ -310,7 +310,7 @@ and isotopes.
 
 **Question**: What is the default metal composition of MESA?
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -319,7 +319,7 @@ You can choose from pre-defined compositions using the field `initial_zfracs`.
 
 </details>
 
-**Answer**
+
 
 <details>
 <summary>Show answer</summary>
@@ -333,7 +333,7 @@ Say you have decided that you would like to use the more recent solar metal comp
 [Asplund et al. (2009)](https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract).
 Check the MESA documentation for how you can set that composition.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -342,7 +342,7 @@ Note the initials of the authors on the Asplund et al. (2009) papers.
 
 </details>
 
-**Hint**
+
 
 <details>
 <summary>Show answer</summary>
@@ -365,7 +365,7 @@ sure you are using an appropriate opacity table, like you did by
 setting ``ZBase`` after changing ``initial_z``. Navigate to the
 documentation of the kap module, which describes the opacities.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -378,7 +378,7 @@ To choose an appropriate opacity table, look for the 'Table selection' setting o
 Look through the available opacity tables.
 Can you find the appropriate tables to be consistent with your metal compositions?
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -398,7 +398,7 @@ kap_lowT_prefix = 'lowT_fa05_a09p'
 
 **Question**: What is currently the initial value of the helium abundance in your model? How did MESA compute this initial value?
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -417,7 +417,7 @@ Scaling to the solar composition, we find \$\frac{dY}{dZ} = 2.193\$.
 Using these values, compute an appropriate initial helium fraction for your model
 and implement it in your *inlist\_project*.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -438,7 +438,7 @@ It is recommended to place it alongside `initial_z` for clarity.
     Check the documentation of `&controls` to see what implementations of mass loss are available.
     And what is the default mass loss?
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -448,7 +448,7 @@ In the panel on the left, navigate to
 
 </details>
 
-**Answer**
+
 
 <details>
 <summary>Show answer</summary>
@@ -463,7 +463,7 @@ all of which can be scaled up or down. Each scheme is appropriate in particular 
 The so-called Dutch scheme attempts to merge some of these schemes into a cohesive whole.
 Add it into your *inlist\_project* without scaling it down.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -579,7 +579,7 @@ For now, focus on that mixing panel.
 
 **Question**: What is the panel showing exactly? What does the colour of each line indicate?
 
-**Answer**
+
 
 <details>
 <summary>Show answer</summary>
@@ -637,7 +637,7 @@ the defaults. Now add the stellar radius and radius of the convective
 core to the history output. Look for and uncomment the appropriate
 fields.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -646,7 +646,7 @@ The radius of the star is simply called `radius`.
 
 </details>
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -657,7 +657,7 @@ How would you make sure the definition of this radius is consistent with the cor
 
 </details>
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -691,7 +691,7 @@ History_Panels1_yaxis_name(1) = 'mass_conv_core'
 **Bonus**: You could also use this panel to directly compare the two different definitions we might use.
 How would you go about that?
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -739,7 +739,7 @@ To this end, you will need the profile of the (logarithmic) diffusive
 mixing coefficient and some way to tell what process is causing that
 mixing. Find and uncomment some appropriate fields.
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -760,7 +760,7 @@ profile_columns_file = 'my_profile_columns.list'
 **Bonus Question**: How often does MESA produce a profile file?
 How could you increase this resolution?
 
-**Answer**
+
 
 <details>
 <summary>Show answer</summary>
@@ -850,7 +850,7 @@ recommended to use a name that reflects the settings of your
 model, rather than something generic such as *model2*.  
 Here’s the cleaned-up, collapsible version of that double hint block:
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>
@@ -860,7 +860,7 @@ you can look for the field with that default value using the search functionalit
 
 </details>
 
-**Hint**
+
 
 <details>
 <summary>Show hint</summary>

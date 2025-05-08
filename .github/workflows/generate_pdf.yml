@@ -1,53 +1,55 @@
-name: Convert README to PDF
+name: Generate Documentation PDFs
 on:
   push:
     paths:
       - 'lab1/README.md'
       - 'lab1/batch_runs/README.md'
+
 jobs:
-  convert_to_pdf:
+  build-pdf:
     runs-on: ubuntu-latest
+    name: Generate Documentation PDFs
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Install md-to-pdf
-        run: npm install -g md-to-pdf
+      - name: Checkout
+        uses: actions/checkout@v3
         
-      - name: Create PDF config file
-        run: |
-          cat > pdf-config.json << 'EOF'
-          {
-            "stylesheet": "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css",
-            "body_class": "markdown-body",
-            "pdf_options": {
-              "format": "A4",
-              "margin": "20mm",
-              "printBackground": true,
-              "headerTemplate": "<div style='font-size: 9px; margin-left: 20px;'>MESA Batch Runs Documentation</div>",
-              "footerTemplate": "<div style='font-size: 9px; margin: 0 auto;'><span class='pageNumber'></span> / <span class='totalPages'></span></div>"
-            },
-            "launch_options": {
-              "args": ["--no-sandbox", "--disable-setuid-sandbox"]
-            }
-          }
-          EOF
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
           
-      - name: Convert README to PDF
+      - name: Install pandoc
         run: |
-          # Main README conversion
-          md-to-pdf lab1/README.md --config-file pdf-config.json
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-latex-extra
+          
+      - name: Create PDF directories
+        run: |
           mkdir -p lab1/pdf
-          mv lab1/README.pdf lab1/pdf/ || echo "Main README PDF not found"
+          mkdir -p lab1/batch_runs/pdf
           
-          # Batch runs README conversion
-          if [ -f "lab1/batch_runs/README.md" ]; then
-            md-to-pdf lab1/batch_runs/README.md --config-file pdf-config.json
-            mkdir -p lab1/batch_runs/pdf
-            mv lab1/batch_runs/README.pdf lab1/batch_runs/pdf/ || echo "Batch runs README PDF not found"
-          fi
-          
+      - name: Generate main README PDF
+        run: |
+          pandoc lab1/README.md \
+            --from markdown \
+            --template=https://raw.githubusercontent.com/openjournals/joss/master/assets/latex.template \
+            --pdf-engine=xelatex \
+            -o lab1/pdf/README.pdf
+        
+      - name: Generate batch runs README PDF
+        if: hashFiles('lab1/batch_runs/README.md') != ''
+        run: |
+          pandoc lab1/batch_runs/README.md \
+            --from markdown \
+            --template=https://raw.githubusercontent.com/openjournals/joss/master/assets/latex.template \
+            --pdf-engine=xelatex \
+            -o lab1/batch_runs/pdf/README.pdf
+            
+      - name: Upload PDFs as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation-pdfs
+          path: |
+            lab1/pdf/README.pdf
+            lab1/batch_runs/pdf/README.pdf
+          retention-days: 90

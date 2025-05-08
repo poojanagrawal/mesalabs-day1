@@ -1,5 +1,7 @@
 # Introduction to running MESA
 
+[PDF of README](pdf/README.pdf)
+
 If you can't stand reading anything that isn't on the web, skip this and go directly to https://docs.mesastar.org. Even if you do read this file, when you are done you should still go to that site!
 
 These directions assume you have already installed MESA. Double check if you have set your paths correctly by running:

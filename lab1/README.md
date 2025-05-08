@@ -138,7 +138,7 @@ overshooting should take place. Go into
 What other values are available? Meanwhile, `overshoot_scheme` describes what shape the  
 overshoot mixing profile should take. Again, what are the alternatives to our 'step'?
 
-**Answer **  
+**Answer**  
 <details>
 <summary>Show answer</summary>
 
@@ -155,7 +155,7 @@ overshoot mixing profile should take. Again, what are the alternatives to our 's
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
 
-**Answer **  
+**Answer**  
 <details>
 <summary>Show answer</summary>
 
@@ -170,7 +170,7 @@ the model should switch from mixing by convection to overshooting.
 
 **Question**: Where should you add these fields?
 
-**Answer **  
+**Answer**  
 <details>
 <summary>Show answer</summary>
 
@@ -187,7 +187,7 @@ As such, we recommend adding these new fields under `! mixing`.
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
 
-**Answer **  
+**Answer**  
 <details>
 <summary>Show answer</summary>
 
@@ -225,19 +225,17 @@ Bear in mind that different people define
 the TAMS in different ways, so you should always think about how
 you want to define it.
 
-<span style="color:green">
-**QUESTION**: How does the default *inlist_project* define the TAMS?
-</span>
-<br>
-<br>
+**Question**: How does the default *inlist\_project* define the TAMS?
 
-<span style="color: #148f77 ">
-**ANSWER**: [click here to reveal the answer] [TO DO] When the mass
-fraction of $^1H$ drops below 0.001. For the sake of simplicity, we'll
-stick to this easy definition today.
-</span>
-<br>
-<br>
+**Answer**
+
+<details>
+<summary>Show answer</summary>
+
+When the mass fraction of \$^1\$H drops below 0.001.
+For the sake of simplicity, we'll stick to this easy definition today.
+
+</details>
 
 
 5.
@@ -312,51 +310,56 @@ set the metallicity mass fraction of the model. However, you also need
 to think about how that mass is distributed across different elements
 and isotopes.
 
-<span style="color:green">
-**QUESTION**: What is the default metal composition of MESA?  
-</span>
-<br>
-<br>
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] You can choose from pre-
-defined compositions using the field ``initial_zfracs``.
-</span>
-<br>
-<br>
+**Question**: What is the default metal composition of MESA?
 
-<span style="color: #148f77 ">
-**ANSWER**: [click here to reveal the answer] [TO DO] By default,
-MESA uses the solar metal fractions of
-[Grevesse & Sauval (1998)]{https://ui.adsabs.harvard.edu/abs/1998SSRv...85..161G/abstract}.
-</span>
-<br>
-<br>
+**Hint**
 
-Say you have decided that you would like to use the more recent solar
-metal composition found by
-[Asplund et al. (2009)]{https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract}.
+<details>
+<summary>Show hint</summary>
+
+You can choose from pre-defined compositions using the field `initial_zfracs`.
+
+</details>
+
+**Answer**
+
+<details>
+<summary>Show answer</summary>
+
+By default, MESA uses the solar metal fractions of
+[Grevesse & Sauval (1998)](https://ui.adsabs.harvard.edu/abs/1998SSRv...85..161G/abstract).
+
+</details>
+
+Say you have decided that you would like to use the more recent solar metal composition found by
+[Asplund et al. (2009)](https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract).
 Check the MESA documentation for how you can set that composition.
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] Note the initials of the authors
-on the Asplund et al. (2009) papers.
-</span>
-<br>
-<br>
+**Hint**
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal the answer] [TO DO] The Asplund et al.
-(2009) composition can be set by adding
+<details>
+<summary>Show hint</summary>
+
+Note the initials of the authors on the Asplund et al. (2009) papers.
+
+</details>
+
+**Hint**
+
+<details>
+<summary>Show answer</summary>
+
+The Asplund et al. (2009) composition can be set by adding:
 
 ```fortran
 initial_zfracs = 6
 ```
 
-to your ``%star_job`` namelist.
-</span>
-<br>
-<br>
+to your `%star_job` namelist.
+
+</details>
+
 
 
 8. As you just altered the composition of your model, you should make

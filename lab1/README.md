@@ -791,6 +791,102 @@ save_model_filename = ! Add your name here
 As the model runs, keep an eye on your new mixing panel in particular.
 Compare it to those of the other people at your table.
 
+---
+
+## SESSION 2
+
+### Trying different the overshoot parameters
+
+You now know how to navigate your work directory and build up a
+main-sequence model. That's great. However, so far we have
+limited ourselves to simply adding in pre-chosen parameter values,
+choices of tables etc. In real scientific applications, you should
+always consider the impact of these settings, for instance by
+trying a few different values. In particular, there are a number
+numerical schemes and poorly calibrated physical parameters for
+which you should think carefully about the appropriate value.
+You already encountered some of these today, namely the
+mixing length parameter $\alpha_{MLT}$ and the mixing by
+overshooting.
+
+In this session, we'll explore the impact of overshooting in
+your model. Through your experiments and the lecturer's
+discussion of everyone's result, you will learn how you
+can find reasonable values and settings for overshooting
+in your model. The plan is that everyone gets a unique
+set of overshooting parameters, initial mass and initial
+metallicity to try out. You will then compare the results
+of these parameter settings to the model you produced in
+lab 1. Meanwhile, we will collect some basic results from
+everyone's model and examine the correlations between
+different parameters together.
+
+20. Go into
+[this spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
+and put your name next to one set of parameters to claim it as yours.
+Modify your inlist accordingly.
+
+If you selected the **'no overshoot'** scheme from the spreadsheet,
+you should leave the overshoot scheme as an empty string, i.e.
+
+```fortran
+overshoot_scheme(1) = ''
+```
+
+21. Before you run your model again, you should make sure you are
+not overwriting your previous results. To do so, you should first
+adapt ``save_model_filename``, ideally with some new name that
+reflects the new parameter set.
+
+Next, to not overwrite your history and profile data, you could
+tell MESA to write the history and profile data to differently
+named files. However, there is another, easier option, which
+is to simply tell MESA to save the output in another directory
+than *LOGS/*. Check the documentation or user forums to discover
+how you can do that. Like the final model name, it is generally
+recommended to use a name that reflects the settings of your
+model, rather than something generic such as *model2*.  
+
+<span style="color: #1e118d ">
+**HINT**: Since you already know what the default directory name
+is, *LOGS* you can look for the field with that default value
+using the search functionality of the documentation site.
+</span>
+<br>
+<br>
+
+<span style="color: #1e118d ">
+**HINT**: The field you need is ``log_directory`` under ``&controls``.
+</span>
+<br>
+<br>
+
+22. Now run your model again. Keep a close eye on your pgstar plots,
+particularly the mixing panel. Compare it with those of the
+other people at your table.
+
+23. Using your favourite text editor, open the history.data file and find
+the line describing the TAMS. Add the values of the following parameters
+to the second page of the spreadsheet. Take care to check your units!
+
+ - log(Teff)
+ - log(L)
+ - core mass
+ - core radius
+ - age in Myr
+
+MATHIJS TO TEAM: What output would be most useful? Teff and L are no-
+brainers and the core conditions are relevant as well. What else?
+
+24. Now let's wrap up this lab by reading your MESA output in using Python
+and making some custom plots.
+
+MATHIJS TO TEAM: What kind of plots should we have them make? One idea is
+to make them plot the mixing profile of every profile together in one plot.
+Another obvious option is to plot core mass/radius against (a proxy of) time.
+
+---
+
 ## BONUS: Automating Batch Runs
 
 If you've completed the main lab activities and have time left, you can explore the batch_runs directory which contains tools to automate running multiple MESA models with different parameter sets. This allows you to efficiently explore how different overshooting parameters affect stellar evolution without having to manually create and run each model.

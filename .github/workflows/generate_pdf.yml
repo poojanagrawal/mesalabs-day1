@@ -9,6 +9,8 @@ jobs:
   build-pdf:
     runs-on: ubuntu-latest
     name: Generate Documentation PDFs
+    permissions:
+      contents: write  # Crucial permission for repository operations
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,12 +20,12 @@ jobs:
         with:
           python-version: '3.9'
           
-      - name: Install pandoc and LaTeX
+      - name: Install pandoc and LaTeX dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-latex-extra
           
-      - name: Create PDF directories
+      - name: Create output directories
         run: |
           mkdir -p lab1/pdf
           mkdir -p lab1/batch_runs/pdf
@@ -45,11 +47,18 @@ jobs:
             --pdf-engine=xelatex \
             -o lab1/batch_runs/pdf/README.pdf
             
-      - name: Upload PDFs as artifacts
-        uses: actions/upload-artifact@v2  # Changed from v3 to v2 for better compatibility
-        with:
-          name: documentation-pdfs
-          path: |
-            lab1/pdf/README.pdf
-            lab1/batch_runs/pdf/README.pdf
-          retention-days: 90
+      - name: Commit PDFs to repository
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add the PDFs to git
+          git add lab1/pdf/README.pdf || echo "Main PDF not found"
+          git add lab1/batch_runs/pdf/README.pdf || echo "Batch runs PDF not found"
+          
+          # Only commit if there are changes to commit
+          git diff --staged --quiet || git commit -m "Update documentation PDFs [skip ci]"
+          
+      - name: Push changes
+        # The '[skip ci]' in the commit message prevents an infinite loop of workflow runs
+        run: git push

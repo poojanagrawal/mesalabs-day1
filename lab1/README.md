@@ -1,6 +1,6 @@
 # Introduction to running MESA
 
-[PDFtest](pdf/README.pdf)
+[PDFtesst](pdf/README.pdf)
 
 If you can't stand reading anything that isn't on the web, skip this and go directly to https://docs.mesastar.org. Even if you do read this file, when you are done you should still go to that site!
 

@@ -362,26 +362,31 @@ to your `%star_job` namelist.
 
 
 
+
 8. As you just altered the composition of your model, you should make
 sure you are using an appropriate opacity table, like you did by
 setting ``ZBase`` after changing ``initial_z``. Navigate to the
 documentation of the kap module, which describes the opacities.
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] In the panel on the left,
-expand 'Module documentation' and open 'Opacities (kap)'. To choose
-an appropriate opacity table, look for the 'Table selection' setting
-of 'kap module controls'.
-</span>
-<br>
-<br>
+**Hint**
 
-Look through the available opacity tables. Can you find the
-appropriate tables to be consistent with your metal compositions?
+<details>
+<summary>Show hint</summary>
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO]
-Add the following to your ``&kap`` namelist in *inlist_project*.
+In the panel on the left, expand 'Module documentation' and open 'Opacities (kap)'.
+To choose an appropriate opacity table, look for the 'Table selection' setting of 'kap module controls'.
+
+</details>
+
+Look through the available opacity tables.
+Can you find the appropriate tables to be consistent with your metal compositions?
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+Add the following to your `&kap` namelist in *inlist\_project*:
 
 ```fortran
 kap_file_prefix = 'a09'
@@ -389,9 +394,7 @@ kap_CO_prefix = 'a09_co'
 kap_lowT_prefix = 'lowT_fa05_a09p'
 ```
 
-</span>
-<br>
-<br>
+</details>
 
 
 9. After deciding on how the metal mass fractions are, let's

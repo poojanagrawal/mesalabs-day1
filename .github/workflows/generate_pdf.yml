@@ -3,8 +3,8 @@ name: Convert README to PDF
 on:
   push:
     paths:
-      - 'README.md'
-      - 'batch_runs/README.md'
+      - 'lab1/README.md'
+      - 'lab1/batch_runs/README.md'
 
 jobs:
   convert_to_pdf:
@@ -38,11 +38,11 @@ jobs:
           
       - name: Convert README to PDF
         run: |
-          md-to-pdf README.md --config-file pdf-config.json
-          if [ -f "batch_runs/README.md" ]; then
-            md-to-pdf batch_runs/README.md --config-file pdf-config.json
-            mkdir -p batch_runs/pdf
-            mv batch_runs/README.pdf batch_runs/pdf/
+          md-to-pdf lab1/README.md --config-file pdf-config.json
+          if [ -f "lab1/batch_runs/README.md" ]; then
+            md-to-pdf lab1/batch_runs/README.md --config-file pdf-config.json
+            mkdir -p lab1/batch_runs/pdf
+            mv lab1/batch_runs/README.pdf lab1/batch_runs/pdf/
           fi
           
       - name: Move PDFs to docs directory

@@ -58,7 +58,7 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
     plt.figure(figsize=(16, 12))
 
     masses = sorted(set(param["mass"] for param in run_params.values()))
-    mass_colors = plt.cm.viridis(np.linspace(0, 1, len(masses)))
+    mass_colors = plt.cm.brg(np.linspace(0, 1, len(masses)))
     mass_color_map = {mass: mass_colors[i] for i, mass in enumerate(masses)}
     scheme_markers = {'none': 'o', 'exponential': '^', 'step': 's'}
 
@@ -153,12 +153,13 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
 
 
     try:
+        print("Trying to make GIF...")
         from matplotlib import animation
 
         # Animate the 3D plot (full rotation + bobbing)
         def update_view(frame):
             azim = (frame % 360)
-            elev = 30 + 30 * np.sin(np.radians(frame))  # bob up and down
+            elev = 30 + 30 * np.sin(np.radians(frame)*2)  # bob up and down
             ax.view_init(elev=elev, azim=azim)
             return fig,
 
@@ -167,6 +168,7 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
         anim = animation.FuncAnimation(fig, update_view, frames=frames, interval=50, blit=False)
         gif_path = os.path.join(save_path, "hr_diagram_3d_rotation.gif")
         anim.save(gif_path, writer='pillow', fps=20)
+        print("... GIF made!")
     except:
         print("\033[1;31m" + "="*60)
         print("   \033[91mFAILED TO MAKE GIF\033[0m".center(60))

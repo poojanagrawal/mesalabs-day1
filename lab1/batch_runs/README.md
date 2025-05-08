@@ -1,6 +1,6 @@
 # MESA Batch Runs
 
-[View batch runs documentation as PDF](https://github.com/USERNAME/REPO-NAME/blob/main/batch_runs/pdf/README.pdf)
+[PDF](https://github.com/USERNAME/REPO-NAME/blob/main/batch_runs/pdf/README.pdf)
 
 This directory contains tools to automate running multiple MESA models with different parameters. This README explains how to use these tools, their options, and the recommended workflow.
 

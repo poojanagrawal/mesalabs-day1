@@ -150,6 +150,32 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
     plt.savefig(f"{save_path}/all_hr_diagrams_3d.png", dpi=300, bbox_inches='tight')
     plt.show()
 
+
+
+    try:
+        from matplotlib import animation
+
+        # Animate the 3D plot (full rotation + bobbing)
+        def update_view(frame):
+            azim = (frame % 360)
+            elev = 30 + 30 * np.sin(np.radians(frame))  # bob up and down
+            ax.view_init(elev=elev, azim=azim)
+            return fig,
+
+        # Save animation as GIF
+        frames = 360  # 1 degree per frame = smooth full rotation
+        anim = animation.FuncAnimation(fig, update_view, frames=frames, interval=50, blit=False)
+        gif_path = os.path.join(save_path, "hr_diagram_3d_rotation.gif")
+        anim.save(gif_path, writer='pillow', fps=20)
+    except:
+        print("\033[1;31m" + "="*60)
+        print("   \033[91mFAILED TO MAKE GIF\033[0m".center(60))
+        print("   \033[90mMaybe you don't have\033[0m \033[1;36m'pillow'\033[0m \033[90minstalled...\033[0m".center(60))
+        print("\033[1;31m" + "="*60 + "\033[0m")
+
+
+
+
 def main():
     batch_runs_dir = "runs"
     save_path = "plots"

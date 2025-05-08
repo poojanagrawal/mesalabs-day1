@@ -895,8 +895,37 @@ Another obvious option is to plot core mass/radius against (a proxy of) time.
 
 ---
 
-## BONUS: Automating Batch Runs
+## BONUS: Batch Parameter Studies with MESA
 
-If you've completed the main lab activities and have time left, you can explore the batch_runs directory which contains tools to automate running multiple MESA models with different parameter sets. This allows you to efficiently explore how different overshooting parameters affect stellar evolution without having to manually create and run each model.
+If you've completed the main lab activities and have time remaining, explore the automated parameter study framework in the [`batch_runs/`](./batch_runs) directory. This framework enables systematic exploration of overshooting effects across multiple stellar models.
 
-The batch_runs directory contains scripts to generate inlists from parameter specifications in a CSV file and run them sequentially, along with tools for analyzing and comparing the results. See the README.md in the batch_runs directory for detailed instructions.
+### Why Run Batch Studies?
+
+1. **Efficiency**: Run dozens of MESA models without manual intervention
+2. **Thoroughness**: Test how overshooting parameters affect stellar evolution across different masses and metallicities
+3. **Reproducibility**: Generate standardized output for consistent analysis
+
+### Quick Start Guide
+
+```bash
+# Generate parameter-specific inlists
+python batch_runs/make_batch.py batch_runs/MESA_Lab.csv
+
+# Execute models sequentially
+python batch_runs/run_batch.py
+
+# Visualize results across parameter space
+python batch_runs/plot_hr.py
+python batch_runs/plot_ccore_mass.py
+```
+
+### Available Parameter Space
+
+The provided parameter grid explores:
+- Stellar masses: 2, 5, 15, 30 M☉
+- Metallicities: Z = 0.014, 0.0014
+- Overshooting schemes: None, Exponential, Step
+- Overshooting parameters: 0.01-0.3
+- Penetration depths: 0.001-0.01
+
+For complete documentation and additional analysis tools, see [`batch_runs/README.md`](./batch_runs/README.md).

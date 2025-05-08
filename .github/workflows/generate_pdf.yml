@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Generate Documentation PDFs
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
         
       - name: Setup Python
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.9'
           
-      - name: Install pandoc
+      - name: Install pandoc and LaTeX
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-latex-extra
@@ -46,7 +46,7 @@ jobs:
             -o lab1/batch_runs/pdf/README.pdf
             
       - name: Upload PDFs as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Changed from v3 to v2 for better compatibility
         with:
           name: documentation-pdfs
           path: |

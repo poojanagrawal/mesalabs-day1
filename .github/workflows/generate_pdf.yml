@@ -51,10 +51,3 @@ jobs:
             mv lab1/batch_runs/README.pdf lab1/batch_runs/pdf/ || echo "Batch runs README PDF not found"
           fi
           
-      - name: Commit and push if changed
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add lab1/pdf/README.pdf lab1/batch_runs/pdf/README.pdf || true
-          git commit -m "Update PDF documentation" || echo "No changes to commit"
-          git push || echo "Nothing to push"

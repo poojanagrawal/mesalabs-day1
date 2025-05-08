@@ -506,19 +506,15 @@ just check it does not crash. Plus, you should be able to
 use the terminal output to check if some of your changes are
 working as intended.
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] In step 7, you reduced
-the number of pre-main-sequence relaxation steps from 300 to 100.
-You also set the initial timestep to 1 year, which should be
-reflected in the ``lg_dt_years`` value of the first few steps.
-The ``He_cntr`` of the first steps should
-also show your new value for ``initial_y``. You could also
-compare the values of some metals with your first run if you
-haven't removed that terminal output yet. Finally, you should
-see the total mass of your model decreasing slightly.
-</span>
-<br>
-<br>
+<details> <summary>Show hint</summary>
+In step 7, you reduced the number of pre-main-sequence relaxation steps from 300 to 100.
+You also set the initial timestep to 1 year, which should be reflected in the lg_dt_years
+value of the first few steps. The He_cntr of the first steps should also show your new value
+for initial_y. You could also compare the values of some metals with your first run if you
+haven't removed that terminal output yet. Finally, you should see the total mass of your model
+decreasing slightly.
+</details>
+
 
 Despite how much you already added into your *inlist_project*,
 there are still many empty headers. Indeed, when building
@@ -562,12 +558,10 @@ Grid1_win_width = 10
 Grid1_win_aspect_ratio = 0.7
 ```
 
-<span style="color: #1e118d ">
-**HINT** : You can edit *inlist_pgstar* while the model is running
+<details> <summary>Show hint</summary>
+You can edit *inlist_pgstar* while the model is running
 and it will immediately update your plots.
-</span>
-<br>
-<br>
+</details>
 
 
 14. We have merged all the plots in one panel for a better overview.
@@ -581,23 +575,24 @@ We'll get back to that empty panel later.
 
 For now, focus on that mixing panel.
 
-<span style="color:green">
-**QUESTION**: What is the panel showing exactly? What does the colour
-of each line indicate?
-</span>
-<br>
-<br>
 
-<span style="color: #148f77 ">
-**ANSWER**: MESA treats the mixing of chemicals as a diffusive process.
-The y-axis shows the logarithm of the diffusive mixing coefficient in
-cm^2/s (unless otherwise specified, MESA uses cgs units). The colour
-indicates the process behind the mixing, blue for convection and white
-for overshooting. These are the only two mixing processes in our model,
-but there are a plethora of other processes MESA can include.
-</span>
-<br>
-<br>
+
+**Question**: What is the panel showing exactly? What does the colour of each line indicate?
+
+**Answer**
+
+<details>
+<summary>Show answer</summary>
+
+MESA treats the mixing of chemicals as a diffusive process.
+The y-axis shows the logarithm of the diffusive mixing coefficient in cm²/s
+(unless otherwise specified, MESA uses cgs units).
+The colour indicates the process behind the mixing — blue for convection and white for overshooting.
+These are the only two mixing processes in our model, but there are a plethora of other processes MESA can include.
+
+</details>
+
+
 
 
 15. So far, so good! Now let's think about the age plot. This is an example
@@ -642,29 +637,38 @@ the defaults. Now add the stellar radius and radius of the convective
 core to the history output. Look for and uncomment the appropriate
 fields.
 
-<span style="color: #1e118d ">
-**HINT** : The radius of the star is simply called 'radius'.
-</span>
-<br>
-<br>
+**Hint**
 
-<span style="color: #1e118d ">
-**HINT** : For the radius of the convective core, look under the section
-marked by ``!## mixing regions``. Which field here would provide the
-core radius in a main-sequence star with a fairly large convective core?
-How would you make sure the definition of this radius is consistent with
-the core mass?
-</span>
-<br>
-<br>
+<details>
+<summary>Show hint</summary>
 
-<span style="color: #1e118d ">
-**HINT** : For the radius, take the field ``conv_mx1_top_r``. To guarantee
-consistency with the core mass, use ``conv_mx1_top`` for your core mass.
+The radius of the star is simply called `radius`.
+
+</details>
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+For the radius of the convective core, look under the section marked by `!## mixing regions`.
+Which field here would provide the core radius in a main-sequence star with a fairly large convective core?
+How would you make sure the definition of this radius is consistent with the core mass?
+
+</details>
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+For the radius, take the field `conv_mx1_top_r`.
+To guarantee consistency with the core mass, use `conv_mx1_top` for your core mass.
 Be aware that these are relative to the total radius and mass!
-</span>
-<br>
-<br>
+
+</details>
+
+
 
 Once you have uncommented the relevant lines, you need to tell your MESA
 inlist that you want to include the output columns in
@@ -684,27 +688,22 @@ convective core mass.
 History_Panels1_yaxis_name(1) = 'mass_conv_core'
 ```
 
-<span style="color: orange ">
-**BONUS**: You could also use this panel to directly compare the
-two different definitions we might use. How would you go about that?
-</span>
-<br>
-<br>
+**Bonus**: You could also use this panel to directly compare the two different definitions we might use.
+How would you go about that?
 
-<span style="color: #1e118d ">
-**HINT**: [click here to reveal the answer] [TO DO] The optional
-field ``History_Panels1_other_yaxis_name(1)`` lets you set the
-right y-axis.
-</span>
-<br>
-<br>
+**Hint**
 
-<span style="color: orange ">
-**BONUS QUESTION**: Which of these two definitions seems more
-convenient to you? And what about the definition of the core radius?
-</span>
-<br>
-<br>
+<details>
+<summary>Show hint</summary>
+
+The optional field `History_Panels1_other_yaxis_name(1)` lets you set the right y-axis.
+
+</details>
+
+
+**Bonus Question**: Which of these two definitions seems more convenient to you?
+And what about the definition of the core radius?
+
 
 What history and profile quantities we ask MESA to include not only changes
 the output of our model, but also impacts pgstar's plotting options.
@@ -740,38 +739,38 @@ To this end, you will need the profile of the (logarithmic) diffusive
 mixing coefficient and some way to tell what process is causing that
 mixing. Find and uncomment some appropriate fields.
 
-<span style="color: #1e118d ">
-**HINT**: At minimum, include the fields ``log_D_mix`` and
-``mixing_type``. Adding the contributions of each mixing type
-separately using ``log_D_conv``, ``log_D_ovr`` & co. is also
-recommended.
-</span>
-<br>
-<br>
+**Hint**
 
-Remember to add your profile column list to your inlist!
+<details>
+<summary>Show hint</summary>
+
+At minimum, include the fields `log_D_mix` and `mixing_type`.
+Adding the contributions of each mixing type separately using `log_D_conv`, `log_D_ovr`, & co. is also recommended.
+
+</details>
+
+Remember to add your profile column list to your inlist:
 
 ```fortran
 profile_columns_file = 'my_profile_columns.list'
 ```
 
+---
 
-<span style="color: orange ">
-**BONUS QUESTION**: How often does MESA produce a profile file? How could
-you increase this resolution?
-</span>
-<br>
-<br>
+**Bonus Question**: How often does MESA produce a profile file?
+How could you increase this resolution?
 
-<span style="color: #148f77 ">
-**ANSWER**: [click here to reveal the answer] [TO DO] By default, MESA
-produces a profile every 50 model steps. The most straightforward way
-to increase the frequency of the output is using ``profile_interval``
-in your inlist's ``&controls`` section. You could also set
-``write_profile_when_terminate = .true.``.
-</span>
-<br>
-<br>
+**Answer**
+
+<details>
+<summary>Show answer</summary>
+
+By default, MESA produces a profile every 50 model steps.
+The most straightforward way to increase the frequency of the output is using `profile_interval`
+in your inlist's `&controls` section. You could also set `write_profile_when_terminate = .true.`.
+
+</details>
+
 
 
 18. In the other labs today, you will learn how to run models that continue
@@ -849,20 +848,27 @@ than *LOGS/*. Check the documentation or user forums to discover
 how you can do that. Like the final model name, it is generally
 recommended to use a name that reflects the settings of your
 model, rather than something generic such as *model2*.  
+Here’s the cleaned-up, collapsible version of that double hint block:
 
-<span style="color: #1e118d ">
-**HINT**: Since you already know what the default directory name
-is, *LOGS* you can look for the field with that default value
-using the search functionality of the documentation site.
-</span>
-<br>
-<br>
+**Hint**
 
-<span style="color: #1e118d ">
-**HINT**: The field you need is ``log_directory`` under ``&controls``.
-</span>
-<br>
-<br>
+<details>
+<summary>Show hint</summary>
+
+Since you already know what the default directory name is, *LOGS*,
+you can look for the field with that default value using the search functionality of the documentation site.
+
+</details>
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+The field you need is `log_directory` under `&controls`.
+
+</details>
+
 
 22. Now run your model again. Keep a close eye on your pgstar plots,
 particularly the mixing panel. Compare it with those of the

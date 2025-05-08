@@ -1,0 +1,59 @@
+name: Convert README to PDF
+
+on:
+  push:
+    paths:
+      - 'README.md'
+      - 'batch_runs/README.md'
+
+jobs:
+  convert_to_pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Install md-to-pdf
+        run: npm install -g md-to-pdf
+        
+      - name: Create PDF config file
+        run: |
+          cat > pdf-config.json << 'EOF'
+          {
+            "stylesheet": "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css",
+            "body_class": "markdown-body",
+            "pdf_options": {
+              "format": "A4",
+              "margin": "20mm",
+              "printBackground": true,
+              "headerTemplate": "<div style='font-size: 9px; margin-left: 20px;'>MESA Batch Runs Documentation</div>",
+              "footerTemplate": "<div style='font-size: 9px; margin: 0 auto;'><span class='pageNumber'></span> / <span class='totalPages'></span></div>"
+            }
+          }
+          EOF
+          
+      - name: Convert README to PDF
+        run: |
+          md-to-pdf README.md --config-file pdf-config.json
+          if [ -f "batch_runs/README.md" ]; then
+            md-to-pdf batch_runs/README.md --config-file pdf-config.json
+            mkdir -p batch_runs/pdf
+            mv batch_runs/README.pdf batch_runs/pdf/
+          fi
+          
+      - name: Move PDFs to docs directory
+        run: |
+          mkdir -p docs
+          mv README.pdf docs/
+          
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/README.pdf batch_runs/pdf/README.pdf || true
+          git commit -m "Update PDF documentation" || exit 0
+          git push

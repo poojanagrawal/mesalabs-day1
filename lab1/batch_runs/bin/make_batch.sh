@@ -9,8 +9,8 @@ if [ $# -lt 1 ]; then
 fi
 
 CSV_FILE=$1
-BATCH_DIR="batch_inlists"
-TEMPLATE_INLIST="../inlist_project"
+BATCH_DIR="../batch_inlists"
+TEMPLATE_INLIST="../../inlist_project"
 
 # Create batch directory if it doesn't exist
 mkdir -p "$BATCH_DIR"

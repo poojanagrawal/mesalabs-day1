@@ -256,7 +256,7 @@ def verify_runs(csv_file, runs_dir="batch_runs/runs"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify MESA runs against a CSV configuration file")
     parser.add_argument("csv_file", help="Path to the CSV file with parameter combinations")
-    parser.add_argument("--runs-dir", "-d", default="runs", 
+    parser.add_argument("--runs-dir", "-d", default="../runs", 
                         help="Path to the directory containing run folders (default: runs)")
     
     args = parser.parse_args()

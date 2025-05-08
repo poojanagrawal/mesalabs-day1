@@ -52,8 +52,8 @@ def load_mesa_data(run_dirs, run_params):
 
     return runs_data
 
-def plot_core_mass_fraction_evolution(runs_data, run_params, save_path="plots"):
-    os.makedirs(save_path, exist_ok=True)
+def plot_core_mass_fraction_evolution(runs_data, run_params, plots_dir="plots"):
+    os.makedirs(plots_dir, exist_ok=True)
     fig, ax = plt.subplots(figsize=(10, 8))
 
     scheme_colors = {"none": "black", "exponential": "blue", "step": "red"}
@@ -91,13 +91,13 @@ def plot_core_mass_fraction_evolution(runs_data, run_params, save_path="plots"):
             bbox=dict(facecolor='white', alpha=0.7, boxstyle='round'))
 
     plt.tight_layout()
-    plt.savefig(f"{save_path}/core_mass_fraction_vs_log_age.png", dpi=300)
+    plt.savefig(f"{plots_dir}/core_mass_fraction_vs_log_age.png", dpi=300)
     plt.show()
     print("Saved core mass fraction plot.")
     return fig
 
-def plot_core_mass_evolution(runs_data, run_params, save_path="plots"):
-    os.makedirs(save_path, exist_ok=True)
+def plot_core_mass_evolution(runs_data, run_params, plots_dir="plots"):
+    os.makedirs(plots_dir, exist_ok=True)
     fig, ax = plt.subplots(figsize=(10, 8))
 
     scheme_colors = {"none": "black", "exponential": "blue", "step": "red"}
@@ -133,19 +133,19 @@ def plot_core_mass_evolution(runs_data, run_params, save_path="plots"):
             bbox=dict(facecolor='white', alpha=0.7, boxstyle='round'))
 
     plt.tight_layout()
-    plt.savefig(f"{save_path}/core_mass_vs_log_age.png", dpi=300)
+    plt.savefig(f"{plots_dir}/core_mass_vs_log_age.png", dpi=300)
     plt.show()
     print("Saved core mass plot.")
     return fig
 
 def main():
-    batch_runs_dir = "runs"
-    save_path = "plots"
+    batch_runs_dir = "../runs"
+    plots_dir = "../plots"
     run_dirs = [d for d in glob.glob(os.path.join(batch_runs_dir, "*")) if os.path.isdir(d)]
     run_params = parse_run_parameters(run_dirs)
     runs_data = load_mesa_data(run_dirs, run_params)
-    plot_core_mass_fraction_evolution(runs_data, run_params, save_path)
-    plot_core_mass_evolution(runs_data, run_params, save_path)
+    plot_core_mass_fraction_evolution(runs_data, run_params, plots_dir)
+    plot_core_mass_evolution(runs_data, run_params, plots_dir)
     print("Done.")
 
 if __name__ == "__main__":

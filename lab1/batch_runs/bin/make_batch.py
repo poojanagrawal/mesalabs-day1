@@ -13,8 +13,8 @@ import sys
 def create_batch_inlists(csv_file):
     """Create batch inlists from parameters in CSV file"""
     # Define paths
-    batch_dir = "batch_inlists"
-    template_inlist = os.path.join("..", "inlist_project")
+    batch_dir = "../batch_inlists"
+    template_inlist = os.path.join("../..", "inlist_project")
     
     # Create batch directory if it doesn't exist
     os.makedirs(batch_dir, exist_ok=True)

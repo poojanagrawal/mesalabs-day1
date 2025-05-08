@@ -137,7 +137,7 @@ def check_mesa_environment():
 
 def check_batch_directories():
     """Check for required subdirectories in the batch_runs directory"""
-    required_dirs = ["runs", "batch_inlists"]
+    required_dirs = ["../runs", "../batch_inlists"]
     
     results = {}
     for dirname in required_dirs:

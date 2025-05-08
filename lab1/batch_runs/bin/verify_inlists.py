@@ -357,7 +357,7 @@ if __name__ == "__main__":
         sys.exit(1)
         
     csv_file = sys.argv[1]
-    inlist_dir = sys.argv[2] if len(sys.argv) > 2 else "batch_inlists"
+    inlist_dir = sys.argv[2] if len(sys.argv) > 2 else "../batch_inlists"
     
     if not os.path.exists(csv_file):
         print(f"Error: CSV file '{csv_file}' not found")

@@ -8,7 +8,7 @@ echo "Checking environment..."
 # Check if we're in the right directory
 if [ ! -f "inlist" ] || [ ! -f "star" ]; then
     echo "WARNING: Moving to working directory."
-    cd ../
+    cd ../..
 fi
 
 # Check if we're in the right directory

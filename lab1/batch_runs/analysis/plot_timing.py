@@ -9,11 +9,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import os
 
-# Create plots directory
-os.makedirs("plots", exist_ok=True)
-
 # Load timing data
-df_timing = pd.read_csv("run_timings.csv")
+df_timing = pd.read_csv("../run_timings.csv")
+plots_dir = "../plots"
 
 # Extract parameters from filenames
 data = []
@@ -73,7 +71,7 @@ ax.set_ylabel('Overshooting Parameter (fov)')
 ax.set_zlabel('Runtime (seconds)')
 ax.legend()
 plt.show()
-plt.savefig("plots/runtime_3d_plot.png", dpi=300)
+plt.savefig(plots_dir + "/runtime_3d_plot.png", dpi=300)
 
 # 2D Plot with color showing runtime
 plt.figure(figsize=(12, 8))
@@ -97,5 +95,5 @@ plt.xlabel('Mass (M☉)')
 plt.ylabel('Metallicity (Z)')
 plt.legend()
 plt.show()
-plt.savefig("plots/runtime_2d_plot.png", dpi=300)
+plt.savefig(plots_dir + "/runtime_2d_plot.png", dpi=300)
 

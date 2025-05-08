@@ -53,8 +53,8 @@ def load_mesa_data(run_dirs, run_params):
 
     return runs_data
 
-def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
-    os.makedirs(save_path, exist_ok=True)
+def plot_all_hr_diagrams(runs_data, run_params, plots_dir="plots"):
+    os.makedirs(plots_dir, exist_ok=True)
     plt.figure(figsize=(16, 12))
 
     masses = sorted(set(param["mass"] for param in run_params.values()))
@@ -107,7 +107,7 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
         plt.legend(fontsize=10, loc='best')
 
     plt.tight_layout()
-    plt.savefig(f"{save_path}/all_hr_diagrams.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{plots_dir}/all_hr_diagrams.png", dpi=300, bbox_inches='tight')
     plt.show()
 
     fig = plt.figure(figsize=(18, 14))
@@ -147,7 +147,7 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
         ax.legend(fontsize=9, loc='best')
 
     plt.tight_layout()
-    plt.savefig(f"{save_path}/all_hr_diagrams_3d.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{plots_dir}/all_hr_diagrams_3d.png", dpi=300, bbox_inches='tight')
     plt.show()
 
 
@@ -166,7 +166,7 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
         # Save animation as GIF
         frames = 360  # 1 degree per frame = smooth full rotation
         anim = animation.FuncAnimation(fig, update_view, frames=frames, interval=50, blit=False)
-        gif_path = os.path.join(save_path, "hr_diagram_3d_rotation.gif")
+        gif_path = os.path.join(plots_dir, "hr_diagram_3d_rotation.gif")
         anim.save(gif_path, writer='pillow', fps=20)
         print("... GIF made!")
     except:
@@ -179,12 +179,12 @@ def plot_all_hr_diagrams(runs_data, run_params, save_path="plots"):
 
 
 def main():
-    batch_runs_dir = "runs"
-    save_path = "plots"
+    batch_runs_dir = "../runs"
+    plots_dir = "../plots"
     run_dirs = [d for d in glob.glob(os.path.join(batch_runs_dir, "*")) if os.path.isdir(d)]
     run_params = parse_run_parameters(run_dirs)
     runs_data = load_mesa_data(run_dirs, run_params)
-    plot_all_hr_diagrams(runs_data, run_params, save_path)
+    plot_all_hr_diagrams(runs_data, run_params, plots_dir)
 
 if __name__ == "__main__":
     main()

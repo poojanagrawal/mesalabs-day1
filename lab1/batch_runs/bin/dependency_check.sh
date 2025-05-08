@@ -94,7 +94,7 @@ check_batch_directories() {
     local result=""
     
     # Check required directories
-    for dir in "runs" "batch_inlists"; do
+    for dir in "../runs" "../batch_inlists"; do
         if [ -d "$dir" ]; then
             result="${result}${dir}:true "
         else

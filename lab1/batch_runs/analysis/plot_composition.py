@@ -6,18 +6,16 @@ import glob
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 
-def create_minimal_plots():
+def create_minimal_plots(batch_runs_dir = "../runs", plots_dir = "../plots"):
     """
     Create minimal number of comprehensive plots showing all models together.
     Only creates two plots: core evolution and final hydrogen profiles.
     """
-    # Set paths
-    base_dir = "runs"
-    plots_dir = "plots"
+
     os.makedirs(plots_dir, exist_ok=True)
     
     # Find all run directories
-    run_dirs = [d for d in glob.glob(os.path.join(base_dir, "*")) if os.path.isdir(d)]
+    run_dirs = [d for d in glob.glob(os.path.join(batch_runs_dir, "*")) if os.path.isdir(d)]
     
     # Parse run parameters
     run_params = {}
@@ -157,7 +155,7 @@ def create_unified_core_evolution_plot(model_data, plots_dir):
         
         # Plot core mass fraction vs age
         plt.plot(age_myr, core_mass_fraction, linestyle=linestyle, 
-                color=color, alpha=alpha, linewidth=2, label=label)
+                color=color, alpha=alpha, linewidth=2)#, label=label)
     
     # Add reference lines for mass
     for mass, color in mass_colors.items():
@@ -250,7 +248,7 @@ def create_unified_hydrogen_profile_plot(model_data, plots_dir):
         
         # Plot hydrogen profile
         plt.plot(profile.mass / profile.star_mass, profile.x_mass_fraction_H, 
-                linestyle=linestyle, color=color, alpha=alpha, linewidth=2, label=label)
+                linestyle=linestyle, color=color, alpha=alpha, linewidth=2)#, label=label)
     
     # Add reference lines for mass
     for mass, color in mass_colors.items():
@@ -282,4 +280,7 @@ def create_unified_hydrogen_profile_plot(model_data, plots_dir):
     print("Hydrogen profile plot saved.")
 
 if __name__ == "__main__":
-    create_minimal_plots()
+
+    batch_runs_dir = "../runs"
+    plots_dir = "../plots"
+    create_minimal_plots(batch_runs_dir = batch_runs_dir, plots_dir = plots_dir)

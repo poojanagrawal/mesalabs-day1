@@ -16,7 +16,7 @@ import csv
 def run_batch():
     """Run MESA with each inlist in the batch directory"""
     # Change to main MESA work directory
-    os.chdir("..")
+    os.chdir("../..")
     
     # Check if we're in the right directory
     if not os.path.isfile("inlist") or not os.path.isfile("star"):

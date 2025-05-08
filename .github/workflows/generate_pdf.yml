@@ -13,7 +13,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Changed from '16' to '18'
+          node-version: '18'
           
       - name: Install md-to-pdf
         run: npm install -g md-to-pdf
@@ -39,17 +39,17 @@ jobs:
           
       - name: Convert README to PDF
         run: |
+          # Main README conversion
           md-to-pdf lab1/README.md --config-file pdf-config.json
+          mkdir -p lab1/pdf
+          mv lab1/README.pdf lab1/pdf/ || echo "Main README PDF not found"
+          
+          # Batch runs README conversion
           if [ -f "lab1/batch_runs/README.md" ]; then
             md-to-pdf lab1/batch_runs/README.md --config-file pdf-config.json
             mkdir -p lab1/batch_runs/pdf
-            mv lab1/batch_runs/README.pdf lab1/batch_runs/pdf/
+            mv lab1/batch_runs/README.pdf lab1/batch_runs/pdf/ || echo "Batch runs README PDF not found"
           fi
-          
-      - name: Move PDFs to docs directory
-        run: |
-          mkdir -p pdf
-          mv lab1/README.pdf lab1/pdf/ || echo "Main README PDF not found"
           
       - name: Commit and push if changed
         run: |

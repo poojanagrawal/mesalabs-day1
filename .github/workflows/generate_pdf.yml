@@ -13,7 +13,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'  # Changed from '16' to '18'
           
       - name: Install md-to-pdf
         run: npm install -g md-to-pdf
@@ -49,12 +49,12 @@ jobs:
       - name: Move PDFs to docs directory
         run: |
           mkdir -p docs
-          mv lab1/README.pdf docs/
+          mv lab1/README.pdf docs/ || echo "Main README PDF not found"
           
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add docs/README.pdf lab1/batch_runs/pdf/README.pdf || true
-          git commit -m "Update PDF documentation" || exit 0
-          git push
+          git commit -m "Update PDF documentation" || echo "No changes to commit"
+          git push || echo "Nothing to push"

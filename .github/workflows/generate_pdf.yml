@@ -1,11 +1,9 @@
 name: Convert README to PDF
-
 on:
   push:
     paths:
       - 'lab1/README.md'
       - 'lab1/batch_runs/README.md'
-
 jobs:
   convert_to_pdf:
     runs-on: ubuntu-latest
@@ -32,6 +30,9 @@ jobs:
               "printBackground": true,
               "headerTemplate": "<div style='font-size: 9px; margin-left: 20px;'>MESA Batch Runs Documentation</div>",
               "footerTemplate": "<div style='font-size: 9px; margin: 0 auto;'><span class='pageNumber'></span> / <span class='totalPages'></span></div>"
+            },
+            "launch_options": {
+              "args": ["--no-sandbox", "--disable-setuid-sandbox"]
             }
           }
           EOF
@@ -48,12 +49,12 @@ jobs:
       - name: Move PDFs to docs directory
         run: |
           mkdir -p docs
-          mv README.pdf docs/
+          mv lab1/README.pdf docs/
           
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add docs/README.pdf batch_runs/pdf/README.pdf || true
+          git add docs/README.pdf lab1/batch_runs/pdf/README.pdf || true
           git commit -m "Update PDF documentation" || exit 0
           git push

@@ -140,61 +140,60 @@ available? Meanwhile, ``overshoot_scheme`` describes what shape the
 overshoot mixing profile should take. Again, what are the alternatives
 to our 'step'?
 </span>
-
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-The first three fields define:
-
-- `overshoot_zone_type`: Specifies which type of zone should have overshooting. Options include 'burn_H', 'burn_He', 'burn_Z', 'nonburn', or 'any'.
-- `overshoot_zone_loc`: Specifies where in the star to look for this type of zone. Options include 'core', 'shell', or 'any'.
-- `overshoot_bdy_loc`: Specifies which boundary of the zone to apply overshooting. Options include 'top', 'bottom', or 'any'.
-
-For `overshoot_scheme`, alternatives to 'step' include:
-- 'exponential': Uses an exponentially decaying mixing coefficient
-- 'double_exponential': Uses two exponential regions with different parameters
-- 'smooth_step': A smoothed version of the step function
-- 'predictive_mixing': A scheme that predicts convective boundaries
-</details>
+<br>
+<br>
 
 <span style="color:green">
 **QUESTION**: ``overshoot_f`` and ``overshoot_f0`` describe how large the
 overshooting region should be. How are they defined?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-Both are given in units of the local scale height.
-`overshoot_f` is the total size of the overshooting region,
-while `overshoot_f0` describes how far into the convective region
+<span style="color: #148f77 ">
+**ANSWER**: Both are given in units of the local scale height.
+``overshoot_f`` is the total size of the overshooting region,
+while ``overshoot_f0`` describes how far into the convective region
 the model should switch from mixing by convection to overshooting.
-</details>
+</span>
+<br>
+<br>
+
 
 <span style="color:green">
 **QUESTION**: Where should you add these fields?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-Strictly speaking, you can place them anywhere in the
-`&controls` namelist. However, you'll probably notice that `&controls`
+<span style="color: #148f77 ">
+**ANSWER**: Strictly speaking, you can place them anywhere in the
+``&controls`` namelist. However, you'll probably notice that ``&controls``
 is organised into subsections like "starting specifications", "when to
 stop", "wind" and so on. Generally speaking, sticking to this or a
 similar structure is a good idea to keep your inlist clearly organised.
-As such, we recommend adding these new fields under `! mixing`.
-</details>
+As such, we recommend adding these new fields under ``! mixing``.
+</span>
+<br>
+<br>
+
 
 <span style="color:green">
 **BONUS QUESTION**: Why does each overshoot field in our example have
 that ``(1)`` at the end?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-All these `overshoot_` are actually arrays and `(1)`
+<span style="color: #148f77 ">
+**ANSWER**: All these ``overshoot_`` are actually arrays and ``(1)``
 indicates the first element of that array. This way, each element
 can represent a different overshooting zone so you can use
 different overshooting settings for each zone.
-</details>
+</span>
+<br>
+<br>
+
 
 3. While looking around your *inlist_project*, you may have noticed the
 field called ``ZBase`` under the ``&kap`` namelist. This describes
@@ -224,11 +223,17 @@ you want to define it.
 <span style="color:green">
 **QUESTION**: How does the default *inlist_project* define the TAMS?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-When the mass fraction of $^1$H drops below 0.001. For the sake of simplicity, we'll stick to this easy definition today.
-</details>
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] When the mass
+fraction of $^1H$ drops below 0.001. For the sake of simplicity, we'll
+stick to this easy definition today.
+</span>
+<br>
+<br>
+
 
 5.
 Run your model by cleaning any executables in your work directory using
@@ -305,62 +310,81 @@ and isotopes.
 <span style="color:green">
 **QUESTION**: What is the default metal composition of MESA?  
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-You can choose from pre-defined compositions using the field `initial_zfracs`.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] You can choose from pre-
+defined compositions using the field ``initial_zfracs``.
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-By default, MESA uses the solar metal fractions of
-<a href="https://ui.adsabs.harvard.edu/abs/1998SSRv...85..161G/abstract">Grevesse & Sauval (1998)</a>.
-</details>
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] By default,
+MESA uses the solar metal fractions of
+[Grevesse & Sauval (1998)]{https://ui.adsabs.harvard.edu/abs/1998SSRv...85..161G/abstract}.
+</span>
+<br>
+<br>
 
 Say you have decided that you would like to use the more recent solar
 metal composition found by
-[Asplund et al. (2009)](https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract).
+[Asplund et al. (2009)]{https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract}.
 Check the MESA documentation for how you can set that composition.
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-Note the initials of the authors on the Asplund et al. (2009) papers.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] Note the initials of the authors
+on the Asplund et al. (2009) papers.
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-The Asplund et al. (2009) composition can be set by adding
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal the answer] [TO DO] The Asplund et al.
+(2009) composition can be set by adding
 
 ```fortran
 initial_zfracs = 6
 ```
 
-to your `%star_job` namelist.
-</details>
+to your ``%star_job`` namelist.
+</span>
+<br>
+<br>
+
 
 8. As you just altered the composition of your model, you should make
 sure you are using an appropriate opacity table, like you did by
 setting ``ZBase`` after changing ``initial_z``. Navigate to the
 documentation of the kap module, which describes the opacities.
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-In the panel on the left, expand 'Module documentation' and open 'Opacities (kap)'. To choose an appropriate opacity table, look for the 'Table selection' setting of 'kap module controls'.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In the panel on the left,
+expand 'Module documentation' and open 'Opacities (kap)'. To choose
+an appropriate opacity table, look for the 'Table selection' setting
+of 'kap module controls'.
+</span>
+<br>
+<br>
 
 Look through the available opacity tables. Can you find the
 appropriate tables to be consistent with your metal compositions?
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-Add the following to your `&kap` namelist in *inlist_project*.
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO]
+Add the following to your ``&kap`` namelist in *inlist_project*.
 
 ```fortran
 kap_file_prefix = 'a09'
 kap_CO_prefix = 'a09_co'
 kap_lowT_prefix = 'lowT_fa05_a09p'
 ```
-</details>
+
+</span>
+<br>
+<br>
+
 
 9. After deciding on how the metal mass fractions are, let's
 take a look at how the hydrogen and helium fractions are set.
@@ -369,16 +393,21 @@ take a look at how the hydrogen and helium fractions are set.
 **QUESTION**: What is currently the initial value of the helium
 abundance in your model? How did MESA compute this initial value?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-Similar to how you set the initial metallicity with `initial_z`, the initial helium abundance is set using `initial_y` in `&controls`.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] Similar to how you set
+the initial metallicity with ``initial_z``, the initial helium
+abundance is set using ``initial_y`` in ``&controls``.
+</span>
+<br>
+<br>
 
 The Y-Z relation described in ``initial_y``'s documentation is
 a linear one, with $Y = Y_p + \frac{dY}{dZ}Z$ wherein $Y_p$ is
 the galaxy's primordial helium content.
-[Aver et al. (2021)](https://ui.adsabs.harvard.edu/abs/2021JCAP...03..027A/abstract)
+[Aver et al. (2021)]{https://ui.adsabs.harvard.edu/abs/2021JCAP...03..027A/abstract}
 who suggest the primordial helium abundance Y in the Galaxy is
 $Y_p = 0.2453$.
 Scaling to the solar composition, we find $\frac{dY}{dZ} = 2.193$.
@@ -386,31 +415,42 @@ Scaling to the solar composition, we find $\frac{dY}{dZ} = 2.193$.
 Using these values, compute an appropriate initial helium fraction
 for your model and implement it in your *inlist_project*.
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-You should find an initial Y of approximately 0.276. Add this into your `&controls` with
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] You should find an
+initial Y of approximately 0.276. Add this into your
+``&controls`` with
 
 ```fortran
 initial_y = 0.276002d0
 ```
 
-It is recommended to place it alongside `initial_z` for clarity.
-</details>
+It is recommended to place it alongside ``initial_z`` for clarity.
+</span>
+<br>
+<br>
+
 
 10. As this lab concerns fairly massive stars, mass loss by winds
 may play a considerable role. Check the documentation of
 ``&controls`` to see what implementations of mass loss are
 available. And what is the default mass loss?
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-In the panel on the left, navigate to 'Reference > Star defaults > controls > mass gain and loss'.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In the panel on the left,
+navigate to
+'Reference > Star defaults > controls > mass gain and loss'.
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-Broadly speaking, you can add mass loss by either setting a constant, negative value to the field `mass_change` (with or without rotational scaling) or with some wind_scheme.
-</details>
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] Broadly
+speaking, you can add mass loss by either setting a constant,
+negative value to the field ``mass_change`` (with or without
+  rotational scaling) or with some wind_scheme.
+</span>
+<br>
+<br>
 
 You will see in the documentation that there is a wealth of
 wind mass loss schemes available, all of which can be scaled
@@ -420,16 +460,22 @@ Dutch scheme attempts to merge some of these schemes into a
 cohesive whole. Add it into your *inlist_project* without
 scaling it down.
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-In order to use the Dutch scheme at all temperature ranges and without changing its scaling, use
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In order to use
+the Dutch scheme at all temperature ranges and without
+changing its scaling, use
 
 ```fortran
 hot_wind_scheme = 'Dutch'
 cool_wind_RGB_scheme = 'Dutch'
 Dutch_scaling_factor = 1d0
 ```
-</details>
+
+</span>
+<br>
+<br>
+
 
 11. As this lab is concerned with the overshooting around a
 convective core, we naturally needs a good description of the
@@ -457,10 +503,19 @@ just check it does not crash. Plus, you should be able to
 use the terminal output to check if some of your changes are
 working as intended.
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-In step 7, you reduced the number of pre-main-sequence relaxation steps from 300 to 100. You also set the initial timestep to 1 year, which should be reflected in the `lg_dt_years` value of the first few steps. The `He_cntr` of the first steps should also show your new value for `initial_y`. You could also compare the values of some metals with your first run if you haven't removed that terminal output yet. Finally, you should see the total mass of your model decreasing slightly.
-</details>
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In step 7, you reduced
+the number of pre-main-sequence relaxation steps from 300 to 100.
+You also set the initial timestep to 1 year, which should be
+reflected in the ``lg_dt_years`` value of the first few steps.
+The ``He_cntr`` of the first steps should
+also show your new value for ``initial_y``. You could also
+compare the values of some metals with your first run if you
+haven't removed that terminal output yet. Finally, you should
+see the total mass of your model decreasing slightly.
+</span>
+<br>
+<br>
 
 Despite how much you already added into your *inlist_project*,
 there are still many empty headers. Indeed, when building
@@ -482,7 +537,7 @@ your pgstar panels to show those quantities that are the most important
 to your work. To this end, MESA has a bunch of prepared windows you can
 easily add by adding one flag to your *inlist_pgstar*. You can find
 these and how to edit your *inlist_pgstar* in
-[this documentation page](https://docs.mesastar.org/en/24.08.1/reference/pgstar.html).
+[this documentation page]{https://docs.mesastar.org/en/24.08.1/reference/pgstar.html}.
 
 For the purposes of this lab, we have prepared a specialised
 *inlist_pgstar* for you. Download that *inlist_pgstar* here [TO DO]
@@ -504,10 +559,13 @@ Grid1_win_width = 10
 Grid1_win_aspect_ratio = 0.7
 ```
 
-<details>
-<summary><strong>Hint</strong></summary>
-You can edit *inlist_pgstar* while the model is running and it will immediately update your plots.
-</details>
+<span style="color: #1e118d ">
+**HINT** : You can edit *inlist_pgstar* while the model is running
+and it will immediately update your plots.
+</span>
+<br>
+<br>
+
 
 14. We have merged all the plots in one panel for a better overview.
 We also included some key quantities at the top, similar to MESA's
@@ -524,11 +582,20 @@ For now, focus on that mixing panel.
 **QUESTION**: What is the panel showing exactly? What does the colour
 of each line indicate?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-MESA treats the mixing of chemicals as a diffusive process. The y-axis shows the logarithm of the diffusive mixing coefficient in cm²/s (unless otherwise specified, MESA uses cgs units). The colour indicates the process behind the mixing, blue for convection and white for overshooting. These are the only two mixing processes in our model, but there are a plethora of other processes MESA can include.
-</details>
+<span style="color: #148f77 ">
+**ANSWER**: MESA treats the mixing of chemicals as a diffusive process.
+The y-axis shows the logarithm of the diffusive mixing coefficient in
+cm^2/s (unless otherwise specified, MESA uses cgs units). The colour
+indicates the process behind the mixing, blue for convection and white
+for overshooting. These are the only two mixing processes in our model,
+but there are a plethora of other processes MESA can include.
+</span>
+<br>
+<br>
+
 
 15. So far, so good! Now let's think about the age plot. This is an example
 of a history panel, where we plot two history quantities, i.e.
@@ -572,20 +639,29 @@ the defaults. Now add the stellar radius and radius of the convective
 core to the history output. Look for and uncomment the appropriate
 fields.
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-The radius of the star is simply called 'radius'.
-</details>
+<span style="color: #1e118d ">
+**HINT** : The radius of the star is simply called 'radius'.
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-For the radius of the convective core, look under the section marked by `!## mixing regions`. Which field here would provide the core radius in a main-sequence star with a fairly large convective core? How would you make sure the definition of this radius is consistent with the core mass?
-</details>
+<span style="color: #1e118d ">
+**HINT** : For the radius of the convective core, look under the section
+marked by ``!## mixing regions``. Which field here would provide the
+core radius in a main-sequence star with a fairly large convective core?
+How would you make sure the definition of this radius is consistent with
+the core mass?
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-For the radius, take the field `conv_mx1_top_r`. To guarantee consistency with the core mass, use `conv_mx1_top` for your core mass. Be aware that these are relative to the total radius and mass!
-</details>
+<span style="color: #1e118d ">
+**HINT** : For the radius, take the field ``conv_mx1_top_r``. To guarantee
+consistency with the core mass, use ``conv_mx1_top`` for your core mass.
+Be aware that these are relative to the total radius and mass!
+</span>
+<br>
+<br>
 
 Once you have uncommented the relevant lines, you need to tell your MESA
 inlist that you want to include the output columns in
@@ -609,16 +685,23 @@ History_Panels1_yaxis_name(1) = 'mass_conv_core'
 **BONUS**: You could also use this panel to directly compare the
 two different definitions we might use. How would you go about that?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-The optional field `History_Panels1_other_yaxis_name(1)` lets you set the right y-axis.
-</details>
+<span style="color: #1e118d ">
+**HINT**: [click here to reveal the answer] [TO DO] The optional
+field ``History_Panels1_other_yaxis_name(1)`` lets you set the
+right y-axis.
+</span>
+<br>
+<br>
 
 <span style="color: orange ">
 **BONUS QUESTION**: Which of these two definitions seems more
 convenient to you? And what about the definition of the core radius?
 </span>
+<br>
+<br>
 
 What history and profile quantities we ask MESA to include not only changes
 the output of our model, but also impacts pgstar's plotting options.
@@ -654,10 +737,14 @@ To this end, you will need the profile of the (logarithmic) diffusive
 mixing coefficient and some way to tell what process is causing that
 mixing. Find and uncomment some appropriate fields.
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-At minimum, include the fields `log_D_mix` and `mixing_type`. Adding the contributions of each mixing type separately using `log_D_conv`, `log_D_ovr` & co. is also recommended.
-</details>
+<span style="color: #1e118d ">
+**HINT**: At minimum, include the fields ``log_D_mix`` and
+``mixing_type``. Adding the contributions of each mixing type
+separately using ``log_D_conv``, ``log_D_ovr`` & co. is also
+recommended.
+</span>
+<br>
+<br>
 
 Remember to add your profile column list to your inlist!
 
@@ -665,15 +752,24 @@ Remember to add your profile column list to your inlist!
 profile_columns_file = 'my_profile_columns.list'
 ```
 
+
 <span style="color: orange ">
 **BONUS QUESTION**: How often does MESA produce a profile file? How could
 you increase this resolution?
 </span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal the answer</strong></summary>
-By default, MESA produces a profile every 50 model steps. The most straightforward way to increase the frequency of the output is using `profile_interval` in your inlist's `&controls` section. You could also set `write_profile_when_terminate = .true.`.
-</details>
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] By default, MESA
+produces a profile every 50 model steps. The most straightforward way
+to increase the frequency of the output is using ``profile_interval``
+in your inlist's ``&controls`` section. You could also set
+``write_profile_when_terminate = .true.``.
+</span>
+<br>
+<br>
+
 
 18. In the other labs today, you will learn how to run models that continue
 after the main-sequence evolution. When doing so, it is quite annoying to
@@ -737,7 +833,7 @@ you should leave the overshoot scheme as an empty string, i.e.
 overshoot_scheme(1) = ''
 ```
 
-21.Before you run your model again, you should make sure you are
+21. Before you run your model again, you should make sure you are
 not overwriting your previous results. To do so, you should first
 adapt ``save_model_filename``, ideally with some new name that
 reflects the new parameter set.
@@ -751,17 +847,19 @@ how you can do that. Like the final model name, it is generally
 recommended to use a name that reflects the settings of your
 model, rather than something generic such as *model2*.  
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-Since you already know what the default directory name
+<span style="color: #1e118d ">
+**HINT**: Since you already know what the default directory name
 is, *LOGS* you can look for the field with that default value
 using the search functionality of the documentation site.
-</details>
+</span>
+<br>
+<br>
 
-<details>
-<summary><strong>Click to reveal hint</strong></summary>
-The field you need is `log_directory` under `&controls`.
-</details>
+<span style="color: #1e118d ">
+**HINT**: The field you need is ``log_directory`` under ``&controls``.
+</span>
+<br>
+<br>
 
 22. Now run your model again. Keep a close eye on your pgstar plots,
 particularly the mixing panel. Compare it with those of the
@@ -777,8 +875,15 @@ to the second page of the spreadsheet. Take care to check your units!
  - core radius
  - age in Myr
 
+MATHIJS TO TEAM: What output would be most useful? Teff and L are no-
+brainers and the core conditions are relevant as well. What else?
+
 24. Now let's wrap up this lab by reading your MESA output in using Python
 and making some custom plots.
+
+MATHIJS TO TEAM: What kind of plots should we have them make? One idea is
+to make them plot the mixing profile of every profile together in one plot.
+Another obvious option is to plot core mass/radius against (a proxy of) time.
 
 ---
 

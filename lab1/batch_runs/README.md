@@ -1,6 +1,6 @@
 # MESA Batch Runs
 
-[PDF of README](pdf/README.pdf)
+[PDF](pdf/README.pdf)
 
 This directory contains tools to automate running multiple MESA models with different parameters. This README explains how to use these tools, their options, and the recommended workflow.
 

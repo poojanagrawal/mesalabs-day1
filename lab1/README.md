@@ -56,14 +56,15 @@ your TA and/or the other people at your table for assistance if you
 notice you are falling behind on schedule.
 
 **SESSION 1**
-1. Setting up your MESA work directory [20']
-2. Modifying the input physics and saving your final model [30']
-3. Monitoring the run and customising output [40'] (move some stuff into session 2)
+
+1. Setting up your MESA work directory \[20']
+2. Modifying the input physics and saving your final model \[30']
+3. Monitoring the run and customising output \[40'] *(move some stuff into session 2)*
 
 **SESSION 2**
-4. Adapting the input parameters [10'] (and play more with the pgstar plots?)
-5. Making your own plots [20']
-6. BONUS: automatically run multiple MESA models sequentially [20']
+4\. Adapting the input parameters \[10'] *(and play more with the pgstar plots?)*
+5\. Making your own plots \[20']
+6\. BONUS: automatically run multiple MESA models sequentially \[20']
 
 In this lab, we will examine how overshooting of a convective core
 affects a star's evolution together. In particular, we will examine
@@ -131,68 +132,44 @@ Before you try to do so, have a look at the questions below.
 - ``overshoot_f(1) = 0.30 ``
 - ``overshoot_f0(1) = 0.005 ``
 
-<span style="color:green">
-**QUESTION**: The first three ``overshoot_`` fields describe where the
-overshooting should take place. Go into
-[the MESA documentation](https://docs.mesastar.org/en/latest/index.html)
-and look up what each of these fields means. What other values are
-available? Meanwhile, ``overshoot_scheme`` describes what shape the
-overshoot mixing profile should take. Again, what are the alternatives
-to our 'step'?
-</span>
-<br>
-<br>
-
-<span style="color:green">
-**QUESTION**: ``overshoot_f`` and ``overshoot_f0`` describe how large the
-overshooting region should be. How are they defined?
-</span>
-<br>
-<br>
-
-<span style="color: #148f77 ">
-**ANSWER**: Both are given in units of the local scale height.
-``overshoot_f`` is the total size of the overshooting region,
-while ``overshoot_f0`` describes how far into the convective region
-the model should switch from mixing by convection to overshooting.
-</span>
-<br>
-<br>
 
 
-<span style="color:green">
-**QUESTION**: Where should you add these fields?
-</span>
-<br>
-<br>
+<details>
+<summary style="color:green"><strong>QUESTION:</strong> The first three <code>overshoot_</code> fields describe where the overshooting should take place. Go into <a href="https://docs.mesastar.org/en/latest/index.html" target="_blank">the MESA documentation</a> and look up what each of these fields means. What other values are available? Meanwhile, <code>overshoot_scheme</code> describes what shape the overshoot mixing profile should take. Again, what are the alternatives to our 'step'?</summary>
 
-<span style="color: #148f77 ">
-**ANSWER**: Strictly speaking, you can place them anywhere in the
-``&controls`` namelist. However, you'll probably notice that ``&controls``
-is organised into subsections like "starting specifications", "when to
-stop", "wind" and so on. Generally speaking, sticking to this or a
-similar structure is a good idea to keep your inlist clearly organised.
-As such, we recommend adding these new fields under ``! mixing``.
-</span>
-<br>
-<br>
+</br>
+
+</details>
+
+<details>
+<summary style="color:green"><strong>QUESTION:</strong> <code>overshoot_f</code> and <code>overshoot_f0</code> describe how large the overshooting region should be. How are they defined?</summary>
+
+</br>
+
+<span style="color:#148f77"><strong>ANSWER:</strong> Both are given in units of the local scale height. <code>overshoot\_f</code> is the total size of the overshooting region, while <code>overshoot\_f0</code> describes how far into the convective region the model should switch from mixing by convection to overshooting.</span>
+
+</details>
+
+<details>
+<summary style="color:green"><strong>QUESTION:</strong> Where should you add these fields?</summary>
+
+</br>
+
+<span style="color:#148f77"><strong>ANSWER:</strong> Strictly speaking, you can place them anywhere in the <code>\&controls</code> namelist. However, you'll probably notice that <code>\&controls</code> is organised into subsections like "starting specifications", "when to stop", "wind" and so on. Generally speaking, sticking to this or a similar structure is a good idea to keep your inlist clearly organised. As such, we recommend adding these new fields under <code>! mixing</code>.</span>
+
+</details>
+
+<details>
+<summary style="color:green"><strong>BONUS QUESTION:</strong> Why does each overshoot field in our example have that <code>(1)</code> at the end?</summary>
+
+</br>
+
+<span style="color:#148f77"><strong>ANSWER:</strong> All these <code>overshoot\_</code> are actually arrays and <code>(1)</code> indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different overshooting settings for each zone.</span>
+
+</details>
 
 
-<span style="color:green">
-**BONUS QUESTION**: Why does each overshoot field in our example have
-that ``(1)`` at the end?
-</span>
-<br>
-<br>
 
-<span style="color: #148f77 ">
-**ANSWER**: All these ``overshoot_`` are actually arrays and ``(1)``
-indicates the first element of that array. This way, each element
-can represent a different overshooting zone so you can use
-different overshooting settings for each zone.
-</span>
-<br>
-<br>
 
 
 3. While looking around your *inlist_project*, you may have noticed the

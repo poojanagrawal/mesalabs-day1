@@ -49,12 +49,12 @@ jobs:
       - name: Move PDFs to docs directory
         run: |
           mkdir -p docs
-          mv lab1/README.pdf docs/ || echo "Main README PDF not found"
+          mv lab1/README.pdf lab1/pdf/ || echo "Main README PDF not found"
           
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add docs/README.pdf lab1/batch_runs/pdf/README.pdf || true
+          git add lab1/pdf/README.pdf lab1/batch_runs/pdf/README.pdf || true
           git commit -m "Update PDF documentation" || echo "No changes to commit"
           git push || echo "Nothing to push"

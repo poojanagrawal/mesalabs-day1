@@ -150,7 +150,6 @@ overshoot mixing profile should take. Again, what are the alternatives to our 's
 
 </details>
 
----
 
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
@@ -166,7 +165,6 @@ the model should switch from mixing by convection to overshooting.
 
 </details>
 
----
 
 **Question**: Where should you add these fields?
 
@@ -183,7 +181,6 @@ As such, we recommend adding these new fields under `! mixing`.
 
 </details>
 
----
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
 
@@ -397,85 +394,81 @@ kap_lowT_prefix = 'lowT_fa05_a09p'
 </details>
 
 
-9. After deciding on how the metal mass fractions are, let's
-take a look at how the hydrogen and helium fractions are set.
+9. After deciding on how the metal mass fractions are, let's take a look at how the hydrogen and helium fractions are set.
 
-<span style="color:green">
-**QUESTION**: What is currently the initial value of the helium
-abundance in your model? How did MESA compute this initial value?
-</span>
-<br>
-<br>
+**Question**: What is currently the initial value of the helium abundance in your model? How did MESA compute this initial value?
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] Similar to how you set
-the initial metallicity with ``initial_z``, the initial helium
-abundance is set using ``initial_y`` in ``&controls``.
-</span>
-<br>
-<br>
+**Hint**
 
-The Y-Z relation described in ``initial_y``'s documentation is
-a linear one, with $Y = Y_p + \frac{dY}{dZ}Z$ wherein $Y_p$ is
-the galaxy's primordial helium content.
-[Aver et al. (2021)]{https://ui.adsabs.harvard.edu/abs/2021JCAP...03..027A/abstract}
-who suggest the primordial helium abundance Y in the Galaxy is
-$Y_p = 0.2453$.
-Scaling to the solar composition, we find $\frac{dY}{dZ} = 2.193$.
+<details>
+<summary>Show hint</summary>
 
-Using these values, compute an appropriate initial helium fraction
-for your model and implement it in your *inlist_project*.
+Similar to how you set the initial metallicity with `initial_z`,
+the initial helium abundance is set using `initial_y` in `&controls`.
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] You should find an
-initial Y of approximately 0.276. Add this into your
-``&controls`` with
+</details>
+
+The Y–Z relation described in `initial_y`'s documentation is a linear one,
+with \$Y = Y\_p + \frac{dY}{dZ}Z\$, wherein \$Y\_p\$ is the galaxy's primordial helium content.
+[Aver et al. (2021)](https://ui.adsabs.harvard.edu/abs/2021JCAP...03..027A/abstract)
+suggest the primordial helium abundance \$Y\$ in the Galaxy is \$Y\_p = 0.2453\$.
+Scaling to the solar composition, we find \$\frac{dY}{dZ} = 2.193\$.
+
+Using these values, compute an appropriate initial helium fraction for your model
+and implement it in your *inlist\_project*.
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+You should find an initial Y of approximately 0.276.
+Add this into your `&controls` with:
 
 ```fortran
 initial_y = 0.276002d0
 ```
 
-It is recommended to place it alongside ``initial_z`` for clarity.
-</span>
-<br>
-<br>
+It is recommended to place it alongside `initial_z` for clarity.
+
+</details>
 
 
-10. As this lab concerns fairly massive stars, mass loss by winds
-may play a considerable role. Check the documentation of
-``&controls`` to see what implementations of mass loss are
-available. And what is the default mass loss?
+10. As this lab concerns fairly massive stars, mass loss by winds may play a considerable role.
+    Check the documentation of `&controls` to see what implementations of mass loss are available.
+    And what is the default mass loss?
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] In the panel on the left,
-navigate to
-'Reference > Star defaults > controls > mass gain and loss'.
-</span>
-<br>
-<br>
+**Hint**
 
-<span style="color: #148f77 ">
-**ANSWER**: [click here to reveal the answer] [TO DO] Broadly
-speaking, you can add mass loss by either setting a constant,
-negative value to the field ``mass_change`` (with or without
-  rotational scaling) or with some wind_scheme.
-</span>
-<br>
-<br>
+<details>
+<summary>Show hint</summary>
 
-You will see in the documentation that there is a wealth of
-wind mass loss schemes available, all of which can be scaled
-up or down. Each scheme is appropriate in particular regimes
-of the surface temperature, composition etc. The so-called
-Dutch scheme attempts to merge some of these schemes into a
-cohesive whole. Add it into your *inlist_project* without
-scaling it down.
+In the panel on the left, navigate to
+**Reference > Star defaults > controls > mass gain and loss**.
 
+</details>
 
-<span style="color: #148f77 ">
-**HINT**: [click here to reveal] [TO DO] In order to use
-the Dutch scheme at all temperature ranges and without
-changing its scaling, use
+**Answer**
+
+<details>
+<summary>Show answer</summary>
+
+Broadly speaking, you can add mass loss by either setting a constant, negative value to the field `mass_change`
+(with or without rotational scaling) or with some `wind_scheme`.
+
+</details>
+
+You will see in the documentation that there is a wealth of wind mass loss schemes available,
+all of which can be scaled up or down. Each scheme is appropriate in particular regimes of the surface temperature, composition, etc.
+The so-called Dutch scheme attempts to merge some of these schemes into a cohesive whole.
+Add it into your *inlist\_project* without scaling it down.
+
+**Hint**
+
+<details>
+<summary>Show hint</summary>
+
+In order to use the Dutch scheme at all temperature ranges and without changing its scaling, use:
 
 ```fortran
 hot_wind_scheme = 'Dutch'
@@ -483,9 +476,8 @@ cool_wind_RGB_scheme = 'Dutch'
 Dutch_scaling_factor = 1d0
 ```
 
-</span>
-<br>
-<br>
+</details>
+
 
 
 11. As this lab is concerned with the overshooting around a

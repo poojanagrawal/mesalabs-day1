@@ -93,6 +93,8 @@ automatically write parameter values into your inlist and runs different
 sets of parameters sequentially.
 
 
+# SESSION 1
+
 ### Setting up your MESA work directory
 
 1. We will start from the mostly empty default MESA work directory and
@@ -108,21 +110,21 @@ _rn_. You can look at the summary at the start of this README to see what
 these executables do. The subdirectories _make_ and _src_ contain the
 Makefile and extra code to include, but you don't have to look into that
 today. For now, let's take a look at the inlists _inlist_,
-_inlist_pgstar_ and _inlist_project_. These files describe what you want
+*inlist_pgstar* and *inlist_project*. These files describe what you want
 MESA to do. In particular MESA will always look for _inlist_. Using your
 favourite text editor, take a look at what is in _inlist_.
 
 What this _inlist_ essentially does is redirect MESA to the other two
-inlist files for all the real content, with _inlist_project_ containing
+inlist files for all the real content, with *inlist_project* containing
 most of the fields describing how the MESA run should go and
-_inlist_pgstar_ describing what visuals MESA should produce. For now,
-let's focus on _inlist_project_.
+*inlist_pgstar* describing what visuals MESA should produce. For now,
+let's focus on *inlist_project*.
 
 
 2. To start, let's run a very simple main-sequence model of a star with
 an initial mass of 5 solar masses and metallicity of 0.014 with some
 strong step-wise mixing due to core overshooting. To do so, open
-_inlist_project_ and find and change the following parameters to the
+*inlist_project* and find and change the following parameters to the
 given values:
 
 - ``initial_m = 5d0``
@@ -202,7 +204,7 @@ different overshooting settings for each zone.
 <br>
 
 
-3. While looking around your _inlist_project_, you may have noticed the
+3. While looking around your *inlist_project*, you may have noticed the
 field called ``ZBase`` under the ``&kap`` namelist. This describes
 the reference metallicity used in the calculation of the opacities.
 For consistency, you should set ``ZBase`` to the same value as
@@ -213,7 +215,7 @@ For consistency, you should set ``ZBase`` to the same value as
 terminated. Since we want to simulate the main-sequence evolution,
 we should place our stopping condition around the terminal age
 main-sequence (TAMS). Look under ``! when to stop`` in ``&controls``
-of your _inlist_project_.
+of your *inlist_project*.
 
 You'll note there are two conditions that can trigger
 the model to end. The first is designed to stop the model at the
@@ -228,7 +230,7 @@ the TAMS in different ways, so you should always think about how
 you want to define it.
 
 <span style="color:green">
-**QUESTION**: How does the default _inlist_project_ define the TAMS?
+**QUESTION**: How does the default *inlist_project* define the TAMS?
 </span>
 <br>
 <br>
@@ -270,7 +272,6 @@ and density profiles. Like the terminal output, these help you keep an
 eye on your model.
 
 
-### Customising output
 
 6. From all these numbers MESA wrote to your terminal, we've already
 identified a way to improve the efficiency of our models.
@@ -278,7 +279,7 @@ The first 50 or so steps accomplish very little because the
 time steps are very small. We can tell MESA to start with a time step
 of one year, hence decreasing the required number of steps and speeding
 up the run. To do so, add the following to the ``%star_job`` section of
-_inlist_project_:
+*inlist_project*:
 
     ``set_initial_dt = .true.``
     ``years_for_initial_dt = 1d0``
@@ -295,18 +296,242 @@ your ``%star_job``:
     ``pre_ms_relax_num_steps = 100``
 
 
-7. Now let's turn to these animated plots, often called
+### Upgrading the inlist
+
+7. *inlist_project* is currently mostly empty. This means that most
+settings are using MESA's default values. You should always check
+whether these are appropriate for your models. As an example, let's
+consider the composition of the model. In steps 2 and 3, you already
+set the metallicity mass fraction of the model. However, you also need
+to think about how that mass is distributed across different elements
+and isotopes.
+
+<span style="color:green">
+**QUESTION**: What is the default metal composition of MESA?  
+</span>
+<br>
+<br>
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] You can choose from pre-
+defined compositions using the field ``initial_zfracs``.
+</span>
+<br>
+<br>
+
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] By default,
+MESA uses the solar metal fractions of
+[Grevesse & Sauval (1998)]{https://ui.adsabs.harvard.edu/abs/1998SSRv...85..161G/abstract}.
+</span>
+<br>
+<br>
+
+Say you have decided that you would like to use the more recent solar
+metal composition found by
+[Asplund et al. (2009)]{https://ui.adsabs.harvard.edu/abs/2009ARA%26A..47..481A/abstract}.
+Check the MESA documentation for how you can set that composition.
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] Note the initials of the authors
+on the Asplund et al. (2009) papers.
+</span>
+<br>
+<br>
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal the answer] [TO DO] The Asplund et al.
+(2009) composition can be set by adding
+
+    ``initial_zfracs = 6``
+
+to your ``%star_job`` namelist.
+</span>
+<br>
+<br>
+
+
+8. As you just altered the composition of your model, you should make
+sure you are using an appropriate opacity table, like you did by
+setting ``ZBase`` after changing ``initial_z``. Navigate to the
+documentation of the kap module, which describes the opacities.
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In the panel on the left,
+expand 'Module documentation' and open 'Opacities (kap)'. To choose
+an appropriate opacity table, look for the 'Table selection' setting
+of 'kap module controls'.
+</span>
+<br>
+<br>
+
+Look through the available opacity tables. Can you find the
+appropriate tables to be consistent with your metal compositions?
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO]
+Add the following to your ``&kap`` namelist in *inlist_project*.
+
+    ``kap_file_prefix = 'a09'``
+    ``kap_CO_prefix = 'a09_co'``
+    ``kap_lowT_prefix = 'lowT_fa05_a09p'``
+
+</span>
+<br>
+<br>
+
+
+9. After deciding on how the metal mass fractions are, let's
+take a look at how the hydrogen and helium fractions are set.
+
+<span style="color:green">
+**QUESTION**: What is currently the initial value of the helium
+abundance in your model? How did MESA compute this initial value?
+</span>
+<br>
+<br>
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] Similar to how you set
+the initial metallicity with ``initial_z``, the initial helium
+abundance is set using ``initial_y`` in ``&controls``.
+</span>
+<br>
+<br>
+
+The Y-Z relation described in ``initial_y``'s documentation is
+a linear one, with $Y = Y_p + \frac{dY}{dZ}Z$ wherein $Y_p$ is
+the galaxy's primordial helium content.
+[Aver et al. (2021)]{https://ui.adsabs.harvard.edu/abs/2021JCAP...03..027A/abstract}
+who suggest the primordial helium abundance Y in the Galaxy is
+$Y_p = 0.2453$.
+Scaling to the solar composition, we find $\frac{dY}{dZ} = 2.193$.
+
+Using these values, compute an appropriate initial helium fraction
+for your model and implement it in your *inlist_project*.
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] You should find an
+initial Y of approximately 0.276. Add this into your
+``&controls`` with
+
+    ``initial_y = 0.276002d0``
+
+It is recommended to place it alongside ``initial_z`` for clarity.
+</span>
+<br>
+<br>
+
+
+10. As this lab concerns fairly massive stars, mass loss by winds
+may play a considerable role. Check the documentation of
+``&controls`` to see what implementations of mass loss are
+available. And what is the default mass loss?
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In the panel on the left,
+navigate to
+'Reference > Star defaults > controls > mass gain and loss'.
+</span>
+<br>
+<br>
+
+<span style="color: #148f77 ">
+**ANSWER**: [click here to reveal the answer] [TO DO] Broadly
+speaking, you can add mass loss by either setting a constant,
+negative value to the field ``mass_change`` (with or without
+  rotational scaling) or with some wind_scheme.
+</span>
+<br>
+<br>
+
+You will see in the documentation that there is a wealth of
+wind mass loss schemes available, all of which can be scaled
+up or down. Each scheme is appropriate in particular regimes
+of the surface temperature, composition etc. The so-called
+Dutch scheme attempts to merge some of these schemes into a
+cohesive whole. Add it into your *inlist_project* without
+scaling it down.
+
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In order to use
+the Dutch scheme at all temperature ranges and without
+changing its scaling, use
+
+    ``hot_wind_scheme = 'Dutch'``
+    ``cool_wind_RGB_scheme = 'Dutch'``
+    ``Dutch_scaling_factor = 1d0``
+
+</span>
+<br>
+<br>
+
+
+11. As this lab is concerned with the overshooting around a
+convective core, we naturally needs a good description of the
+convective zones as well. To that end, we would like for MESA
+to use the Ledoux criterion. Search through the documentation
+how to activate this criterion and add it into your
+*inlist_project*.
+
+MESA uses the mixing-length theory (MLT) to describe the
+transport by convection. This theory relies on a scaling factor
+$\alpha_{MLT}$ which is in general quite poorly calibrated.
+As such, you should check what MESA's default value of this
+$\alpha_{MLT}$ parameter is.
+
+When you are working on your real science cases, you should
+test a few different values for this $\alpha_{MLT}$ to gain
+an understanding of its effects. However, to save some time
+in this lab, we will stick to just one value, namely 1.8.
+Add this into your *inlist_project*.
+
+
+12. To check if you made any mistakes, run your model again.
+You do not need to let it continue all the way to the TAMS,
+just check it does not crash. Plus, you should be able to
+use the terminal output to check if some of your changes are
+working as intended.
+
+<span style="color: #148f77 ">
+**HINT**: [click here to reveal] [TO DO] In step 7, you reduced
+the number of pre-main-sequence relaxation steps from 300 to 100.
+You also set the initial timestep to 1 year, which should be
+reflected in the ``lg_dt_years`` value of the first few steps.
+The ``He_cntr`` of the first steps should
+also show your new value for ``initial_y``. You could also
+compare the values of some metals with your first run if you
+haven't removed that terminal output yet. Finally, you should
+see the total mass of your model decreasing slightly.
+</span>
+<br>
+<br>
+
+Despite how much you already added into your *inlist_project*,
+there are still many empty headers. Indeed, when building
+an inlist for your real science cases, you should still look
+into your atmosphere settings, equation of state tables,
+spatial and temporal resolution, and much more besides.
+However, for the sake of time and not making this lab too
+repetitive, we'll stop here and move on to adapting MESA's
+output and tracking the model's evolution using PGPLOT.
+
+
+### Customising output
+
+13. Now let's turn to these animated plots, often called
 the pgstar plots. These are incredible useful in understanding what
 is going on in your model while its running, helping you spot
 potential problems early. Therefore, it is worthwhile to customise
 your pgstar panels to show those quantities that are the most important
 to your work. To this end, MESA has a bunch of prepared windows you can
-easily add by adding one flag to your _inlist_pgstar_. You can find
-these and how to edit your _inlist_pgstar_ in
+easily add by adding one flag to your *inlist_pgstar*. You can find
+these and how to edit your *inlist_pgstar* in
 [this documentation page]{https://docs.mesastar.org/en/24.08.1/reference/pgstar.html}.
 
 For the purposes of this lab, we have prepared a specialised
-_inlist_pgstar_ for you. Download that _inlist_pgstar_ here [TO DO]
+*inlist_pgstar* for you. Download that *inlist_pgstar* here [TO DO]
 and move it into your MESA work directory.
 
 Run your model again to see what the new pgstar plots look like.
@@ -317,21 +542,21 @@ For some of you, this new panel may look terrible, either being very
 small or overflowing out of your screen. This is because the width
 of the pgstar window is dependent on your system and the size of
 your screen. If the panel is too large or small for you, open
-_inlist_pgstar_, find the two lines shown below near the start of
+*inlist_pgstar*, find the two lines shown below near the start of
 the inlist and play around with the values until it looks nice.
 
     ``Grid1_win_width = 10``
     ``Grid1_win_aspect_ratio = 0.7``
 
 <span style="color: #1e118d ">
-**HINT** : You can edit _inlist_pgstar_ while the model is running
+**HINT** : You can edit *inlist_pgstar* while the model is running
 and it will immediately update your plots.
 </span>
 <br>
 <br>
 
 
-8. We have merged all the plots in one panel for a better overview.
+14. We have merged all the plots in one panel for a better overview.
 We also included some key quantities at the top, similar to MESA's
 terminal output.
 The plots are the HRD, a plot relating the star's age to the
@@ -361,7 +586,7 @@ but there are a plethora of other processes MESA can include.
 <br>
 
 
-9. So far, so good! Now let's think about the age plot. This is an example
+15. So far, so good! Now let's think about the age plot. This is an example
 of a history panel, where we plot two history quantities, i.e.
 quantities that vary over time. Since we will explore the effect of
 overshooting on the core in the second half of this lab, it would be
@@ -432,8 +657,8 @@ _my_history_columns.list_ under ``&star_job`` :
     ``history_columns_file = 'my_history_columns.list'``
 
 
-10. Now we can finally turn back to the pgstar history plot. Open up
-_inlist_pgstar_ and navigate to the section where the history panel
+16. Now we can finally turn back to the pgstar history plot. Open up
+*inlist_pgstar* and navigate to the section where the history panel
 is defined. Change the left y-axis to the default quantity of the
 convective core mass.  
 
@@ -477,7 +702,7 @@ Your pgstar window should now include fully functional panels. Briefly
 run your model again to double check everything works as it should.
 
 
-11. The history files tell you how chosen quantities vary over time. But
+17. The history files tell you how chosen quantities vary over time. But
 what about quantities that vary over the star's radius? Those are
 described by the files _profile{i}.data_ in the LOGS folder. As with
 the history, let's check study what is included by default and add
@@ -523,37 +748,100 @@ in your inlist's ``&controls`` section. You could also set
 <br>
 
 
-12. In the other labs today, you will learn how to run models that continue
+18. In the other labs today, you will learn how to run models that continue
 after the main-sequence evolution. When doing so, it is quite annoying to
 have to simulate the main-sequence again every time you tweak something in
 your inlist. Instead, we can tell MESA to save a model at the end of a
 main-sequence run so we can load that model in next lab. Add this to your
 ``%star_job`` and name your model:
 
-    save_model_when_terminate = .true.
-    save_photo_when_terminate = .true.
-    ! Give a name to the model file to be saved including your parameter values, e.g.
-    ! 'M{your_M}_Z{your_Z}_fov{your_f_overshoot}_f0ov{your_f0_overshoot}.mod'
-    save_model_filename = ! Add your name here
+    ``save_model_when_terminate = .true.``
+    ``save_photo_when_terminate = .true.``
+    ``! Give a name to the model file to be saved including your parameter values, e.g.``
+    ``! 'M{your_M}_Z{your_Z}_fov{your_f_overshoot}_f0ov{your_f0_overshoot}.mod'``
+    ``save_model_filename = ! Add your name here``
 
 
-13. Now let's run the model all the way to the end.
+19. Now let's run the model all the way to the end.
 As the model runs, keep an eye on your new mixing panel in particular.
 Compare it to those of the other people at your table.
 
+# SESSION 2
 
-### Studying the output
 
-2. Go into
+### Trying different the overshoot parameters
+
+You now know how to navigate your work directory and build up a
+main-sequence model. That's great. However, so far we have
+limited ourselves to simply adding in pre-chosen parameter values,
+choices of tables etc. In real scientific applications, you should
+always consider the impact of these settings, for instance by
+trying a few different values. In particular, there are a number
+numerical schemes and poorly calibrated physical parameters for
+which you should think carefully about the appropriate value.
+You already encountered some of these today, namely the
+mixing length parameter $\alpha_{MLT}$ and the mixing by
+overshooting.
+
+In this session, we'll explore the impact of overshooting in
+your model. Through your experiments and the lecturer's
+discussion of everyone's result, you will learn how you
+can find reasonable values and settings for overshooting
+in your model. The plan is that everyone gets a unique
+set of overshooting parameters, initial mass and initial
+metallicity to try out. You will then compare the results
+of these parameter settings to the model you produced in
+lab 1. Meanwhile, we will collect some basic results from
+everyone's model and examine the correlations between
+different parameters together.
+
+
+20. Go into
 [this spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
 and put your name next to one set of parameters to claim it as yours.
-
+Modify your inlist accordingly.
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
-you should comment all the lines starting with ``overshoot_`` by
-adding an exclamation mark (``!``) in front.
+you should leave the overshoot scheme as an empty string, i.e.
 
-11. Using your favourite text editor, open the history.data file and find
+    ``overshoot_scheme(1) = ''``
+
+
+21. Before you run your model again, you should make sure you are
+not overwriting your previous results. To do so, you should first
+adapt ``save_model_filename``, ideally with some new name that
+reflects the new parameter set.
+
+Next, to not overwrite your history and profile data, you could
+tell MESA to write the history and profile data to differently
+named files. However, there is another, easier option, which
+is to simply tell MESA to save the output in another directory
+than *LOGS/*. Check the documentation or user forums to discover
+how you can do that. Like the final model name, it is generally
+recommended to use a name that reflects the settings of your
+model, rather than something generic such as *model2*.  
+
+<span style="color: #1e118d ">
+**HINT**: Since you already know what the default directory name
+is, *LOGS* you can look for the field with that default value
+using the search functionality of the documentation site.
+</span>
+<br>
+<br>
+
+<span style="color: #1e118d ">
+**HINT**: The field you need is ``log_directory`` under ``&controls``.
+</span>
+<br>
+<br>
+
+
+22. Now run your model again. Keep a close eye on your pgstar plots,
+particularly the mixing panel. Compare it with those of the
+other people at your table.
+
+
+23. Using your favourite text editor, open the history.data file and find
 the line describing the TAMS. Add the values of the following parameters
 to the second page of the spreadsheet. Take care to check your units!
 
@@ -563,10 +851,11 @@ to the second page of the spreadsheet. Take care to check your units!
  - core radius
  - age in Myr
 
-MATHIJS TO TEAM: What output would be most useful? Teff and L are no-brainers
-and the core conditions are relevant as well. What else?
+MATHIJS TO TEAM: What output would be most useful? Teff and L are no-
+brainers and the core conditions are relevant as well. What else?
 
-12. Now let's wrap up this lab by reading your MESA output in using Python
+
+24. Now let's wrap up this lab by reading your MESA output in using Python
 and making some custom plots.
 
 MATHIJS TO TEAM: What kind of plots should we have them make? One idea is

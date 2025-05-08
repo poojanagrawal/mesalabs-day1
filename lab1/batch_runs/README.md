@@ -35,6 +35,8 @@ The typical workflow for batch runs is:
 
 ### 1. Use Provided CSV File
 
+The online spreadsheet and the provided `MESA_Lab.csv` file contain the same parameter combinations.
+
 You don't need to create your own CSV file. Use the provided `MESA_Lab.csv` file or access the [online spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
 
 This CSV file already contains the necessary columns:
@@ -45,7 +47,6 @@ This CSV file already contains the necessary columns:
 - `overshoot parameter (f_ov)` (overshooting parameter)
 - `overshoot f0` (f0 parameter for overshooting)
 
-The online spreadsheet and the provided `MESA_Lab.csv` file contain the same parameter combinations.
 
 ### 2. Generate Inlists
 
@@ -74,7 +75,7 @@ You will be prompted to choose whether pgstar (visualization) should be enabled:
 
 #### Alternative: Jupyter Notebook
 
-For users who prefer a GUI approach, use the `make_batch.ipynb` notebook. Upload your CSV and template inlist file to generate your batch inlists.
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 ### 3. Run the Models
 
@@ -90,12 +91,6 @@ python run_batch.py
 ./run_batch.sh
 ```
 
-Add the `--force` flag to skip confirmation prompt:
-
-```bash
-./run_batch.sh --force
-```
-
 This will:
 1. Process each inlist in `batch_inlists` directory
 2. Create a subdirectory in `runs` for each model
@@ -104,7 +99,8 @@ This will:
 
 #### Alternative: Jupyter Notebook
 
-You can use the `run_batch.ipynb` notebook to generate a run script that you can download and execute in your MESA work directory.
+AAAAAAAAAAAAAAAAAAAAAAA
+
 
 ### 4. Analyze Results
 

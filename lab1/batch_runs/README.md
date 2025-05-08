@@ -6,20 +6,38 @@ This directory contains tools to automate running multiple MESA models with diff
 
 ```
 batch_runs/
-├── batch_inlists/       # Directory for generated inlist files
-├── runs/                # Directory for run outputs
-├── make_batch.py        # Script to generate inlists from CSV
-├── make_batch.sh        # Shell script version of make_batch.py
-├── run_batch.py         # Script to run all inlists sequentially
-├── run_batch.sh         # Shell script version of run_batch.py
-├── run_batch.ipynb      # Notebook version for generating run script
-├── make_batch.ipynb     # Notebook version for generating inlists
-├── plot_hr.py           # Script to generate HR diagram plots
-├── plot_ccore_mass.py   # Script to plot core mass evolution
-├── plot_composition.py  # Script to plot composition profiles
-├── verify_inlists.py    # Script to verify inlist parameters
-├── verify_outlists.py   # Script to verify run outputs
-└── construct_output.py  # Script to extract results into CSV
+├── bin/                  # Executable scripts for batch operations
+│   ├── make_batch.py     # Script to generate inlists from CSV
+│   ├── make_batch.sh     # Shell script version of make_batch.py
+│   ├── run_batch.py      # Script to run all inlists sequentially
+│   ├── run_batch.sh      # Shell script version of run_batch.py
+│   ├── dependency_check.py  # Checks required dependencies
+│   ├── verify_inlists.py    # Script to verify inlist parameters
+│   ├── verify_outlists.py   # Script to verify run outputs
+│   └── construct_output.py  # Script to extract results into CSV
+│
+├── batch_inlists/        # Directory for generated inlist files
+│   └── *.inp             # Generated inlist files
+│
+├── runs/                 # Directory for run outputs
+│   └── */                # Subdirectories for each model run
+│
+├── analysis/             # Analysis and visualization tools
+│   ├── plot_hr.py        # Script to generate HR diagram plots
+│   ├── plot_ccore_mass.py  # Script to plot core mass evolution
+│   ├── plot_composition.py # Script to plot composition profiles
+│   └── plot_timing.py      # Analyze runtime performance
+│
+├── notebooks/            # Interactive Jupyter notebooks
+│   ├── run_batch.ipynb   # Notebook version for generating run script
+│   └── make_batch.ipynb  # Notebook version for generating inlists
+│
+├── plots/                # Output directory for generated plots
+│   └── *.png             # Plot image files
+│
+├── MESA_Lab.csv          # Parameter combinations for batch runs
+├── filled_MESA_Lab.csv   # Results from completed runs
+└── run_timings.csv       # Performance data for each run
 ```
 
 ## Workflow Overview
@@ -27,9 +45,9 @@ batch_runs/
 The typical workflow for batch runs is:
 
 1. **Prepare a CSV** file with parameter combinations to explore
-2. **Generate inlists** using `make_batch.py` or `make_batch.sh`
-3. **Run the models** using `run_batch.py` or `run_batch.sh`
-4. **Analyze the results** using the plotting scripts or `construct_output.py`
+2. **Generate inlists** using `bin/make_batch.py` or `bin/make_batch.sh`
+3. **Run the models** using `bin/run_batch.py` or `bin/run_batch.sh`
+4. **Analyze the results** using the scripts in the `analysis/` directory or `bin/construct_output.py`
 
 ## Detailed Steps
 

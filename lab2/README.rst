@@ -95,7 +95,7 @@ the initial conditions at the beginning of the evolution::
 Moreover, we should change our stopping condition. In Lab 1, we
 were only interested in the evolution until the TAMS. But now we
 want to go to the end of core helium burning (CHeB), which we 
-will define as core helium mass fraction < 1d-4. Replace the 
+will define as core helium mass fraction < 1d-5. Replace the 
 old stopping condition by the new one.
 
 * HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`
@@ -110,7 +110,7 @@ with::
 
   ! stop when the center mass fraction of he4 drops below this limit
     xa_central_lower_limit_species(1) = 'he4'
-    xa_central_lower_limit(1) = 1d-4
+    xa_central_lower_limit(1) = 1d-5
 
 Alternatively, you can use the following shortcut:
 
@@ -357,7 +357,47 @@ Look again at the plot showing the growth of the convective
 core mass. How does it compare to to the model with the 
 weaker overshooting? Do you have an idea why?
 
-* SOLUTION: The convective core reaches a very similar maximum mass as in the low overshooting case. Similar as before, one can see that there are weak pulses in the mass growth that are linked to convection regions forming directly on top of the overshooting region. It seems, like these convective regions prevent the core to grow further. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modelling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature, but you will learn more about this in the concluding lecture.
+* SOLUTION: The convective core reaches a very similar maximum mass as in the low overshooting case. Similar as before, one can see that there are weak pulses in the mass growth that are linked to convection regions forming directly on top of the overshooting region. It seems, like these convective regions prevent the core to grow further. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature, but you will learn more about this in the concluding lecture. Furthermore, the overshooting formalism used in our calculations does not take into account that the chemical gradient between the helium burning core and the envelope might be an additional stabilizing force, reducing the size of the overshooting core.
+
+Limiting core overshooting in regions with strong chemical gradients
+--------------------------------------------------------------------
+
+In MESA while modeling overshooting, one can account for a stabilizing 
+composition gradient in the calculations using the Brunt-Vaisala frequency.
+This is turned on in MESA by default::
+
+   calculate_Brunt_B = .true.
+   calculate_Brunt_N2 = .true.
+
+However, the threshold is set to ``0d0``. For our calculations, lets 
+set this threshold to a higher value to prevent to overshoot in regions
+with a strong chemical gradient. In your *controls* section in your 
+*inlist_extra* add::
+
+    overshoot_brunt_B_max = 1d-1   
+    
+and change the output directories to::
+
+  ! change the LOGS directory
+    log_directory = 'output_overshoot_fov0p3_f0ov0p005_brunt/LOGS'
+    
+and::
+
+  ! change the png directory
+    Grid1_file_dir = 'output_overshoot_fov0p3_f0ov0p005_brunt/png'
+
+Lets have a look, what MESA will tell us::
+
+	./rn
+	
+Look again at the plot showing the growth of the convective
+core mass. How does it compare to to the model with the 
+strong overshooting and the model without overshooting? Do you 
+have an idea why these differences appear?
+
+* SOLUTION: The new included physics quickly remove the growth of the core by overshooting due to the strong chemical gradient between the core and the H-burning shell. When the stabilizing gradient is hit, overshooting is suppressed and the only mixing process between the core and the envelope is semiconvection. Therefore, the final convective mass of the helium core of this star is quite similar to that one of the model without overshooting.
+
+
 
 Numerical methods to prevent the formation of the convective zone
 -----------------------------------------------------------------
@@ -366,6 +406,37 @@ Since it is not clear if the formation of this breathing
 pulses is physical or numerical, we would like to introduce 
 an example of a numerical workaround to prevent the formation
 of the convection zone on top of the overshooting zone. 
+
+Within MESA there are different ways to determine the boundaries 
+of convective mixing regions. One of these implementations is
+the "Predictive mixing" formalism. Here the convective boundaries
+are expanded until grad_r = grada. This formalism comes with 
+seveal control options. If you have time you can look for them
+on the MESA website. We do not want to dive too deep into the 
+controls here. To switch to the predictive mixing formalism,
+add the following lines to your *controls* section in your 
+*inlist_extra*
+
+I TIRED THIS OPTIONS WHICH ARE RECOMMENDED IN THE PAPER AND A 
+TESTCASE BUT THEY DO NOT WORK WITH OVERSHOOTING TURNED ON. 
+I THINK SINCE OVERSHOOTING SEPARATES THE HE BURNING CORE AND THE
+CONVECTIVE CELL FORMED ON TOP, THIS FORMALISM CANNOT MERGE THE
+CONVECTIVE CELLS....
+    
+      !MLT_option = 'Cox'
+
+      !predictive_mix(1) = .true.
+      !predictive_zone_type(1) = 'any'
+      !predictive_zone_loc(1) = 'core'
+      !predictive_bdy_loc(1) = 'any'
+      !predictive_avoid_reversal(1) = 'he4'
+      !predictive_superad_thresh(1) = 0.05
+
+      !predictive_mix(2) = .true.
+      !predictive_zone_type(2) = 'any'
+      !predictive_zone_loc(2) = 'surf'
+      !predictive_bdy_loc(2) = 'any'
+      !predictive_superad_thresh(2) = 0.05
 
 DO WE WANT TO SHOW THEM THAT? I THINK THE SOLUTION IS PREDICTIVE 
 MIXING WITH EITHER ``predictive_avoid_reversal?`` or 

@@ -2,7 +2,7 @@
   ! Here we can add our controls
    
   ! change the LOGS directory
-    log_directory = 'output_overshoot_fov0p3_f0ov0p005_brunt_test/LOGS'
+    log_directory = 'output_overshoot_brunt/LOGS'
 
   ! mixing
     overshoot_scheme(2) = 'step'
@@ -12,7 +12,7 @@
     overshoot_f(2) = 0.3
     overshoot_f0(2) = 0.005 
     
-    overshoot_brunt_B_max = 0.1d-1    
+    overshoot_brunt_B_max = 1d-1    
     
 / ! end of controls namelist
 
@@ -21,6 +21,6 @@
   ! Here we can edit stuff related to pgstar
   
   ! change the png directory
-    Grid1_file_dir = 'output_overshoot_fov0p3_f0ov0p005_brunt_test/png' 
+    Grid1_file_dir = 'output_overshoot_brunt/png' 
   
 / ! end of star_job namelist

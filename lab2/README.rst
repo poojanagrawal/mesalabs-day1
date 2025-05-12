@@ -118,31 +118,8 @@ Alternatively, you can use the following shortcut:
     stop_at_phase_TACHeB = .true.
 
 In principle your model should now be able to run until helium is
-depleted in the core. But before we run the model, lets add some
-more physics that is needed during the later evolutionary stages.
-
-After the main-sequence evolution in stars regions 
-will appear that are stable against the Schwarzschild criterion
-but not the Ledoux criterion. These regions are thought to 
-undergo slow semiconvective mixing. To include semiconvection 
-in our models, we need to turn on the Ledoux criterion and 
-define the efficiency of the mixing process::
-
-  ! mixing
-    use_Ledoux_criterion = .true.
-    alpha_semiconvection = 1d0
-    
-Furthermore, stars will start hydrogen shell-burning,
-leading to the formation of an outwards increasing mean molecular 
-weight. In stars in the regions stable to convection but with such
-a gradient, there will be some mixing in the form of thermohaline 
-mixing. To create a more realistic model, lets turn this option 
-on in the *controls* section by adding::
-
-  ! mixing
-    thermohaline_coeff = 1d0
-    
-Also massive stars will evolve into red supergiants (RSG) or 
+depleted in the core. However, we are missing one important physical
+component: Massive stars will evolve into red supergiants (RSG) or 
 Wolf-Rayet (WR) stars where the current wind mass-loss rates 
 are no longer applicable. MESA has different options to choose
 pre-included mass-loss recipes for the different evolutionary
@@ -243,15 +220,15 @@ figure out why the core behaves as it does?
 
 * HINT_1: Compared to the first lab, we added additional physics related to mixing. Can you identify the new mixing regions in the Kippenhahn diagram in the lower left plot? Can they have an impact on the core mass?
 
-* SOLUTION: Because we include in our model thermohaline and semiconvective mixing, the additional helium produced in the hydrogen shell burning layers can be mixed into the core fueling it with additional material and leading to an increase in its mass.
+* SOLUTION: How to formulate this so that it is understandable? leading to an increase in its mass.
 
 Core helium burning with weak step overshooting
 -----------------------------------------------
 
 Now lets add some overshooting on top of the helium burning
 core to see how it impacts the evolution. As a first model, 
-lets start with a weak step overshooting as used in lab1,
-namely f_ov = 0.1 and f0_ov = 0.005. In lab1, we added 
+lets start with a strong step overshooting as used in lab1,
+namely f_ov = 0.3 and f0_ov = 0.005. In lab1, we added 
 overshooting on the top of the hydrogen burning core by 
 using the following lines::
 
@@ -272,8 +249,6 @@ on top of the helium burning core?
 
 * HINT_2: Are the locations, types and boundaries of the overshooting zone still correct? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`.
 
-* HINT_3: Do not forget to change the f_ov and f0_ov values.
-
 * SOLUTION: In the end you should have in the *controls* section of your *inlist_extra* lines that are similar to::
 
   ! mixing
@@ -290,10 +265,10 @@ We can do that in the *inlist_extra* by overwriting the directory
 commands with::
 
   ! change the LOGS directory
-    log_directory = 'output_overshoot_fov0p1_f0ov0p005/LOGS'
+    log_directory = 'output_overshoot/LOGS'
     
   ! change the png directory
-    Grid1_file_dir = 'output_overshoot_fov0p1_f0ov0p005/png' 
+    Grid1_file_dir = 'output_overshoot/png' 
 
 What do you expect to happen now? Will the core grow, stay at
 the same level, or receed? What happens to the semiconvective
@@ -311,7 +286,7 @@ you can have a look at your pgstar files saved in
 ``output_no_overshoot/png``. Are the maximum masses similar
 or different and why?
 
-* SOLUTION: Overshooting is acting on much shorter timescale than semiconvection. Even with a small overshooting on the core we can let the core grow quite quickly.
+* SOLUTION: Overshooting is very efficient in mixing additional fuel into the core, leading to a growth.
 
 If you look at the upper right plot, showing the evolution 
 of the growing core, you should see some pulses where the core
@@ -319,45 +294,8 @@ mass grows and receeds again. That is strange. At the model
 numbers where these pulses occur, can you see something happening
 in the structure of the star in the Kippenhahn diagram?
 
-* SOLUTION: You should see that a convective region forms directly on top of the overshooting region. That is strange, isn't it? Lets ignore it for now and test if it still appears when using a more efficient overshooting.
+* SOLUTION: You should see that a convective region forms directly on top of the overshooting region. That is strange, isn't it? The convective core reaches into layers with a strong chemical gradient. If this happens, convective region forms on top of the core and is stable against overshooting, pushing down the overshooting and the core mass. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature. One thing that we have been ignoring sofar in our threatment of overshooting is the impact of a chemical gradient as the one between the helium burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region.
 
-
-Core helium burning with strong step overshooting
--------------------------------------------------
-
-Now, lets add some strong step overshoot during core helium 
-burning to see how it impacts the convective core mass. 
-Following Lab1, lets now use the step overshoot for massive
-stars f_ov=0.3. To include it in MESA we need to change the 
-line for the f_ov in *inlist_extra*::
-
-     overshoot_f(2) = 0.3
-     
-Before you run you model, do not forget to change the output
-paths to::
-
-  ! change the LOGS directory
-    log_directory = 'output_overshoot_fov0p3_f0ov0p005/LOGS'
-    
-and::
-
-  ! change the png directory
-    Grid1_file_dir = 'output_overshoot_fov0p3_f0ov0p005/png'
-    
-Similar as above, what do you expect your model to do when 
-using higher core overshooting during core helium burning?
-Should the convective core grow in mass, reach a similar 
-value, or receed? 
-
-Lets have a look, what MESA will tell us::
-
-	./rn
-	
-Look again at the plot showing the growth of the convective
-core mass. How does it compare to to the model with the 
-weaker overshooting? Do you have an idea why?
-
-* SOLUTION: The convective core reaches a very similar maximum mass as in the low overshooting case. Similar as before, one can see that there are weak pulses in the mass growth that are linked to convection regions forming directly on top of the overshooting region. It seems, like these convective regions prevent the core to grow further. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature, but you will learn more about this in the concluding lecture. Furthermore, the overshooting formalism used in our calculations does not take into account that the chemical gradient between the helium burning core and the envelope might be an additional stabilizing force, reducing the size of the overshooting core.
 
 Limiting core overshooting in regions with strong chemical gradients
 --------------------------------------------------------------------
@@ -379,12 +317,12 @@ with a strong chemical gradient. In your *controls* section in your
 and change the output directories to::
 
   ! change the LOGS directory
-    log_directory = 'output_overshoot_fov0p3_f0ov0p005_brunt/LOGS'
+    log_directory = 'output_overshoot_brunt/LOGS'
     
 and::
 
   ! change the png directory
-    Grid1_file_dir = 'output_overshoot_fov0p3_f0ov0p005_brunt/png'
+    Grid1_file_dir = 'output_overshoot_brunt/png'
 
 Lets have a look, what MESA will tell us::
 
@@ -396,61 +334,3 @@ strong overshooting and the model without overshooting? Do you
 have an idea why these differences appear?
 
 * SOLUTION: The new included physics quickly remove the growth of the core by overshooting due to the strong chemical gradient between the core and the H-burning shell. When the stabilizing gradient is hit, overshooting is suppressed and the only mixing process between the core and the envelope is semiconvection. Therefore, the final convective mass of the helium core of this star is quite similar to that one of the model without overshooting.
-
-
-
-Numerical methods to prevent the formation of the convective zone
------------------------------------------------------------------
-
-Since it is not clear if the formation of this breathing 
-pulses is physical or numerical, we would like to introduce 
-an example of a numerical workaround to prevent the formation
-of the convection zone on top of the overshooting zone. 
-
-Within MESA there are different ways to determine the boundaries 
-of convective mixing regions. One of these implementations is
-the "Predictive mixing" formalism. Here the convective boundaries
-are expanded until grad_r = grada. This formalism comes with 
-seveal control options. If you have time you can look for them
-on the MESA website. We do not want to dive too deep into the 
-controls here. To switch to the predictive mixing formalism,
-add the following lines to your *controls* section in your 
-*inlist_extra*
-
-I TIRED THIS OPTIONS WHICH ARE RECOMMENDED IN THE PAPER AND A 
-TESTCASE BUT THEY DO NOT WORK WITH OVERSHOOTING TURNED ON. 
-I THINK SINCE OVERSHOOTING SEPARATES THE HE BURNING CORE AND THE
-CONVECTIVE CELL FORMED ON TOP, THIS FORMALISM CANNOT MERGE THE
-CONVECTIVE CELLS....
-    
-      !MLT_option = 'Cox'
-
-      !predictive_mix(1) = .true.
-      !predictive_zone_type(1) = 'any'
-      !predictive_zone_loc(1) = 'core'
-      !predictive_bdy_loc(1) = 'any'
-      !predictive_avoid_reversal(1) = 'he4'
-      !predictive_superad_thresh(1) = 0.05
-
-      !predictive_mix(2) = .true.
-      !predictive_zone_type(2) = 'any'
-      !predictive_zone_loc(2) = 'surf'
-      !predictive_bdy_loc(2) = 'any'
-      !predictive_superad_thresh(2) = 0.05
-
-DO WE WANT TO SHOW THEM THAT? I THINK THE SOLUTION IS PREDICTIVE 
-MIXING WITH EITHER ``predictive_avoid_reversal?`` or 
-``predictive_superad_thresh``.
-
-
-BONUS: Calculate a 15Msun star model until core helium burning
-==============================================================
-
-Model without overshooting
---------------------------
-
-Model with weak overshooting
-----------------------------
-
-Model with strong overshooting
-------------------------------

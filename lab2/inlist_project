@@ -56,8 +56,9 @@
   ! when to stop
   ! stop at the end of core helium burning 
     xa_central_lower_limit_species(1) = 'he4'
-    xa_central_lower_limit(1) = 1d-4
-
+    xa_central_lower_limit(1) = 1d-5
+    
+  ! alternative solution
     !stop_at_phase_TACHeB = .true.
 
   ! wind 
@@ -80,10 +81,7 @@
      overshoot_f(1) = 0.30d0
      overshoot_f0(1) = 0.005d0
      
-     ! Conv. boundaries: Use Ledoux criterion and do premixing.
-     use_Ledoux_criterion = .true.
-     alpha_semiconvection = 1d0
-     thermohaline_coeff = 1d0
+  ! Conv. boundaries: Use Ledoux criterion and do premixing.
      mixing_length_alpha = 1.8d0
 
   ! timesteps

@@ -60,7 +60,7 @@
 
     ! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
-    xa_central_lower_limit(1) = 1d-3
+    xa_central_lower_limit(1) = 1d-6
 
   ! wind
 

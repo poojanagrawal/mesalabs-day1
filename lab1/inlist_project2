@@ -73,7 +73,7 @@
 
     ! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
-    xa_central_lower_limit(1) = 1d-3
+    xa_central_lower_limit(1) = 1d-6
 
   ! wind
     hot_wind_scheme = 'Dutch'
@@ -87,6 +87,8 @@
   ! element diffusion
 
   ! mlt
+  ! the mixing length parameter alpha_MLT
+    mixing_length_alpha = 1.8d0
 
   ! mixing
     overshoot_scheme(1) = 'step'
@@ -95,12 +97,6 @@
     overshoot_bdy_loc(1) = 'top'
     overshoot_f(1) = 0.30d0
     overshoot_f0(1) = 0.005d0
-
-  ! Use the Ledoux criterion instead of the Schwarzschild criterion to define convective boundaries
-    use_Ledoux_criterion = .true.
-
-  ! the mixing length parameter alpha_MLT
-    mixing_length_alpha = 1.8d0
 
   ! timesteps
 

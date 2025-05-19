@@ -96,7 +96,9 @@ slowly build it up until we have a properly fleshed-out main-sequence
 model. Make a new empty directory somewhere on your machine, go into
 the empty directory and copy over the default MESA work directory:
 
-    ``cp -r $MESA_DIR/star/work/ .``
+```bash
+    cp -r $MESA_DIR/star/work/ .
+```
 
 Do a quick ``ls`` to check what is included in this default work directory.
 You'll see a number of executables, namely _clean_, _mk_, _re_ and
@@ -121,19 +123,22 @@ strong step-wise mixing due to core overshooting. To do so, open
 *inlist_project* and find and change the following parameters to the
 given values:
 
-- ``initial_m = 5d0``
-- ``initial_z = 0.014d0``
+```fortran
+initial_m = 5d0
+initial_z = 0.014d0
+```
 
 Next, to add the core overshooting, we need to add in some new fields.
 Before you try to do so, have a look at the questions below.
 
-- ``overshoot_zone_type(1) = 'burn_H' ``
-- ``overshoot_zone_loc(1) = 'core' ``
-- ``overshoot_bdy_loc(1) = 'top' ``
-- ``overshoot_scheme(1) = 'step' ``
-- ``overshoot_f(1) = 0.30 ``
-- ``overshoot_f0(1) = 0.005 ``
-
+```fortran
+overshoot_zone_type(1) = 'burn_H'
+overshoot_zone_loc(1) = 'core'
+overshoot_bdy_loc(1) = 'top'
+overshoot_scheme(1) = 'step'
+overshoot_f(1) = 0.30d0
+overshoot_f0(1) = 0.005d0
+```
 
 **Question**: The first three `overshoot_` fields describe where the  
 overshooting should take place. Go into  
@@ -141,23 +146,9 @@ overshooting should take place. Go into
 What other values are available? Meanwhile, `overshoot_scheme` describes what shape the  
 overshoot mixing profile should take. Again, what are the alternatives to our 'step'?
 
-  
-<details>
-<summary>Show answer</summary>
-
-<!-- answer starts -->
-  
-*(no answer was originally provided for this one)*
-
-<!-- answer ends -->
-
-</details>
-
-
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
 
-  
 <details>
 <summary>Show answer</summary>
 
@@ -171,7 +162,6 @@ the model should switch from mixing by convection to overshooting.
 
 **Question**: Where should you add these fields?
 
-  
 <details>
 <summary>Show answer</summary>
 
@@ -187,7 +177,6 @@ As such, we recommend adding these new fields under `! mixing`.
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
 
-  
 <details>
 <summary>Show answer</summary>
 
@@ -218,7 +207,9 @@ the model to end. The first is designed to stop the model at the
 zero-age main-sequence (ZAMS), which we obviously do not want.
 Therefore, set
 
-  ``stop_near_zams = .false. ``
+```fortran
+stop_near_zams = .false.
+```  
 
 The second condition is meant to stop the model around the TAMS.
 Bear in mind that different people define
@@ -233,9 +224,15 @@ you want to define it.
 <summary>Show answer</summary>
 
 When the mass fraction of \$^1\$H drops below 0.001.
-For the sake of simplicity, we'll stick to this easy definition today.
 
 </details>
+
+For our purposes today, it would be interesting to include the hook at
+the TAMS, since that is where the effects of core overshooting on the
+star's position in the HRD are very pronounced. However, stars in this
+mass range typically hit a central hydrogen fraction of 0.001 before
+before reaching the hook. To ensure your model includes the hook, change
+the lower limit on \$^1\$H to 10^-6.
 
 
 5. Run your model by cleaning any executables in your work directory using
@@ -313,14 +310,12 @@ and isotopes.
 **Question**: What is the default metal composition of MESA?
 
 
-
 <details>
 <summary>Show hint</summary>
 
 You can choose from pre-defined compositions using the field `initial_zfracs`.
 
 </details>
-
 
 
 <details>
@@ -481,15 +476,7 @@ Dutch_scaling_factor = 1d0
 </details>
 
 
-
-11. As this lab is concerned with the overshooting around a
-convective core, we naturally needs a good description of the
-convective zones as well. To that end, we would like for MESA
-to use the Ledoux criterion. Search through the documentation
-how to activate this criterion and add it into your
-*inlist_project*.
-
-MESA uses the mixing-length theory (MLT) to describe the
+11. MESA uses the mixing-length theory (MLT) to describe the
 transport by convection. This theory relies on a scaling factor
 $\alpha_{MLT}$ which is in general quite poorly calibrated.
 As such, you should check what MESA's default value of this
@@ -930,5 +917,6 @@ The provided parameter grid explores:
 - Overshooting schemes: None, Exponential, Step
 - Overshooting parameters: 0.01-0.3
 - Penetration depths: 0.001-0.01
+
 
 For complete documentation and additional analysis tools, see [`batch_runs/README.md`](./batch_runs/README.md).

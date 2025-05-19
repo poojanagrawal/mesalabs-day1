@@ -146,11 +146,8 @@ overshooting should take place. Go into
 What other values are available? Meanwhile, `overshoot_scheme` describes what shape the  
 overshoot mixing profile should take. Again, what are the alternatives to our 'step'?
 
-
-
 **Question**: `overshoot_f` and `overshoot_f0` describe how large the  
 overshooting region should be. How are they defined?
-
 
 <details>
 <summary>Show answer</summary>
@@ -164,7 +161,6 @@ the model should switch from mixing by convection to overshooting.
 
 
 **Question**: Where should you add these fields?
-
 
 <details>
 <summary>Show answer</summary>
@@ -180,7 +176,6 @@ As such, we recommend adding these new fields under `! mixing`.
 
 
 **Bonus Question**: Why does each overshoot field in our example have that `(1)` at the end?
-
 
 <details>
 <summary>Show answer</summary>
@@ -479,7 +474,6 @@ Dutch_scaling_factor = 1d0
 ```
 
 </details>
-
 
 
 11. MESA uses the mixing-length theory (MLT) to describe the
@@ -923,5 +917,6 @@ The provided parameter grid explores:
 - Overshooting schemes: None, Exponential, Step
 - Overshooting parameters: 0.01-0.3
 - Penetration depths: 0.001-0.01
+
 
 For complete documentation and additional analysis tools, see [`batch_runs/README.md`](./batch_runs/README.md).

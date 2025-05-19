@@ -1,0 +1,16 @@
+# Ignore compiled files and general binary junk
+*.mod
+*.smod
+*.o
+*.png
+*.data
+*.inp
+*.csv
+*.data
+*star
+# directories and their contents
+**/photos/**
+**/batch_runs/runs/**
+
+# placeholder files to keep directory structure
+!*.keep

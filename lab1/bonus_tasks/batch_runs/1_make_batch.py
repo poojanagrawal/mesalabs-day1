@@ -66,36 +66,36 @@ def create_batch_inlists(csv_file):
             
             # Update initial_mass - ensure proper format including scientific notation
             if re.search(r'initial_mass\s*=', content):
-                content = re.sub(r'initial_mass\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'initial_mass = {mass}d0', content)
+                content = re.sub(r'initial_mass\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'initial_mass = {mass}', content)
             else:
                 # Add it to the starting specifications section if it exists
                 if '! starting specifications' in content:
-                    content = re.sub(r'! starting specifications\n', f'! starting specifications\n    initial_mass = {mass}d0 ! in Msun units\n', content)
+                    content = re.sub(r'! starting specifications\n', f'! starting specifications\n    initial_mass = {mass} ! in Msun units\n', content)
                 else:
                     # Otherwise add it at the beginning of the &controls section
-                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_mass = {mass}d0 ! in Msun units', content)
+                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_mass = {mass} ! in Msun units', content)
             
             # For initial_z - ensure proper format including scientific notation
             if re.search(r'initial_z\s*=', content):
-                content = re.sub(r'initial_z\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'initial_z = {metallicity}d0', content)
+                content = re.sub(r'initial_z\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'initial_z = {metallicity}', content)
             else:
                 # Add it after initial_mass if it exists
                 if re.search(r'initial_mass\s*=', content):
-                    content = re.sub(r'(initial_mass\s*=.+)', f'\\1\n    initial_z = {metallicity}d0 ! initial metal mass fraction', content)
+                    content = re.sub(r'(initial_mass\s*=.+)', f'\\1\n    initial_z = {metallicity} ! initial metal mass fraction', content)
                 else:
                     # Otherwise add it at the beginning of the &controls section
-                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_z = {metallicity}d0 ! initial metal mass fraction', content)
+                    content = re.sub(r'&controls', f'&controls\n\n    ! starting specifications\n    initial_z = {metallicity} ! initial metal mass fraction', content)
             
             # For Zbase in the &kap section
             if re.search(r'Zbase\s*=', content):
-                content = re.sub(r'Zbase\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'Zbase = {metallicity}d0', content)
+                content = re.sub(r'Zbase\s*=\s*[0-9]*(\.[0-9]*)?([dD]?[eE][-+]?[0-9]*)?', f'Zbase = {metallicity}', content)
             else:
                 # Add it to the &kap section if it exists
                 if '&kap' in content:
-                    content = re.sub(r'&kap\n', f'&kap\n    Zbase = {metallicity}d0\n', content)
+                    content = re.sub(r'&kap\n', f'&kap\n    Zbase = {metallicity}\n', content)
                 else:
                     # Otherwise add a new &kap section before &controls
-                    content = re.sub(r'&controls', f'&kap\n    ! kap options\n    Zbase = {metallicity}d0\n/ ! end of kap namelist\n\n&controls', content)
+                    content = re.sub(r'&controls', f'&kap\n    ! kap options\n    Zbase = {metallicity}\n/ ! end of kap namelist\n\n&controls', content)
             
             # For pgstar_flag
             if re.search(r'pgstar_flag\s*=\s*\.', content):

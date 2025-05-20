@@ -12,7 +12,7 @@
     save_model_filename = 'M15_Z0.014_step_fov0.1_f00.01.mod'
 
   ! display on-screen plots
-    pgstar_flag = .false.
+    pgstar_flag = .true.
 
   ! Whether to wait for the user to confirm before closing the run and the pgstar window(s)
     pause_before_terminate = .false.

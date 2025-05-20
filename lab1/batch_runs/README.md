@@ -93,10 +93,6 @@ You will be prompted to choose whether pgstar (visualization) should be enabled:
 - Answer `yes` to enable visualization during runs (slower but you can see progress)
 - Answer `no` to disable visualization (faster for batch processing)
 
-#### Alternative: Jupyter Notebook
-
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
 ### 3. Run the Models
 
 #### Using Python Script:
@@ -116,11 +112,6 @@ This will:
 2. Create a subdirectory in `runs` for each model
 3. Copy the model results to its respective subdirectory
 4. Record timing information in `run_timings.csv`
-
-#### Alternative: Jupyter Notebook
-
-AAAAAAAAAAAAAAAAAAAAAAA
-
 
 ### 4. Analyze Results
 
@@ -182,7 +173,6 @@ python verify_outlists.py MESA_Lab.csv
 ## Running Individual Models
 
 To run a specific model rather than the entire batch:
-
 1. Copy the desired inlist file from `batch_inlists` to the main MESA directory as `inlist_project`
 2. Run MESA as normal with `./rn`
 

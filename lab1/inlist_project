@@ -88,17 +88,18 @@
   ! mlt
 
   ! mixing
-          overshoot_scheme(1) = 'step'
-          overshoot_zone_type(1) = 'any'
-          overshoot_zone_loc(1) = 'core'
-          overshoot_bdy_loc(1) = 'top'
-          overshoot_f(1) = 0.1d0
-          overshoot_f0(1) = 0.01d0
+overshoot_zone_type(1) = 'burn_H'
+overshoot_zone_loc(1) = 'core'
+overshoot_bdy_loc(1) = 'top'
+overshoot_scheme(1) = 'step'
+overshoot_f(1) = 0.30d0
+overshoot_f0(1) = 0.005d0
+
+          mixing_length_alpha = 1.8d0
 
      ! Conv. boundaries: Use Ledoux criterion and do premixing.
      use_Ledoux_criterion = .true.
 
-     mixing_length_alpha = 1.8d0
 
   ! timesteps
 

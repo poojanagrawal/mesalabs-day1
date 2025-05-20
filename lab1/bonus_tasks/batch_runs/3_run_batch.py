@@ -23,9 +23,9 @@ def run_batch():
         print("Error: This script must be run from the main MESA work directory.")
         sys.exit(1)
     
-    batch_dir = os.path.join("batch_runs", "batch_inlists")
-    output_dir = os.path.join("batch_runs", "runs")
-    timing_file = os.path.join("batch_runs", "run_timings.csv")
+    batch_dir = os.path.join("../", "batch_inlists")
+    output_dir = os.path.join("../", "runs")
+    timing_file = os.path.join("../", "run_timings.csv")
     
     # Check if batch inlists exist
     inlist_files = glob.glob(os.path.join(batch_dir, "*.inp"))

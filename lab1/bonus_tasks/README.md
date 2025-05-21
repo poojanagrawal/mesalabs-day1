@@ -34,7 +34,7 @@ These scripts work "out of the box" with any standard MESA run that includes the
 
 ## 2. Batch Running MESA (Sequentially)
 
-The batch run system allows you to explore how different physical parameters (like overshooting) affect stellar evolution by automating the creation and execution of multiple MESA models.
+The batch run system allows you to explore how different physical parameters (like overshooting) affect stellar evolution by automating the creation and execution of multiple MESA models, avoiding tedious manual editing of the inlist parameters. 
 
 ### Directory Structure
 
@@ -52,16 +52,24 @@ batch_runs/
 
 The typical workflow follows these steps:
 
-1. **Check dependencies** to ensure your environment is properly set up
+0. **Check dependencies** to ensure your environment is properly set up
    ```bash
    python 0_dependency_check.py
    ```
 
-2. **Generate inlists** using a CSV file of parameter combinations
+1. **Generate inlists** using a CSV file of parameter combinations
    ```bash
    python 1_make_batch.py MESA_Lab.csv
    ```
    This creates a separate inlist for each parameter set in the `../batch_inlists/` directory.
+
+2. **Verify inlists** similar to before
+   ```bash
+   python 2_verify_inlists.py MESA_Lab.csv
+   ```
+   This checks the inlist files for any weird things that may have happened. Both of the methods for constructing the these inlists are prone to error. 
+
+    
 
 3. **Run the models** (this may take several hours)
    ```bash
@@ -69,14 +77,32 @@ The typical workflow follows these steps:
    ```
    Each model is run sequentially with results saved to `../runs/`
 
-4. **Analyze the results** collectively
+4. **Verify output** 
+   ```bash
+   python 4_verify_oulists.py MESA_Lab.csv
+   ```
+ This checks the output files to ensure that we have the expected features seen in our stars.  
+
+
+5. **Analyze the results** collectively
    ```bash
    python 5_construct_output.py         # Creates a summary CSV
-   cd ../python_analysis/batch          # Go to batch analysis directory
+   ```
+
+6. **Revisit python plots** 
+
+   ```bash
    python plot_hr.py                    # Creates combined HR diagram
    python plot_ccore_mass.py            # Plots all core masses
    python plot_composition.py           # Shows composition profiles
    ```
+
+   You can also invesitage how the inlist parameters changed the run time (this can be more apparrent with differnt parameter spaces):
+
+   ```bash
+   python plot_timing.py
+   ```
+
 
 ### Understanding the Parameter Space
 

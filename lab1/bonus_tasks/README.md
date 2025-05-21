@@ -40,6 +40,38 @@ The batch run system allows you to explore how different physical parameters (li
 Bash alternatives for the python files have been provided where possible (whereever mesa reader is not required).
 ### Directory Structure
 
+
+
+## MESA Batch Run Performance
+
+### Runtime Expectations
+
+The MESA batch run framework allows you to efficiently run multiple stellar models with different parameters. Here's what to expect in terms of timing:
+
+- **Setup time**: ~10 minutes to configure batch runs
+- **Individual model runtime**:
+  - ~70-75 seconds per model (using 4 threads)
+  - ~105-125 seconds per model (using 2 threads)
+
+### Performance Considerations
+
+- **Threading impact**: Using 4 threads instead of 2 reduces runtime by approximately 30-40%
+- **Batch size options**:
+  - Small batch (10 models): Completes in ~12-20 minutes
+  - Full parameter space (128 models): Takes ~2.5-4 hours depending on thread count
+
+### Recommendations
+
+For the lab session, we'll provide a subset of ~10 representative models to ensure all students can complete the exercise within the available time. This allows for:
+
+- Quick iteration and analysis
+- Exploration of the key parameter effects
+- Completion within a single lab period
+
+If you are particularly interested in the topic, you can run larger batches outside of lab hours using the same framework.
+
+
+
 ```
 batch_runs/
 ├── 0_dependency_check.py/.sh   # Verify your environment is correctly set up

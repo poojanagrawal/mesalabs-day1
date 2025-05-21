@@ -9,7 +9,7 @@
   ! save a model and photo at the end of the run
     save_model_when_terminate = .true.
     save_photo_when_terminate = .true.
-    save_model_filename = 'M2_Z0.014_exponential_fov0.1_f00.005.mod'
+    save_model_filename = 'M5_Z0.014_exponential_fov0.01_f00.001.mod'
 
   ! display on-screen plots
     pgstar_flag = .false.
@@ -60,7 +60,7 @@
   ! see star/defaults/controls.defaults
 
   ! starting specifications
-    initial_mass = 2d0 ! in Msun units
+    initial_mass = 5d0 ! in Msun units
 
     ! Set initial fractions according to Galactic enrichtment law
     ! Primordial helium abundance (Aver et al. 2021)
@@ -92,8 +92,8 @@
      overshoot_zone_loc(1) = 'core'
      overshoot_bdy_loc(1) = 'top'
      overshoot_scheme(1) = 'exponential'
-     overshoot_f(1) = 0.1d0
-     overshoot_f0(1) = 0.005d0
+     overshoot_f(1) = 0.01d0
+     overshoot_f0(1) = 0.001d0
 
           mixing_length_alpha = 1.8d0
 

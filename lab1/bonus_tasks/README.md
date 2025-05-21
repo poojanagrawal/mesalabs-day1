@@ -18,7 +18,9 @@ python conv_core_plot.py    # Plots core mass evolution
 python composition_plot.py  # Shows composition profiles
 ```
 
-These scripts will automatically detect your MESA model in the `../../LOGS` directory and create appropriate plots. All plots are saved to a `plots/` directory for easy access.
+These scripts will automatically detect your MESA model in the `LOGS/` directory and create appropriate plots. All plots are saved to a `plots/` directory for easy access.
+
+NB As these scripts run within a directory with no guaranteed paths, we use relative paths. This is not ideal but do not move these files.
 
 ### Available Analysis Scripts
 
@@ -35,7 +37,7 @@ These scripts work "out of the box" with any standard MESA run that includes the
 ## 2. Batch Running MESA (Sequentially)
 
 The batch run system allows you to explore how different physical parameters (like overshooting) affect stellar evolution by automating the creation and execution of multiple MESA models, avoiding tedious manual editing of the inlist parameters. 
-
+Bash alternatives for the python files have been provided where possible (whereever mesa reader is not required).
 ### Directory Structure
 
 ```

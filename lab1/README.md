@@ -418,10 +418,18 @@ and it will immediately update your plots.
 11. We have merged all the plots in one panel for a better overview.
 We also included some key quantities at the top, similar to MESA's
 terminal output.
-The plots are the HRD (top left), a plot relating the star's age to the
-model number (top right) and another MESA default panel: the mixing
-panel (bottom right). Finally, there is a mysterious mostly empty panel
-in the bottom left. We'll get back to that empty panel later.
+
+
+The plots are:
+- Top left: The Hertzsprung-Russell diagram (HRD),
+- Top right: History panel showing model number on the x-axis and age on the y-axis.  
+  (This is often used as a proxy for age since model number increments regularly during evolution),
+- Bottom right: The mixing panel,
+- Bottom left: This is a mysterious mostly empty panel. We'll get back to that empty panel later.
+
+### We'll refer to the “history plot” (top right) throughout the lab, so keep that panel in mind.
+
+
 
 For now, focus on that mixing panel in the top right.
 
@@ -583,6 +591,12 @@ you should leave the overshoot scheme as an empty string, i.e.
 ```fortran
 overshoot_scheme(1) = ''
 ```
+
+> **Reminder**: Use the same naming format for your save files and logs as below:
+>
+> `save_model_filename = 'M{mass}_Z{Z}_{scheme}_fov{fov}_f0{f0}.mod'`  
+> `log_directory = 'LOGS_M{mass}_Z{Z}_{scheme}_fov{fov}_f0{f0}'`
+
 
 
 18. Preserving Your Previous Results

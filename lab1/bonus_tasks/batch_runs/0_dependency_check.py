@@ -126,6 +126,7 @@ def check_mesa_environment():
     result = {
         "mesa_dir": os.environ.get("MESA_DIR"),
         "mesasdk_root": os.environ.get("MESASDK_ROOT"),
+        "mesa_threads": os.environ.get("OMP_NUM_THREADS"),
         "properly_set": False
     }
     
@@ -201,6 +202,7 @@ def generate_report(results):
     report.append(f"Status: {status}")
     report.append(f"MESA_DIR: {mesa_env['mesa_dir'] or 'Not set'}")
     report.append(f"MESASDK_ROOT: {mesa_env['mesasdk_root'] or 'Not set'}")
+    report.append(f"MESA Threads: {mesa_env['mesa_threads'] or 'Not set'}")
     
     if not mesa_env["properly_set"]:
         report.append(colorize("\nAction Required:", Colors.YELLOW))

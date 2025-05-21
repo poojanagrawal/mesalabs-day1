@@ -78,6 +78,7 @@ check_command() {
 check_mesa_environment() {
     local mesa_dir="${MESA_DIR:-}"
     local mesasdk_root="${MESASDK_ROOT:-}"
+    local mesa_threads="${OMP_NUM_THREADS:-}"
     local properly_set=false
     
     if [ -n "$mesa_dir" ] && [ -n "$mesasdk_root" ]; then
@@ -87,7 +88,7 @@ check_mesa_environment() {
     fi
     
     # Return results
-    echo "$properly_set:$mesa_dir:$mesasdk_root"
+    echo "$properly_set:$mesa_dir:$mesasdk_root:$mesa_threads"
 }
 
 check_batch_directories() {
@@ -137,6 +138,7 @@ generate_report() {
     local properly_set=$(echo "$mesa_env" | cut -d ':' -f 1)
     local mesa_dir=$(echo "$mesa_env" | cut -d ':' -f 2)
     local mesasdk_root=$(echo "$mesa_env" | cut -d ':' -f 3)
+    local mesa_threads=$(echo "$mesa_env" | cut -d ':' -f 4)
     
     if [ "$properly_set" = "true" ]; then
         echo "Status: $(colorize "PROPERLY SET" "$GREEN")"
@@ -146,6 +148,7 @@ generate_report() {
     
     echo "MESA_DIR: ${mesa_dir:-Not set}"
     echo "MESASDK_ROOT: ${mesasdk_root:-Not set}"
+    echo "MESA #Threads: ${mesa_threads:-Not set}"
     
     if [ "$properly_set" != "true" ]; then
         echo

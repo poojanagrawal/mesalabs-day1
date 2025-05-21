@@ -159,6 +159,7 @@ pip install mesa-reader
 pip install --user mesa-reader
 ```
 
+
 #### Option 2: Installation from source
 
 For the latest development version:

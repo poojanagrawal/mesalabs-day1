@@ -138,8 +138,42 @@ The dependency check script will verify these requirements for you.
 
 - If plots don't appear, check if your MESA run generated the required history and profile files
 - For batch runs, examine individual log files in `../runs/[model_name]/run.log`
-- Ensure your CSV file has the correct format (see `MESA_Lab.csv` as an example)
+- Ensure your CSV file has the correct format (see `MESA_Lab.csv`)
 - For Python errors, verify you have all required packages installed
+
+
+
+## Installing MESA Reader
+
+MESA Reader is a Python package for analyzing output from the MESA stellar evolution code.
+
+### Option 1: Installation with pip
+
+The simplest method using Python's package manager:
+
+```bash
+# Standard installation
+pip install mesa-reader
+
+# User-specific installation (no admin rights needed)
+pip install --user mesa-reader
+```
+
+### Option 2: Installation from source
+
+For the latest development version:
+
+```bash
+# Clone the repository
+git clone https://github.com/wmwolf/py_mesa_reader.git
+
+# Navigate to the directory
+cd py_mesa_reader
+
+# Install in development mode
+pip install -e .
+```
+
 
 ## Further Customisation
 

@@ -1,200 +1,126 @@
-# MESA Batch Runs
+# MESA Lab Bonus Tasks
 
-[PDF](pdf/README.pdf)
+This directory contains enhanced tools to analyze your MESA models and automate running multiple models with different parameters. These tools are organized into two main categories:
 
-This directory contains tools to automate running multiple MESA models with different parameters. This README explains how to use these tools, their options, and the recommended workflow.
+1. **Python Analysis** - Tools to create plots and analyze a single MESA run
+2. **Batch Runs** - Tools to automate running multiple MESA models with different parameters
 
-## Directory Structure
+## 1. Python Analysis for Single Models
+
+After completing your first MESA model run, you can use these Python scripts to create publication-quality plots and analyze your results without needing to run multiple models.
+
+### Quick Start
+
+```bash
+cd bonus_tasks/python_analysis
+python hr_plot.py           # Creates HR diagram from your MESA run
+python conv_core_plot.py    # Plots core mass evolution
+python composition_plot.py  # Shows composition profiles
+```
+
+These scripts will automatically detect your MESA model in the `../../LOGS` directory and create appropriate plots. All plots are saved to a `plots/` directory for easy access.
+
+### Available Analysis Scripts
+
+| Script | Description |
+|--------|-------------|
+| `hr_plot.py` | Creates HR diagrams (both standard and 3D with age as z-axis) |
+| `conv_core_plot.py` | Plots convective core mass evolution over time |
+| `composition_plot.py` | Shows composition profiles for different elements |
+
+These scripts work "out of the box" with any standard MESA run that includes the necessary history and profile columns (which you set up during the main lab).
+
+---
+
+## 2. Batch Running MESA (Sequentially)
+
+The batch run system allows you to explore how different physical parameters (like overshooting) affect stellar evolution by automating the creation and execution of multiple MESA models.
+
+### Directory Structure
 
 ```
 batch_runs/
-├── bin/                  # Executable scripts for batch operations
-│   ├── make_batch.py     # Script to generate inlists from CSV
-│   ├── make_batch.sh     # Shell script version of make_batch.py
-│   ├── run_batch.py      # Script to run all inlists sequentially
-│   ├── run_batch.sh      # Shell script version of run_batch.py
-│   ├── dependency_check.py  # Checks required dependencies
-│   ├── verify_inlists.py    # Script to verify inlist parameters
-│   ├── verify_outlists.py   # Script to verify run outputs
-│   └── construct_output.py  # Script to extract results into CSV
-│
-├── batch_inlists/        # Directory for generated inlist files
-│   └── *.inp             # Generated inlist files
-│
-├── runs/                 # Directory for run outputs
-│   └── */                # Subdirectories for each model run
-│
-├── analysis/             # Analysis and visualization tools
-│   ├── plot_hr.py        # Script to generate HR diagram plots
-│   ├── plot_ccore_mass.py  # Script to plot core mass evolution
-│   ├── plot_composition.py # Script to plot composition profiles
-│   └── plot_timing.py      # Analyze runtime performance
-│
-├── notebooks/            # Interactive Jupyter notebooks
-│   ├── run_batch.ipynb   # Notebook version for generating run script
-│   └── make_batch.ipynb  # Notebook version for generating inlists
-│
-├── plots/                # Output directory for generated plots
-│   └── *.png             # Plot image files
-│
-├── MESA_Lab.csv          # Parameter combinations for batch runs
-├── filled_MESA_Lab.csv   # Results from completed runs
-└── run_timings.csv       # Performance data for each run
+├── 0_dependency_check.py/.sh   # Verify your environment is correctly set up
+├── 1_make_batch.py/.sh         # Generate inlists from CSV parameter file
+├── 2_verify_inlists.py         # Verify inlists were generated correctly
+├── 3_run_batch.py/.sh          # Run all inlists sequentially
+├── 4_verify_outlists.py        # Verify runs completed successfully
+└── 5_construct_output.py       # Extract results into CSV
 ```
 
-## Workflow Overview
+### Workflow for Batch Runs
 
-The typical workflow for batch runs is:
+The typical workflow follows these steps:
 
-1. **Prepare a CSV** file with parameter combinations to explore
-2. **Generate inlists** using `bin/make_batch.py` or `bin/make_batch.sh`
-3. **Run the models** using `bin/run_batch.py` or `bin/run_batch.sh`
-4. **Analyze the results** using the scripts in the `analysis/` directory or `bin/construct_output.py`
+1. **Check dependencies** to ensure your environment is properly set up
+   ```bash
+   python 0_dependency_check.py
+   ```
 
-## Detailed Steps
+2. **Generate inlists** using a CSV file of parameter combinations
+   ```bash
+   python 1_make_batch.py MESA_Lab.csv
+   ```
+   This creates a separate inlist for each parameter set in the `../batch_inlists/` directory.
 
-### 1. Use Provided CSV File
+3. **Run the models** (this may take several hours)
+   ```bash
+   python 3_run_batch.py
+   ```
+   Each model is run sequentially with results saved to `../runs/`
 
-The online spreadsheet and the provided `MESA_Lab.csv` file contain the same parameter combinations.
+4. **Analyze the results** collectively
+   ```bash
+   python 5_construct_output.py         # Creates a summary CSV
+   cd ../python_analysis/batch          # Go to batch analysis directory
+   python plot_hr.py                    # Creates combined HR diagram
+   python plot_ccore_mass.py            # Plots all core masses
+   python plot_composition.py           # Shows composition profiles
+   ```
 
-You don't need to create your own CSV file. Use the provided `MESA_Lab.csv` file or access the [online spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
+### Understanding the Parameter Space
 
-This CSV file already contains the necessary columns:
-- `YOUR NAME` (your name)
-- `initial mass [Msol]` (stellar mass in solar masses)
-- `initial metallicity` (Z value)
-- `overshoot scheme` ("no overshooting", "exponential", or "step")
-- `overshoot parameter (f_ov)` (overshooting parameter)
-- `overshoot f0` (f0 parameter for overshooting)
+The provided `MESA_Lab.csv` file contains parameter combinations to explore:
 
+- **Initial mass**: 2, 5, 15, 30 M☉
+- **Metallicity**: Z = 0.014, 0.0014
+- **Overshooting schemes**: None, Exponential, Step
+- **Overshooting parameters (f_ov)**: 0.01-0.3
+- **Penetration depths (f0)**: 0.001-0.01
 
-### 2. Generate Inlists
+You can select a subset of these parameters or create your own parameter combinations.
 
-#### Using Python Script:
+## Technical Requirements
 
-```bash
-python make_batch.py MESA_Lab.csv
-```
+To run these scripts, you'll need:
 
-#### Using Shell Script:
+- **Python 3.6+** with the following packages:
+  - `numpy`
+  - `matplotlib`
+  - `mesa_reader` (for parsing MESA output)
+  - `pandas` (for data manipulation)
 
-```bash
-./make_batch.sh MESA_Lab.csv
-```
+- **MESA environment variables** properly set:
+  - `MESA_DIR`
+  - `MESASDK_ROOT`
 
-This will:
-1. Create the `batch_inlists` directory if it doesn't exist
-2. Generate an inlist file for each parameter set in the CSV
-3. Name each inlist file according to its parameters (e.g., `inlist_M2_Z0.014_exponential_fov0.01_f00.001.inp`)
-
-#### Options during inlist generation:
-
-You will be prompted to choose whether pgstar (visualization) should be enabled:
-- Answer `yes` to enable visualization during runs (slower but you can see progress)
-- Answer `no` to disable visualization (faster for batch processing)
-
-### 3. Run the Models
-
-#### Using Python Script:
-
-```bash
-python run_batch.py
-```
-
-#### Using Shell Script:
-
-```bash
-./run_batch.sh
-```
-
-This will:
-1. Process each inlist in `batch_inlists` directory
-2. Create a subdirectory in `runs` for each model
-3. Copy the model results to its respective subdirectory
-4. Record timing information in `run_timings.csv`
-
-### 4. Analyze Results
-
-#### Extract Data to CSV:
-
-```bash
-python construct_output.py
-```
-
-This will create a CSV file (`filled_MESA_Lab.csv`) with the results from all runs, including:
-- Input parameters
-- log(Teff)
-- log(L)
-- Core mass
-- Core radius
-- Age at TAMS
-- Runtime
-
-#### Create Plots:
-
-```bash
-python plot_hr.py             # Create HR diagrams
-python plot_ccore_mass.py     # Plot core mass evolution
-python plot_composition.py    # Plot composition profiles
-```
-
-These scripts will:
-1. Read data from all models in the `runs` directory
-2. Create comparison plots for all models
-3. Save plots to a `plots` directory
-
-## Verification Tools
-
-To verify that your inlists were generated correctly:
-
-```bash
-python verify_inlists.py MESA_Lab.csv
-```
-
-To verify that your runs completed successfully and match the expected configurations:
-
-```bash
-python verify_outlists.py MESA_Lab.csv
-```
-
-## Compatibility Notes
-
-- The Python scripts require Python 3.6+ and the `mesa_reader` package for analysis scripts
-- The shell scripts require a UNIX-like environment (Linux, macOS, or WSL on Windows)
-- The Jupyter notebooks can be run in Google Colab for platform independence
+The dependency check script will verify these requirements for you.
 
 ## Troubleshooting
 
-- If a run fails, check the `run.log` file in the corresponding run directory
-- Verify that the MESA installation is working with a single model before attempting batch runs
-- Make sure paths are set correctly for `$MESA_DIR` and `$MESASDK_ROOT`
-- Ensure all inlists have valid parameters (use `verify_inlists.py` to check)
+- If plots don't appear, check if your MESA run generated the required history and profile files
+- For batch runs, examine individual log files in `../runs/[model_name]/run.log`
+- Ensure your CSV file has the correct format (see `MESA_Lab.csv` as an example)
+- For Python errors, verify you have all required packages installed
 
-## Running Individual Models
+## Further Customisation
 
-To run a specific model rather than the entire batch:
-1. Copy the desired inlist file from `batch_inlists` to the main MESA directory as `inlist_project`
-2. Run MESA as normal with `./rn`
+These scripts are designed to be easily modified for your specific research needs:
 
-## Example Usage
+- Edit plotting styles in the Python files
+- Add new parameters to the CSV file
+- Modify inlist generation in `make_batch.py`
+- Create your own analysis scripts based on the provided examples
 
-```bash
-# Generate inlists from the provided CSV
-python make_batch.py MESA_Lab.csv
+---
 
-# Run a subset of models for testing
-cp batch_inlists/inlist_M2_Z0.014_noovs.inp ../inlist_project
-cd ..
-./rn
-
-# Run all models in batch
-cd batch_runs
-./run_batch.sh
-
-# Extract results to CSV
-python construct_output.py
-
-# Generate plots
-python plot_hr.py
-python plot_ccore_mass.py
-```

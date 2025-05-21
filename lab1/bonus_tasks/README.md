@@ -42,7 +42,7 @@ Bash alternatives for the python files have been provided where possible (wheree
 
 
 
-## MESA Batch Run Performance
+## MESA Batch Run Timing
 
 ### Runtime Expectations
 

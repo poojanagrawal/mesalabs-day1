@@ -83,9 +83,6 @@ strong step-wise mixing due to core overshooting. To do so, open
 *inlist_project* and find and change the following parameters to the
 given values:
 
-******* Z = 0.014
-**** Mathijs to Niall: I'm not sure what Daniel meant by this. I'll ask him tomorrow
-
 
 ```fortran
 initial_m = 5d0
@@ -232,35 +229,25 @@ with a very small time step which gradually increases, as shown by the
 years.
 
 
-6. The first 50 or so steps accomplish very little because the
-time steps are very small (less than a year).
-We can tell MESA to start with a time step of one year. To do so,
-add the following to the ``%star_job`` section of *inlist_project*:
 
-******* I HAVE NOT LEARNED THAT FROM THE OUTPUT. I AM A WEAK STUDENT AND CANNOT FOLLOW ALL OF THIS FAST NUMBERS AND THE EXPLANATIONS YOU ARE THROWING AT ME. BTW WHEN IS THE LUNCH BREAK? ;)
-**** Mathijs to Niall: Daniel quite rightly points out that my explanations here are too long and overwhelming. I rewrote this bit to hopefully shorten and simplify it, but I'm not sure if it was enough. Do you think this little exercise with the terminal output is understandable to all students? I fear they may not know where to look in the output since there first is this relaxation step that we only explain below. Feel free to restructure if you think we should e.g. first explain and reduce the relaxation steps.
-Alternatively, we could outright throw out one of these two speedup steps (reducing relaxation steps or increasing initial_dt) since they are not super relevant except in the sense that they make the pgstar plots pop up and evolve more quickly later on.
+6. Before running our main model, let's make two adjustments to speed up the MESA run:
+
+MESA starts by creating a pre-main-sequence model (before nuclear burning begins) and by default performs 300 relaxation steps to ensure it's stable. For our educational purposes, we can reduce this to save time:
+
+```fortran
+pre_ms_relax_num_steps = 100
+```
+
+MESA also starts with very tiny time steps after reaching the main sequence. We can tell it to use larger initial steps:
 
 ```fortran
 set_initial_dt = .true.
 years_for_initial_dt = 1d0
 ```
 
-Note that this will only take effect once the star has reached the ZAMS.
+Add both settings to the `&star_job` section of your *inlist_project*.
 
-Before the run truly starts, MESA
-first creates a pre-main-sequence model and lets it relax for 300
-steps. For today's lab, this relaxation is not critical,
-so let's reduce the number of relaxation steps to 100 to speed up the
-initialisation of our model. To do so, add the following to
-your ``%star_job``:
-
-******* WHERE HAVE I NOTICED THAT I RELAX FOR 300 STEPS? I HAVE NOT SEEN THAT BECAUSE I WAS READING THE TEXT AND LOOKING FOR OTHER CHANGING VARIABLES.
-******* ALSO WHY DO I NOT CARE ABOUT THIS? SHOULD I DO THIS ALSO IN MY FUTURE RESEARCH?
-
-```fortran
-pre_ms_relax_num_steps = 100
-```
+These adjustments will help our model run faster, especially during the early phases. In your future research, you'd want to carefully test how these parameters affect your specific science case, but for this lab, these settings are fine.
 
 If you want to (and are on schedule), you can briefly run your model
 again by entering `./rn` in your terminal to test whether
@@ -454,48 +441,34 @@ These are the only two mixing processes in our model, but there are a plethora o
 </details>
 
 
-12. So far, so good! Now let's think about the age plot. This is an example
-of a history panel, where we plot two history quantities, i.e.
-quantities that vary over time. Since we will explore the effect of
-overshooting on the core in the second half of this lab, it would be
-more interesting to change the y-axis of the history panel to
-something more relevant such as the core mass. However, to do so,
-you first need some idea of what history quantities are available.
+12. Customizing MESA's Output Data
 
-******* WHICH IS THE AGE PLOT? THERE IS NO AGE ON THE X AXIS? THERE IS MODEL NUMBER... BUT THERE ARE TWO PLOTS WITH THAT SO AT WHICH PLOT DO I LOOK?
+In your pgstar window, look at the plot in the **top right corner**. 
+This panel is showing how model properties change over time, currently using model number as the x-axis (for a lot of cases the absoulte age of the star doesnt matter and as age is correlated with model number, and model number is a smaller and easier to read number, we use model number as a proxy for age).
+Since we're studying core overshooting effects, we'd like to modify this panel to show the evolution of the core mass instead of the default value.
 
-You may have noticed that since running your model, a new subdirectory
-named _LOGS_ has appeared. That is the default directory to which MESA
-writes its output. In there, you will find files named _history.data_
-and _profile{i}.data_. These track how a number of quantities vary over
-time and the star's radius respectively.
+To customize what's displayed in MESA plots, we first need to understand what data is being tracked. When MESA runs, it creates a `LOGS` directory containing two main types of output files:
 
-So far, your history and profile output only contain the default
-columns. To see what history output is included, open _LOGS/history.data_
-with a text editor. You'll note a header on the first few lines describing
-some essential aspects of your run and then on line 6 the names of your
-history columns. The meaning of some columns will be mostly clear from
-the name, but some are a bit obtuse.
+- `history.data`: Records global stellar properties at each timestep
+- `profile*.data`: Captures the star's internal structure at specific timesteps
 
-Both to find out what these columns mean and to include extra columns,
-we need to examine the file listing which history columns our model
-should output. First, copy the default history columns list to your
-work directory. Let's also give it a new name:
+
+Open `LOGS/history.data` with a text editor. After the header information, you'll see a list of column names around line 6. 
+These are all the quantities MESA has been tracking during your run.
+
+To add more quantities to track, we need to customize the history columns list:
 
 ```bash
 cp $MESA_DIR/star/defaults/history_columns.list my_history_columns.list
 ```
 
-Open _my_history_columns.list_ and, if you're on schedule, take some
-time to scroll through the wealth of possible output MESA offers. Can
-you find the meaning of some of the columns you saw in your
-_history.data_ file?
+Open `my_history_columns.list` and explore the wealth of available output options.
+The file is organized by category, with comments explaining each variable.
+This gives you a comprehensive view of what MESA can track.
 
-In this lab, we are interested in the effects of overshooting on the
-stellar core. The mass of the convective core is already included in
-the defaults. Now add the stellar radius and radius of the convective
-core to the history output. Look for and uncomment the appropriate
-fields.
+For our overshooting study, we're interested in the stellar core properties. 
+The convective core mass is already included in the defaults. 
+Let's add the star's radius to the history output by finding and uncommenting the `radius` field in the appropriate section.
 
 
 <details>
@@ -505,30 +478,6 @@ The radius of the star is simply called `radius`.
 
 </details>
 
-
-<details>
-<summary>Show hint</summary>
-
-For the radius of the convective core, look under the section marked by `!## mixing regions`.
-Which field here would provide the core radius in a main-sequence star with a fairly large convective core?
-How would you make sure the definition of this radius is consistent with the core mass?
-
-</details>
-
-
-
-<details>
-<summary>Show hint</summary>
-
-For the radius, take the field `conv_mx1_top_r`.
-To guarantee consistency with the core mass, use `conv_mx1_top` for your core mass.
-Be aware that these are relative to the total radius and mass!
-
-</details>
-
-******* I THINK THE FIRST QUESTION IS OKAY, BUT THE OTHER ONES ARE QUITE DIFFICULT FOR SOME PEOPLE TO FIND AND MIGHT TAKE A LOT OF TIME. WE CAN SAY IF THEY HAVE TIME THEY CAN LOOK FOR IT, ELSE JUST GIVE THEM THE SOLUTION?
-**** Mathijs to Niall: I think I agree with Daniel here. Do you think we should remove this bit about the core radius? That depends in large part on whether you want the students to make plots of the core radius or density or something. If you think we can drop it, please clear out all the bits related to conv_mx1_top_r and conv_mx1_top.
-
 Once you have uncommented the relevant lines, you need to tell MESA  that you want to include the output columns in _my_history_columns.list_. To do so, add the following line into your *inlist_project* under ``&star_job`` :
 
 ```fortran
@@ -536,88 +485,48 @@ history_columns_file = 'my_history_columns.list'
 ```
 
 
-13. Now we can finally turn back to the pgstar history plot. Open up
-*inlist_pgstar* and navigate to the section where the history panel
-is defined. Change the left y-axis to the default quantity of the
-convective core mass.  
+
+13. Configuring the History Plot
+
+Now let's customize the History Panel in the pgstar window. This panel shows how stellar properties evolve over time.
+
+1. Open `inlist_pgstar` in your text editor
+2. Find the section that defines the History Panel (search for "History_Panels1")
+3. Change the y-axis to display the convective core mass:
 
 ```fortran
 History_Panels1_yaxis_name(1) = 'mass_conv_core'
 ```
 
-**Bonus**: You could also use this panel to directly compare the two different definitions we might use.
-How would you go about that?
+This will show how the convective core mass evolves throughout the star's main sequence lifetime.
 
+To enable more advanced plotting features like the Kippenhahn diagram (which shows the internal structure evolution), we need to tell MESA to track additional data:
 
-
-<details>
-<summary>Show hint</summary>
-
-The optional field `History_Panels1_other_yaxis_name(1)` lets you set the right y-axis.
-
-</details>
-
-
-**Bonus Question**: Which of these two definitions seems more convenient to you?
-And what about the definition of the core radius?
-
-
-What history and profile quantities we ask MESA to include not only changes
-the output of our model, but also impacts pgstar's plotting options.
-For instance, in order to plot a full Kippenhahn diagram, MESA needs to
-keep close track of all the mixing regions. In order to enable that, go
-into _my_history_columns.list_ and find the option named ``mixing_regions``.
-As you can read in its description in _my_history_columns.list_, this is
-not one quantity, but automatically adds a number of history columns.
-Try uncommenting this ``mixing_regions`` and give it a fairly large integer
-to ensure it includes all the relevant mixing zones, e.g.
+1. Open `my_history_columns.list`
+2. Find and uncomment the following options:
 
 ```fortran
 mixing_regions 20
-```
-
-Similarly, the diagram needs to know where nuclear fusion is happening,
-which is described by ``burning_regions``. Find the relevant line,
-uncomment it and also set it to 20 regions:
-
-```fortran
 burning_regions 20
 ```
 
-******* I AM ALSO NOW AT 10 MINUTES IT HINK THIS IS A GOOD POINT TO STOP. DO WE NEED THE PROFILE FILES? MAKE IT A BONUS TASK I WOULD SAY
-**** Mathijs to Niall: I'm really on the fence about this one. On the one hand, this is a great suggestion to shorten the lab without breaking the structure, but on the other hand learning to use the available output is a core take-away of the lab, so reducing the profiles to a bonus task may be a step too far. I'll go with your judgement on this one because I really don't know.
+These settings tell MESA to track up to 20 distinct mixing and nuclear burning regions within the star, which enables the creation of Kippenhahn diagrams and other detailed evolutionary plots.
 
-Your pgstar window should now include fully functional panels. Briefly
-run your model again to double check everything works as it should.
+Run your model briefly to confirm your pgstar window now displays the updated plot configuration.
 
+14. Profile Data (optional)
 
-14. The history files tell you how chosen quantities vary over time. But
-what about quantities that vary over the star's radius? Those are
-described by the files _profile{i}.data_ in the LOGS folder. As with
-the history, let's check study what is included by default and add
-a few columns. First copy over the list file:
+While history files track global properties over time, profile files capture the star's internal structure at specific moments. These are essential for examining how variables change with radius inside the star.
 
 ```bash
 cp $MESA_DIR/star/defaults/profile_columns.list my_profile_columns.list
 ```
 
-Again, take a few minutes to check out what it has to offer. Later
-in this lab, we will examine the mixing profile at different times.
-To this end, you will need the profile of the (logarithmic) diffusive
-mixing coefficient and some way to tell what process is causing that
-mixing. Find and uncomment some appropriate fields.
+To study mixing processes in the stellar interior, uncomment these fields:
+- `log_D_mix` - the diffusion coefficient for mixing
+- `mixing_type` - identifies which mixing process is active in each zone
 
-
-
-<details>
-<summary>Show hint</summary>
-
-At minimum, include the fields `log_D_mix` and `mixing_type`.
-Adding the contributions of each mixing type separately using `log_D_conv`, `log_D_ovr`, & co. is also recommended.
-
-</details>
-
-Remember to add your profile column list to your inlist:
+After modifying this file, tell MESA to use your custom profile columns by adding to your `inlist_project` under `&star_job`:
 
 ```fortran
 profile_columns_file = 'my_profile_columns.list'
@@ -625,21 +534,12 @@ profile_columns_file = 'my_profile_columns.list'
 
 ---
 
-**Bonus Question**: How often does MESA produce a profile file?
-How could you increase this resolution?
-
-
+**Bonus Question**: By default, MESA only saves a profile every 50 model steps. This might miss important evolutionary phases. How could you increase this frequency?
 
 <details>
 <summary>Show answer</summary>
-
-By default, MESA produces a profile every 50 model steps.
-The most straightforward way to increase the frequency of the output is using `profile_interval`
-in your inlist's `&controls` section. You could also set `write_profile_when_terminate = .true.`.
-
+Add <code>profile_interval = 10</code> to your inlist's <code>&controls</code> section to save profiles more frequently. You could also enable <code>write_profile_when_terminate = .true.</code> to guarantee a profile at the end of the run.
 </details>
-
-
 ---
 
 ## SESSION 2
@@ -675,9 +575,7 @@ different parameters together.
 and put your name next to one set of parameters to claim it as yours.
 Modify your inlist accordingly.
 
-******* IN THE SPREADSHEET CAN WE MERGE THE ROWS FOR A SPECIFIC SET OF PARAMETERS OR SHOULD THEY RANDOMLY PICK ONE COMBINATION OR TRY DIFFERENT F0 FOR FIXED FOV ETC?
-**** Mathijs to Niall: I don't quite understand Daniel's suggestion here. What do you think?
-
+Given that there are more parmeter sets than students here so you are able to test different parameters if time is permitting, though focus should be on completing this task and fully understanding it. Also, the bonus tasks in this lab are concerning running this set of parameters in a batch. 
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
 you should leave the overshoot scheme as an empty string, i.e.
@@ -686,64 +584,59 @@ you should leave the overshoot scheme as an empty string, i.e.
 overshoot_scheme(1) = ''
 ```
 
-18. Before you run your model again, you should make sure you are
-not overwriting your previous results. To do so, you should first
-adapt ``save_model_filename``, ideally with some new name that
-reflects the new parameter set.
 
-******* THIS SHOULD BE THE FIRST THING THEY DO BEFORE EVEN OPENING THE SPREADSHEET
-**** Mathijs to Niall: I personally disagree with this as the new save_model_filename should depend on the chosen parameter set, but what do you think of this?
+18. Preserving Your Previous Results
 
-Next, to not overwrite your history and profile data, you could
-tell MESA to write the history and profile data to differently
-named files. However, there is another, easier option, which
-is to simply tell MESA to save the output in another directory
-than *LOGS/*. Check the documentation or user forums to discover
-how you can do that. Like the final model name, it is generally
-recommended to use a name that reflects the settings of your
-model, rather than something generic such as *model2*.  
+Before running a new model with different parameters, we need to ensure we don't overwrite our previous results. We'll make two adjustments to keep our work organized:
 
 
-<details>
-<summary>Show hint</summary>
+After selecting your parameter set from the spreadsheet, modify the `save_model_filename` in your `inlist_project` file to reflect these specific parameters:
 
-Since you already know what the default directory name is, *LOGS*,
-you can look for the field with that default value using the search functionality of the documentation site.
+```fortran
+save_model_filename = 'M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0{f0}.mod'
+```
 
-</details>
+For example, if you selected a 15 $M_\odot$ star with $Z=0.014$, exponential overshooting with $f_\text{ov}=0.01$ and $f_0=0.001$, your filename would be:
 
+```fortran
+save_model_filename = 'M15_Z0.014_exponential_fov0.01_f00.001.mod'
+```
 
+MESA normally writes all history and profile data to a directory called `LOGS/`. To keep these outputs separate from your previous run, we'll direct MESA to use a different output directory.
 
-<details>
-<summary>Show answer</summary>
+Add the following to your `inlist_project` under the `&controls` section:
 
-The field you need is `log_directory` under `&controls`.
+```fortran
+log_directory = 'LOGS_M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0{f0}'
+```
 
-</details>
+Using the same example parameters as above:
 
+```fortran
+log_directory = 'LOGS_M15_Z0.014_exponential_fov0.01_f00.001'
+```
+
+This keeps all your runs organized with descriptive names that make it easy to identify which parameters were used for each model.
 
 19. Now run your model again. Keep a close eye on your pgstar plots,
 particularly the mixing panel. Compare it with those of the
 other people at your table.
 
-20. Using your favourite text editor, open the history.data file and find
-the line describing the TAMS. Add the values of the following parameters
-to the second page of the spreadsheet. Take care to check your units!
+20. After your model finishes running, we'll extract key parameters at the Terminal Age Main Sequence (TAMS).
 
-******* WE NEED TO TELL STUDENTS WHICH LINE IS DESCRIBING THE TAMS.. IS IT THE LAST LINE OR THE ONE WITH THE LOWEST TEFF? STUDENTS WILL ASK THEMSELVES THESE QUESTIONS
-**** Mathijs to Niall: DO you have any preference here?
+Open the final history.data file in your new LOGS directory with a text editor. The TAMS is represented by the final line in this file - this is where the central hydrogen has been depleted to the threshold we set (1d-6).
 
- - log(Teff)
- - log(L)
- - core mass
- - core radius
- - age in Myr
+From this final line, record the following values in the second page of the spreadsheet:
+- log_Teff (logarithm of effective temperature)
+- log_L (logarithm of luminosity in solar units)
+- mass_conv_core or he_core_mass (depending on which is available)
+- conv_mx1_top_r (if you uncommented this)
+- star_age/1e6 (to convert to Myr)
+
+These values will allow us to analyze how different overshooting parameters affect stellar evolution.
 
 21. Now let's wrap up this lab by reading your MESA output in using Python
 and making some custom plots.
-
-******* TIME FOR LAB2 IS GOOD! I DID NOT TEST THE BONUS TASK.
-**** Mathijs to Niall: yay!
 
 ---
 
@@ -757,19 +650,6 @@ If you've completed the main lab activities and have time remaining, explore the
 2. **Thoroughness**: Test how overshooting parameters affect stellar evolution across different masses and metallicities
 3. **Reproducibility**: Generate standardized output for consistent analysis
 
-### Quick Start Guide
-
-```bash
-# Generate parameter-specific inlists
-python batch_runs/make_batch.py batch_runs/MESA_Lab.csv
-
-# Execute models sequentially
-python batch_runs/run_batch.py
-
-# Visualize results across parameter space
-python batch_runs/plot_hr.py
-python batch_runs/plot_ccore_mass.py
-```
 
 ### Available Parameter Space
 
@@ -780,4 +660,4 @@ The provided parameter grid explores:
 - Overshooting parameters: 0.01-0.3
 - Penetration depths: 0.001-0.01
 
-For complete documentation and additional analysis tools, see [`batch_runs/README.md`](./batch_runs/README.md).
+For complete documentation and additional analysis tools, see [`bonus_tasks/README.md`](./bonus_tasks/README.md).

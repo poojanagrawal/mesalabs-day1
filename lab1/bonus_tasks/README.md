@@ -143,11 +143,11 @@ The dependency check script will verify these requirements for you.
 
 
 
-## Installing MESA Reader
+### Installing MESA Reader
 
 MESA Reader is a Python package for analyzing output from the MESA stellar evolution code.
 
-### Option 1: Installation with pip
+#### Option 1: Installation with pip
 
 The simplest method using Python's package manager:
 
@@ -159,7 +159,7 @@ pip install mesa-reader
 pip install --user mesa-reader
 ```
 
-### Option 2: Installation from source
+#### Option 2: Installation from source
 
 For the latest development version:
 

@@ -386,7 +386,7 @@ your pgstar panels to show those quantities that are the most important
 to your work. To this end, MESA has a bunch of prepared windows you can
 easily add by adding one flag to your *inlist_pgstar*. You can find
 these and how to edit your *inlist_pgstar* in
-[this documentation page]{https://docs.mesastar.org/en/24.08.1/reference/pgstar.html}.
+[this documentation page](https://docs.mesastar.org/en/24.08.1/reference/pgstar.html).
 
 For the purposes of this lab, we have prepared a specialised
 *inlist_pgstar* for you. Download that *inlist_pgstar* here [TO DO]
@@ -452,7 +452,7 @@ These are the only two mixing processes in our model, but there are a plethora o
 12. Customizing MESA's Output Data
 
 In your pgstar window, look at the plot in the **top right corner**. 
-This panel is showing how model properties change over time, currently using model number as the x-axis (for a lot of cases the absoulte age of the star doesnt matter and as age is correlated with model number, and model number is a smaller and easier to read number, we use model number as a proxy for age).
+This panel is showing how model properties change over time, currently using model number as the x-axis (In many cases, the absolute age of the star doesn’t matter. Since age correlates closely with model number, and model number is easier to interpret, we often use it as a proxy).
 Since we're studying core overshooting effects, we'd like to modify this panel to show the evolution of the core mass instead of the default value.
 
 To customize what's displayed in MESA plots, we first need to understand what data is being tracked. When MESA runs, it creates a `LOGS` directory containing two main types of output files:

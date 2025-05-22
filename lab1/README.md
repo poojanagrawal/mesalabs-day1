@@ -45,7 +45,7 @@ Make further changes to the inlist (e.g. adjust mass, overshoot params, timestep
 Extract and visualize data from `history.data` and `profile.data` using Python, matplotlib, or pgstar.
 
 **6. BONUS: Automatically run multiple MESA models sequentially**
-*\~20 minutes*
+*\~20+ minutes*
 Learn to loop over parameter grids using shell scripts or Python (e.g., `inlist_template` + script).
 
 ---

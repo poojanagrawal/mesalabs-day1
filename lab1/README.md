@@ -15,15 +15,40 @@ time you are expected to spend on each. Please do not hesitate to ask
 your TA and/or the other people at your table for assistance if you
 notice you are falling behind on schedule.
 
-**SESSION 1**
-1. Setting up your MESA work directory [20']
-2. Modifying the input physics and saving your final model [30']
-3. Monitoring the run and customising output [40'] (move some stuff into session 2)
+---
 
-**SESSION 2**
-4. Adapting the input parameters [10'] (and play more with the pgstar plots?)
-5. Making your own plots [20']
-6. BONUS: automatically run multiple MESA models sequentially [20']
+### **Session 1**
+
+**1. Setting up your MESA work directory**
+*\~20 minutes*
+Learn how to initialize a new MESA run directory from the default templates and understand the directory structure.
+
+**2. Modifying the input physics and saving your final model**
+*\~30 minutes*
+Adjust the inlist files to define key input physics, like overshooting and metallicity. Save the resulting model.
+
+**3. Monitoring the run and customizing output**
+*\~40 minutes*
+Use `pgstar` and log file outputs to visualize evolution.
+
+
+### **Session 2**
+
+**4. Adapting the input parameters**
+*\~10 minutes*
+Make further changes to the inlist (e.g. adjust mass, overshoot params, timestep) and observe effects.
+
+> *(You can also tweak your `pgstar` plots more here)*
+
+**5. Making your own plots**
+*\~20 minutes*
+Extract and visualize data from `history.data` and `profile.data` using Python, matplotlib, or pgstar.
+
+**6. BONUS: Automatically run multiple MESA models sequentially**
+*\~20 minutes*
+Learn to loop over parameter grids using shell scripts or Python (e.g., `inlist_template` + script).
+
+---
 
 In this lab, we will examine how overshooting of a convective core
 affects a star's evolution together. In particular, we will examine

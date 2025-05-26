@@ -1,9 +1,8 @@
-============================================================
-Monday Lab 2: Overshooting during core helium burning (CHeB)
-============================================================
 
-Preparation
-===========
+# Monday MaxiLab 1: Overshooting during core helium burning (CHeB)
+
+
+### Preparation
 
 Now we are interested in studying how stars with and without core 
 overshooting evolve during the CHeB and which impact it has. 
@@ -36,11 +35,13 @@ To load a saved model, we need to modify our *inlist_project*
 in the *star_job* section. Since we do not need to start with
 a pre-main-sequence model anymore, we need to delete the following
 lines::
-
+  
+```
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
   ! reducing the number of relaxation steps to decrease computation time
     pre_ms_relax_num_steps = 100
+```
 
 We also do no longer need to save the model at the end of the run, 
 meaning that we can also delete the following lines::

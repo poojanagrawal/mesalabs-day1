@@ -129,9 +129,9 @@
 
       ! radius -- values are radii in Rsun units
       conv_mx1_top_r
-      conv_mx1_bot_r
-      conv_mx2_top_r
-      conv_mx2_bot_r
+      !conv_mx1_bot_r
+      !conv_mx2_top_r
+      !conv_mx2_bot_r
       !mx1_top_r
       !mx1_bot_r
       !mx2_top_r
@@ -341,7 +341,7 @@
 
       ! you might want to get a more complete list of burning regions by using the following
 
-      burning_regions 20
+      !burning_regions <integer>
          ! the <integer> is the number of regions to report
          ! there will be 2*<integer> columns for this in the log file, 2 for each region.
          ! the first column for a region gives int(sign(val)*log10(max(1,abs(val))))
@@ -1064,4 +1064,4 @@
       !num_hydro_splits
 
    !## timing
-      !elapsed_time ! time since start of run (seconds)
+      elapsed_time ! time since start of run (seconds)

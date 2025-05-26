@@ -86,7 +86,8 @@ Can you find on the website any content that is related to **load** something?
 
 </details>
 
-* <details>
+* 
+<details>
 <summary>SOLUTION</summary>
 
 Add to your *star_job* section in the *inlist_project* the following lines::

@@ -72,22 +72,32 @@ Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
 <details>
-<summary>Show answer</summary>
+<summary>HINT_1</summary>
 
-Look in the *star_job* panel under *References and Defaults* here: 
-`https://docs.mesastar.org/en/24.08.1/reference/star_job.html <https://docs.mesastar.org/en/24.08.1/reference/star_job.html>`
+Look in the *star_job* panel under *References and Defaults*: 
+[here](https://docs.mesastar.org/en/24.08.1/reference/star_job.html)
 
 </details>
 
-* HINT_1: 
-* HINT_2: Can you find on the website any content that is related to **load** something?
+<details>
+<summary>HINT_2</summary>
 
-* SOLUTION: Add to your *star_job* section in the *inlist_project* the following lines::
+Can you find on the website any content that is related to **load** something?
 
-  ! loading the pre-saved 5Msun model
+</details>
+
+* <details>
+<summary>SOLUTION</summary>
+
+Add to your *star_job* section in the *inlist_project* the following lines::
+```
+! loading the pre-saved 5Msun model
     load_saved_model = .true.
     load_model_filename = 'M5_Z0014_fov030_f0ov0005.mod'
+```
 
+</details>
+  
 
 inlist_project: controls
 ------------------------

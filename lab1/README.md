@@ -58,15 +58,7 @@ model parameters, namely the initial mass of the star $M_\rm{ini}$,
 its initial metal mass fraction $Z$, the overshooting scheme, overshoot
 parameter $f_\rm{ov}$ which describes how far from the core the overshoot
 can reach and $f_0$ which describes how deep in the convection zones the
-model switches from mixing by convection to overshoot. To this end,
-everyone picks one set of parameter values to simulate, after which we
-will collect everyone's results and look for trends together. You will
-also learn how to navigate the MESA output in greater detail and make
-fully custom plots in Python, both using the dedicated ``mesa_reader``
-Python package as well as 'by hand'.
-If you have time left over, you can look into some prepared scripts that
-automatically write parameter values into your inlist and runs different
-sets of parameters sequentially.
+model switches from mixing by convection to overshoot. 
 
 ---
 
@@ -123,7 +115,7 @@ For consistency, you should set ``ZBase`` to the same value as
 ZBase = 0.014d0
 ```
 
-3. Next, to add the core overshooting, we need to add in some new fields.
+3. Next, to add the core overshooting, we need to add in some new fields, shown below.
 Before you try to do so, have a look at the questions below.
 
 ```fortran
@@ -135,18 +127,15 @@ overshoot_f(1) = 0.30d0
 overshoot_f0(1) = 0.005d0
 ```
 
-**Question**: The first three `overshoot_` fields describe where the  
-overshooting should take place. Go into  
-[the MESA documentation](https://docs.mesastar.org/en/latest/reference/controls.html)
-and look up what each of these fields means.  
+**Question**: The first three `overshoot_` fields describe where the overshooting should take place. Go into [the MESA documentation](https://docs.mesastar.org/en/latest/reference/controls.html) and look up what each of these fields means.  
 
 
 <details>
 <summary>Show answer</summary>
 
-`overshoot_zone_type` lets you indicate to only activate overshooting around
+`overshoot_zone_type` lets you only activate overshooting around
 regions where certain types of burning takes place. `overshoot_zone_loc` then
-tells MESA whether this convection zone should reach down to the core or not
+tells MESA whether this convection zone should surround the core
 and `overshoot_bdy_loc` whether the overshoot should occur only above or under
  the relevant convection zone(s).
 
@@ -159,12 +148,8 @@ and `overshoot_bdy_loc` whether the overshoot should occur only above or under
 <details>
 <summary>Show answer</summary>
 
-Strictly speaking, you can place them anywhere in the `&controls` namelist.  
-However, you'll probably notice that `&controls` is organised into subsections like  
-"starting specifications", "when to stop", "wind" and so on.  
-Generally speaking, sticking to this or a similar structure is a good idea  
-to keep your inlist clearly organised.  
-As such, we recommend copy-pasting the six lines above under "mixing".
+Strictly speaking, you can place them anywhere in the `&controls` namelist. However, you'll probably notice that `&controls` is organised into subsections like "starting specifications", "when to stop", "wind" and so on. Sticking to this or a similar structure is a good idea to keep your inlist clearly organised. 
+As such, we recommend copy-pasting the six lines above under "! mixing".
 
 </details>
 
@@ -175,10 +160,7 @@ As such, we recommend copy-pasting the six lines above under "mixing".
 <details>
 <summary>Show answer</summary>
 
-All these `overshoot_` are actually arrays and `(1)`  
-indicates the first element of that array.  
-This way, each element can represent a different overshooting zone  
-so you can use different overshooting settings for each zone.
+All these `overshoot_` are actually arrays and `(1)` indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different overshooting settings for each zone.
 
 </details>
 
@@ -190,7 +172,7 @@ we should place our stopping condition around the terminal age
 main-sequence (TAMS). Look under ``! when to stop`` in ``&controls``
 of your *inlist_project*.
 
-You'll note there are two conditions that can trigger
+There are two conditions that can trigger
 the model to end. The first is
 ```fortran
 Lnuc_div_L_zams_limit = 0.99d0
@@ -246,8 +228,8 @@ and density profiles. These help you keep a close eye on your model
 and can help you identify problems and potential improvements.
 
 For now, let's focus on the terminal output. One important field for our
-purposes are the central hydrogen fraction (``H_cntr``), which will tell
-you how far along the main-sequence evolution your model is. You'll note
+purposes is the central hydrogen fraction (``H_cntr``), which tells
+you how far along the main-sequence evolution your model is. Note
 that it initially changes extremely slowly. This is because MESA starts
 with a very small time step which gradually increases, as shown by the
 ``lg_dt_yrs`` field, the base 10 logarithm of the time step expressed in
@@ -281,7 +263,7 @@ have to run your model all the way to the TAMS. You can interupt
 it using ctrl+C if you're on Linux and Cmd+C if you're on Mac.
 
 <details> <summary>Show hint</summary>
-In step 7, you reduced the number of pre-main-sequence relaxation steps from 300 to 100.
+You reduced the number of pre-main-sequence relaxation steps from 300 to 100.
 You also set the initial timestep to 1 year, which should be reflected in the lg_dt_years
 value of the first few steps. The He_cntr of the first steps should also show your new value
 for initial_y. You could also compare the values of some metals with your first run if you
@@ -292,7 +274,7 @@ decreasing slightly.
 
 ### Upgrading the physics
 
-7. *inlist_project* is currently mostly empty. This means that most
+7. *inlist_project* is currently mostly empty, meaning most
 settings are using MESA's default values. You should always check
 whether these are appropriate for your models. As an example, since
 this lab concerns fairly massive stars, mass loss by winds may play
@@ -316,8 +298,8 @@ by winds is found under **mass gain and loss**.
 <details>
 <summary>Show answer</summary>
 
-Broadly speaking, you can add mass loss by either setting a constant, negative value to the field `mass_change`
-(with or without rotational scaling) or with some `wind_scheme`.
+Broadly speaking, you can add mass loss by either setting a negative value to the field `mass_change`
+or with some `wind_scheme`.
 
 </details>
 
@@ -362,7 +344,7 @@ When you are working on your real science cases, you should
 test a few different values for this $\alpha_{MLT}$ to gain
 an understanding of its effects. However, to save some time
 in this lab, we will stick to just one value, namely 1.8.
-Add this into your *inlist_project*
+Add this into your *inlist_project* under &controls
 
 ```fortran
 mixing_length_alpha = 1.8d0

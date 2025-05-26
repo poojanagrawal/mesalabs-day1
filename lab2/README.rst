@@ -23,7 +23,7 @@ directories LOGS, photos, and png::
 
 In the previous Lab1 we have calculated a 5Msun model with 
 step overshooting having f=0.030 and f0=0.005 until core-hydrogen
-depletion. The model should be saved as ``M5_Z0014_fov030_f0ov0005.mod``
+depletion. The model should be saved as ``M5_Z0014_fov030_f0ov0005_TAMS.mod``
 and should be still in your lab2 folder. To save computation time, 
 and to avoid calculating the evolution to the TAMS several times,
 we will load the saved model every time when we will explore 
@@ -48,15 +48,15 @@ meaning that we can also delete the following lines::
   ! save a model and photo at the end of the run
     save_model_when_terminate = .true.
     save_photo_when_terminate = .true.
-    save_model_filename = 'M5_Z0014_fov030_f0ov0005.mod'
+    save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 
 Furthermore, since we do want to start from a previously saved
 model, we do not want to fix the initial timesteps and thus 
 remove the lines:: 
 
-  ! Set the initial time step to 1000 years
+  ! Set the initial time step to 1 year
     set_initial_dt = .true.
-    years_for_initial_dt = 1d3
+    years_for_initial_dt = 1d0
     
 Now, we need to add lines that tell MESA to load a saved model.
 Can you go to the MESA website and search for commands that allow

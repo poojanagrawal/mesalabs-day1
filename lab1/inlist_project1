@@ -6,22 +6,15 @@
   ! reducing the number of preMS relaxation steps from 300 to 100 to save on some computation time
     pre_ms_relax_num_steps = 100
 
+  ! increasing the first time step after a convective core has formed from 0.00001 years to 1 year to speed up the computation
+    set_initial_dt = .true.
+    years_for_initial_dt = 1d0
+
   ! display on-screen plots
     pgstar_flag = .true.
 
   ! wait for confirmation of the user before closing the pgstar plots
     pause_before_terminate = .true.
-
-  ! print a summary of the nuclear network to the terminal
-    show_net_species_info = .true.
-
-  ! Our selection of only the finest history columns to include
-    history_columns_file = 'my_history_columns.list'
-    profile_columns_file = 'my_profile_columns.list'
-
-  ! save a model at the end of the run
-    save_model_when_terminate = .true.
-    save_model_filename = '5M_at_TAMS.mod'
 
 / ! end of star_job namelist
 
@@ -88,8 +81,5 @@
   ! options for energy conservation (see MESA V, Section 3)
     energy_eqn_option = 'dedt'
     use_gold_tolerances = .true.
-
-  ! output
-    history_interval = 1
 
 / ! end of controls namelist

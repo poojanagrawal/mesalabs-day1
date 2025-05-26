@@ -58,7 +58,7 @@ model parameters, namely the initial mass of the star $M_\rm{ini}$,
 its initial metal mass fraction $Z$, the overshooting scheme, overshoot
 parameter $f_\rm{ov}$ which describes how far from the core the overshoot
 can reach and $f_0$ which describes how deep in the convection zones the
-model switches from mixing by convection to overshoot. 
+model switches from mixing by convection to overshoot.
 
 ---
 
@@ -148,7 +148,7 @@ and `overshoot_bdy_loc` whether the overshoot should occur only above or under
 <details>
 <summary>Show answer</summary>
 
-Strictly speaking, you can place them anywhere in the `&controls` namelist. However, you'll probably notice that `&controls` is organised into subsections like "starting specifications", "when to stop", "wind" and so on. Sticking to this or a similar structure is a good idea to keep your inlist clearly organised. 
+Strictly speaking, you can place them anywhere in the `&controls` namelist. However, you'll probably notice that `&controls` is organised into subsections like "starting specifications", "when to stop", "wind" and so on. Sticking to this or a similar structure is a good idea to keep your inlist clearly organised.
 As such, we recommend copy-pasting the six lines above under "! mixing".
 
 </details>
@@ -262,15 +262,6 @@ your changes to the inlist did what they are supposed to. You don't
 have to run your model all the way to the TAMS. You can interupt
 it using ctrl+C if you're on Linux and Cmd+C if you're on Mac.
 
-<details> <summary>Show hint</summary>
-You reduced the number of pre-main-sequence relaxation steps from 300 to 100.
-You also set the initial timestep to 1 year, which should be reflected in the lg_dt_years
-value of the first few steps. The He_cntr of the first steps should also show your new value
-for initial_y. You could also compare the values of some metals with your first run if you
-haven't removed that terminal output yet. Finally, you should see the total mass of your model
-decreasing slightly.
-</details>
-
 
 ### Upgrading the physics
 
@@ -287,10 +278,7 @@ loss is.
 <details>
 <summary>Show hint</summary>
 
-In the panel on the left, navigate to
-**Reference and Defaults > controls**.
-On the right, you can now see the contents of this page. Mass loss
-by winds is found under **mass gain and loss**.
+In the panel on the left, navigate to **Reference and Defaults > controls**. On the right, you can now see the contents of this page. Mass loss by winds is found under **mass gain and loss**.
 
 </details>
 
@@ -298,8 +286,7 @@ by winds is found under **mass gain and loss**.
 <details>
 <summary>Show answer</summary>
 
-Broadly speaking, you can add mass loss by either setting a negative value to the field `mass_change`
-or with some `wind_scheme`.
+Broadly speaking, you can add mass loss by either setting a negative value to the field `mass_change` or with some `wind_scheme`.
 
 </details>
 
@@ -332,11 +319,8 @@ $\alpha_{MLT}$ parameter is.
 <details>
 <summary>Show hint</summary>
 
-The field setting $\alpha_{MLT}$ is called `mixing_length_alpha`.
-You can easily navigate to its description by entering this field
-name into the search bar on the top left of the MESA documentation
-website. If you do so, it's best to click on *controls > mixing_length_alpha*
-since that will take you straight to the description of mixing_length_alpha.
+The field setting $\alpha_{MLT}$ is called `mixing_length_alpha`. You can easily navigate to its description by entering this field name into the search bar on the top left of the MESA documentation website. If you do so, it's best to click on *controls > mixing_length_alpha* since that will take you straight to the description of mixing_length_alpha.
+
 </details>
 
 
@@ -370,7 +354,7 @@ save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 there are still many empty headers. Indeed, when building
 an inlist for your real science cases, you should still look
 into your opacity tables, atmosphere settings, equation of state,
-spatial and temporal resolution, and much more besides.
+spatial and temporal resolution, and much more.
 However, for the sake of time and not making this lab too
 repetitive, we'll stop here.
 
@@ -395,7 +379,7 @@ easily add by adding one flag to your *inlist_pgstar*. You can find
 these and how to edit your *inlist_pgstar* in
 [this documentation page](https://docs.mesastar.org/en/24.08.1/reference/pgstar.html).
 
-For the purposes of this lab, we have prepared a specialised
+For this lab, we have prepared a specialised
 *inlist_pgstar* for you. Download that *inlist_pgstar* here [TO DO]
 and move it into your MESA work directory.
 
@@ -404,12 +388,11 @@ You don't have to wait for the run to be finished. Remember that
 you can interrupt it using ctrl+C if you're on Linux and Cmd+C if
 you're on Mac.
 
-For some of you, this new panel may look terrible, either being very
-small or overflowing out of your screen. This is because the width
-of the pgstar window is dependent on your system and the size of
-your screen. If the panel is too large or small for you, open
-*inlist_pgstar*, find the two lines shown below near the start of
-the inlist and play around with the values until it looks nice.
+For some of you, this new panel may be very small or bigger than your screen.
+This is because the width of the pgstar window is dependent on your system and
+the size of your screen. If the panel is too large or small for you, open
+*inlist_pgstar*, find the two lines shown below near the top of
+the inlist and edit these values until the panel looks nice.
 
 ```fortran
 Grid1_win_width = 10
@@ -426,7 +409,6 @@ and it will immediately update your plots.
 We also included some key quantities at the top, similar to MESA's
 terminal output.
 
-
 The plots are:
 - Top left: The Hertzsprung-Russell diagram (HRD),
 - Top right: History panel showing model number on the x-axis and age on the y-axis.  
@@ -436,9 +418,7 @@ The plots are:
 
 ### We'll refer to the “history plot” (top right) throughout the lab, so keep that panel in mind.
 
-
-
-For now, focus on that mixing panel in the top right.
+For now, focus on that mixing panel in the bottom right.
 
 
 **Question**: What is the mixing panel showing exactly? What does the colour of each line indicate?
@@ -447,9 +427,7 @@ For now, focus on that mixing panel in the top right.
 <details>
 <summary>Show answer</summary>
 
-MESA treats the mixing of chemicals as a diffusive process.
-The y-axis shows the logarithm of the diffusive mixing coefficient in cm²/s
-(unless otherwise specified, MESA uses cgs units).
+MESA treats the mixing of chemicals as a diffusive process. The y-axis shows the logarithm of the diffusive mixing coefficient in cm²/s (unless otherwise specified, MESA uses cgs units).
 The colour indicates the process behind the mixing — blue for convection and white for overshooting.
 These are the only two mixing processes in our model, but there are a plethora of other processes MESA can include.
 
@@ -458,7 +436,7 @@ These are the only two mixing processes in our model, but there are a plethora o
 
 12. Customizing MESA's Output Data
 
-In your pgstar window, look at the plot in the **top right corner**. 
+In your pgstar window, look at the plot in the **top right corner**.
 This panel is showing how model properties change over time, currently using model number as the x-axis (In many cases, the absolute age of the star doesn’t matter. Since age correlates closely with model number, and model number is easier to interpret, we often use it as a proxy).
 Since we're studying core overshooting effects, we'd like to modify this panel to show the evolution of the core mass instead of the default value.
 
@@ -468,30 +446,24 @@ To customize what's displayed in MESA plots, we first need to understand what da
 - `profile*.data`: Captures the star's internal structure at specific timesteps
 
 
-Open `LOGS/history.data` with a text editor. After the header information, you'll see a list of column names around line 6. 
+Open `LOGS/history.data` with a text editor. After the header information, you'll see a list of column names around line 6.
 These are all the quantities MESA has been tracking during your run.
 
-To add more quantities to track, we need to customize the history columns list:
+To add more quantities to track, we need to customize the history columns list.
+First, we need to copy it to our work folder:
 
 ```bash
 cp $MESA_DIR/star/defaults/history_columns.list my_history_columns.list
 ```
 
 Open `my_history_columns.list` and explore the wealth of available output options.
-The file is organized by category, with comments explaining each variable.
+The file is organized by category, with comments explaining most variables.
 This gives you a comprehensive view of what MESA can track.
 
-For our overshooting study, we're interested in the stellar core properties. 
-The convective core mass is already included in the defaults. 
+For our overshooting study, we're interested in the stellar core properties.
+The convective core mass is already included in the defaults.
 Let's add the star's radius to the history output by finding and uncommenting the `radius` field in the appropriate section.
 
-
-<details>
-<summary>Show hint</summary>
-
-The radius of the star is simply called `radius`.
-
-</details>
 
 Once you have uncommented the relevant lines, you need to tell MESA  that you want to include the output columns in _my_history_columns.list_. To do so, add the following line into your *inlist_project* under ``&star_job`` :
 
@@ -499,6 +471,24 @@ Once you have uncommented the relevant lines, you need to tell MESA  that you wa
 history_columns_file = 'my_history_columns.list'
 ```
 
+Finally, let's consider how often MESA writes this history output.
+
+**Bonus Question**: How often does MESA write its history output by default?
+
+<details>
+<summary>Show answer</summary>
+
+If you open the history output in a text editor, you may see that the output is created after every 5 time steps since the model number increases by 5 between each line.
+Alternatively, you may have spotted `history_interval` in the documentation, which is 5 by default.
+
+</details>
+
+As we don't need that many history columns, it's reasonable to write them at
+every step. Do so by setting in your `&controls`
+
+```bash
+history_interval = 1
+```
 
 
 13. Configuring the History Plot
@@ -562,7 +552,7 @@ Add <code>profile_interval = 10</code> to your inlist's <code>&controls</code> s
 ### Trying different the overshoot settings
 
 You now know how to navigate your work directory and build up a
-main-sequence model. That's great. However, so far we have
+main-sequence model. That's great! However, so far we have
 limited ourselves to simply adding in pre-chosen parameter values,
 choices of tables etc. In real scientific applications, you should
 always consider the impact of these settings, for instance by
@@ -585,12 +575,13 @@ lab 1. Meanwhile, we will collect some basic results from
 everyone's model and examine the correlations between
 different parameters together.
 
+
 17. Go into
 [this spreadsheet](https://docs.google.com/spreadsheets/d/1qSNR-dV28Tr_RWv3bDu8OYsq7jTVcTQxmqzWqLM52es/edit?usp=sharing)
 and put your name next to one set of parameters to claim it as yours.
 Modify your inlist accordingly.
 
-Given that there are more parmeter sets than students here so you are able to test different parameters if time is permitting, though focus should be on completing this task and fully understanding it. Also, the bonus tasks in this lab are concerning running this set of parameters in a batch. 
+Given that there are more parameter sets than students here so you are able to test different parameters if time is permitting, though focus should be on completing this task and fully understanding it. Also, the bonus tasks in this lab are concerning running this set of parameters in a batch.
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
 you should leave the overshoot scheme as an empty string, i.e.
@@ -601,8 +592,8 @@ overshoot_scheme(1) = ''
 
 > **Reminder**: Use the same naming format for your save files and logs as below:
 >
-> `save_model_filename = 'M{mass}_Z{Z}_{scheme}_fov{fov}_f0{f0}.mod'`  
-> `log_directory = 'LOGS_M{mass}_Z{Z}_{scheme}_fov{fov}_f0{f0}'`
+> `save_model_filename = 'M{mass}_Z{Z}_{scheme}_fov{fov}_f0ov{f0}.mod'`  
+> `log_directory = 'LOGS_M{mass}_Z{Z}_{scheme}_fov{fov}_f0{ovf0}'`
 
 
 
@@ -614,13 +605,13 @@ Before running a new model with different parameters, we need to ensure we don't
 After selecting your parameter set from the spreadsheet, modify the `save_model_filename` in your `inlist_project` file to reflect these specific parameters:
 
 ```fortran
-save_model_filename = 'M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0{f0}.mod'
+save_model_filename = 'M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0ov{f0}.mod'
 ```
 
 For example, if you selected a 15 $M_\odot$ star with $Z=0.014$, exponential overshooting with $f_\text{ov}=0.01$ and $f_0=0.001$, your filename would be:
 
 ```fortran
-save_model_filename = 'M15_Z0.014_exponential_fov0.01_f00.001.mod'
+save_model_filename = 'M15_Z0014_exponential_fov001_f0ov0001.mod'
 ```
 
 MESA normally writes all history and profile data to a directory called `LOGS/`. To keep these outputs separate from your previous run, we'll direct MESA to use a different output directory.
@@ -628,13 +619,13 @@ MESA normally writes all history and profile data to a directory called `LOGS/`.
 Add the following to your `inlist_project` under the `&controls` section:
 
 ```fortran
-log_directory = 'LOGS_M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0{f0}'
+log_directory = 'LOGS_M{mass}_Z{metallicity}_{scheme}_fov{fov}_f0ov{f0}'
 ```
 
 Using the same example parameters as above:
 
 ```fortran
-log_directory = 'LOGS_M15_Z0.014_exponential_fov0.01_f00.001'
+log_directory = 'LOGS_M15_Z0014_exponential_fov001_f0ov0001'
 ```
 
 This keeps all your runs organized with descriptive names that make it easy to identify which parameters were used for each model.

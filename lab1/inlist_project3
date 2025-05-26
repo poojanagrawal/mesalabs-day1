@@ -3,6 +3,7 @@
 
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
+    
   ! reducing the number of preMS relaxation steps from 300 to 100 to save on some computation time
     pre_ms_relax_num_steps = 100
 
@@ -21,7 +22,7 @@
 
   ! save a model at the end of the run
     save_model_when_terminate = .true.
-    save_model_filename = 'M2_Z00014_exponential_fov0010_f0ov0001_TAMS.mod'
+    save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 
   ! increasing the first time step after a convective core has formed from 0.00001 years to 1 year to speed up the computation
     set_initial_dt = .true.
@@ -42,7 +43,7 @@
   ! see kap/defaults/kap.defaults
 
     use_Type2_opacities = .true.
-    Zbase = 0.0014d0
+    Zbase = 0.014d0
 
 / ! end of kap namelist
 
@@ -51,7 +52,7 @@
   ! see star/defaults/controls.defaults
 
   ! starting specifications
-    initial_mass = 2d0 ! in Msun units
+    initial_mass = 5d0 ! in Msun units
 
   ! when to stop
 
@@ -79,12 +80,12 @@
     mixing_length_alpha = 1.8d0
 
   ! mixing
-    overshoot_scheme(1) = 'exponential'
+    overshoot_scheme(1) = 'step'
     overshoot_zone_type(1) = 'burn_H'
     overshoot_zone_loc(1) = 'core'
     overshoot_bdy_loc(1) = 'top'
-    overshoot_f(1) = 0.010d0
-    overshoot_f0(1) = 0.001d0
+    overshoot_f(1) = 0.30d0
+    overshoot_f0(1) = 0.005d0
 
   ! timesteps
 
@@ -96,11 +97,6 @@
     use_gold_tolerances = .true.
 
   ! output
-  ! How often to write history output. We want output at every step since history output does not
-  ! take a lot of time or disk space to write.
     history_interval = 1
-
-  ! Where to save the history and profile output
-    log_directory = 'LOGS_M2_Z00014_exponential_fov0010_f0ov0001/' ! Add your directory name here
 
 / ! end of controls namelist

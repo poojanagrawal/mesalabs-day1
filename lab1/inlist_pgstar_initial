@@ -6,7 +6,7 @@
 
   ! The size of the pgstar window that pops up.
 	Grid1_win_width = 10
-  ! Ratio of the window's width to its height. 
+  ! Ratio of the window's width to its height.
 	Grid1_win_aspect_ratio = 0.7
 
 	pgstar_interval = 1

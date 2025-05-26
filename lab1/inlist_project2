@@ -3,8 +3,13 @@
 
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
+
   ! reducing the number of preMS relaxation steps from 300 to 100 to save on some computation time
     pre_ms_relax_num_steps = 100
+
+  ! increasing the first time step after a convective core has formed from 0.00001 years to 1 year to speed up the computation
+    set_initial_dt = .true.
+    years_for_initial_dt = 1d0
 
   ! display on-screen plots
     pgstar_flag = .true.
@@ -12,20 +17,9 @@
   ! wait for confirmation of the user before closing the pgstar plots
     pause_before_terminate = .true.
 
-  ! print a summary of the nuclear network to the terminal
-    show_net_species_info = .true.
-
-  ! Our selection of only the finest history columns to include
-    history_columns_file = 'my_history_columns.list'
-    profile_columns_file = 'my_profile_columns.list'
-
   ! save a model at the end of the run
     save_model_when_terminate = .true.
     save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
-
-  ! increasing the first time step after a convective core has formed from 0.00001 years to 1 year to speed up the computation
-    set_initial_dt = .true.
-    years_for_initial_dt = 1d0
 
 / ! end of star_job namelist
 
@@ -52,12 +46,6 @@
 
   ! starting specifications
     initial_mass = 5d0 ! in Msun units
-
-  ! Set initial fractions according to Galactic enrichtment law
-  ! Primordial helium abundance (Aver et al. 2021)
-  ! Galactic enrichment ratio. Calibrated by requiring that for solar (Xini, Yini, Zini) = (0.710, 0.276, 0.014)
-    initial_z = 0.014d0 ! initial metal mass fraction
-    initial_y = 0.276002d0 ! = 0.2453d0 + 2.193d0 * initial_z
 
   ! when to stop
 
@@ -100,8 +88,5 @@
   ! options for energy conservation (see MESA V, Section 3)
     energy_eqn_option = 'dedt'
     use_gold_tolerances = .true.
-
-  ! output
-    history_interval = 1
 
 / ! end of controls namelist

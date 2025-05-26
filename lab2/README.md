@@ -10,15 +10,19 @@ overshooting evolve during the CHeB and which impact it has.
 As a first step, we copy the folder from Lab1 and name it Lab2.
 You can do this by hand or run in your terminal::
 
+```
 	cp -r lab1 lab2
+```
 
 Before we start modifying the inlists such that we can model the 
 further evolution of our 5Msun star, lets clean up the directory
 and delete not needed files from our previous runs, such as the 
 directories LOGS, photos, and png::
 
+```
 	./clean
 	rm -r LOGS photos png
+```
 
 In the previous Lab1 we have calculated a 5Msun model with 
 step overshooting having f=0.030 and f0=0.005 until core-hydrogen
@@ -35,7 +39,7 @@ To load a saved model, we need to modify our *inlist_project*
 in the *star_job* section. Since we do not need to start with
 a pre-main-sequence model anymore, we need to delete the following
 lines::
-  
+
 ```
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
@@ -46,25 +50,36 @@ lines::
 We also do no longer need to save the model at the end of the run, 
 meaning that we can also delete the following lines::
 
+```
   ! save a model and photo at the end of the run
     save_model_when_terminate = .true.
     save_photo_when_terminate = .true.
     save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
+```
 
 Furthermore, since we do want to start from a previously saved
 model, we do not want to fix the initial timesteps and thus 
 remove the lines:: 
 
+```
   ! Set the initial time step to 1 year
     set_initial_dt = .true.
     years_for_initial_dt = 1d0
+```
     
 Now, we need to add lines that tell MESA to load a saved model.
 Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
-* HINT_1: Look in the *star_job* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/star_job.html <https://docs.mesastar.org/en/24.08.1/reference/star_job.html>`
+<details>
+<summary>Show answer</summary>
 
+Look in the *star_job* panel under *References and Defaults* here: 
+`https://docs.mesastar.org/en/24.08.1/reference/star_job.html <https://docs.mesastar.org/en/24.08.1/reference/star_job.html>`
+
+</details>
+
+* HINT_1: 
 * HINT_2: Can you find on the website any content that is related to **load** something?
 
 * SOLUTION: Add to your *star_job* section in the *inlist_project* the following lines::

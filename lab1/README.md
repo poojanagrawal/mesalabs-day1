@@ -1,6 +1,5 @@
 # Introduction to running MESA
 
-[PDF](pdf/README.pdf)
 
 # Monday MaxiLab 1: Modelling core overshooting in main-sequence stars
 
@@ -36,9 +35,7 @@ notice you are falling behind on schedule.
 
 **4. Adapting the input parameters**
 - *\~10 minutes*
-- Make further changes to the inlist (e.g. adjust mass, overshoot params, timestep) and observe effects.
-
-> *(You can also tweak your `pgstar` plots more here)*
+- Make further changes to the inlist, e.g. adjust mass, overshooting parameters, and time steps and visualise the impact.
 
 **5. Making your own plots**
 - *\~20 minutes*
@@ -50,9 +47,9 @@ notice you are falling behind on schedule.
 
 ---
 
-In this lab, we will examine how overshooting of a convective core
-affects a star's evolution together. In particular, we will examine
-how the numerical simplifications in this modelling may affect the model.
+In this session, we will examine how overshooting of a convective core
+affects a star's evolution together. We will also examine
+how the numerical simplifications impact the evolution of the model.
 In doing so, we will learn how to find reasonable values for
 model parameters, namely the initial mass of the star $M_\rm{ini}$,
 its initial metal mass fraction $Z$, the overshooting scheme, overshoot
@@ -66,8 +63,8 @@ model switches from mixing by convection to overshoot.
 
 ### Setting up your MESA work directory
 
-1. We will start from the mostly empty default MESA work directory and
-slowly build it up until we have a properly fleshed-out main-sequence
+1. We will start from the default MESA work directory and
+slowly build it up until we have a fleshed-out main-sequence
 model. Make a new empty directory called lab1, go into
 the empty directory and copy over the default MESA work directory:
 
@@ -94,7 +91,7 @@ most of the fields describing how the MESA run should go and
 let's focus on *inlist_project*.
 
 
-2. To start, let's run a very simple main-sequence model of a star with
+2. Let's start with a very simple main-sequence model of a star with
 an initial mass of 5 solar masses and metallicity of 0.014 with some
 strong step-wise mixing due to core overshooting. To do so, open
 *inlist_project* and find and change the following parameters to the
@@ -116,7 +113,7 @@ ZBase = 0.014d0
 ```
 
 3. Next, to add the core overshooting, we need to add in some new fields, shown below.
-Before you try to do so, have a look at the questions below.
+But before you plug this into your inlist, have a look at the questions below.
 
 ```fortran
 overshoot_zone_type(1) = 'burn_H'
@@ -135,9 +132,9 @@ overshoot_f0(1) = 0.005d0
 
 `overshoot_zone_type` lets you only activate overshooting around
 regions where certain types of burning takes place. `overshoot_zone_loc` then
-tells MESA whether this convection zone should surround the core
-and `overshoot_bdy_loc` whether the overshoot should occur only above or under
- the relevant convection zone(s).
+tells MESA whether this overshoot zone should surround the convective core
+or a shell and `overshoot_bdy_loc` whether the overshoot should occur only above
+or only below the relevant convection zone(s).
 
 </details>
 
@@ -160,7 +157,7 @@ As such, we recommend copy-pasting the six lines above under "! mixing".
 <details>
 <summary>Show answer</summary>
 
-All these `overshoot_` are actually arrays and `(1)` indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different overshooting settings for each zone.
+All these `overshoot_` are actually arrays and `(1)` indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different settings for each overshooting zone.
 
 </details>
 
@@ -168,7 +165,7 @@ All these `overshoot_` are actually arrays and `(1)` indicates the first element
 
 4. Before you run your model, you should consider when the model is
 terminated. Since we want to simulate the main-sequence evolution,
-we should place our stopping condition around the terminal age
+we should place our stopping condition at the terminal age
 main-sequence (TAMS). Look under ``! when to stop`` in ``&controls``
 of your *inlist_project*.
 
@@ -267,12 +264,11 @@ it using ctrl+C if you're on Linux and Cmd+C if you're on Mac.
 
 7. *inlist_project* is currently mostly empty, meaning most
 settings are using MESA's default values. You should always check
-whether these are appropriate for your models. As an example, since
-this lab concerns fairly massive stars, mass loss by winds may play
-a considerable role.
+whether these are appropriate for your models. As an example, massive stars
+can loose a fair amount of mass through winds.
 
 
-Check the documentation of `&controls` to see what the default mass
+Check the documentation of `&controls` to see what the default wind mass
 loss is.
 
 <details>
@@ -291,7 +287,7 @@ By default, there is no mass loss due to winds. You can add mass loss by setting
 </details>
 
 You will see in the documentation that there is a wealth of wind mass loss schemes available,
-all of which can be scaled up or down. Each scheme is appropriate in particular regimes of the surface temperature, composition, etc.
+all of which can be scaled up or down by a constant factor. Each scheme is appropriate in particular regimes of the surface temperature, composition, etc.
 The so-called Dutch scheme attempts to merge some of these schemes into a cohesive whole.
 Add it into your *inlist\_project* without scaling.
 
@@ -312,8 +308,8 @@ Dutch_scaling_factor = 1d0
 
 8. MESA uses the mixing-length theory (MLT) to describe the
 transport by convection. This theory relies on a scaling factor
-$\alpha_{MLT}$ which is in general quite poorly calibrated.
-As such, you should check what MESA's default value of this
+$\alpha_{MLT}$ which is a fairly uncertain parameter in stellar evolution.
+You should check what MESA's default value of this
 $\alpha_{MLT}$ parameter is.
 
 <details>
@@ -328,7 +324,7 @@ When you are working on your real science cases, you should
 test a few different values for this $\alpha_{MLT}$ to gain
 an understanding of its effects. However, to save some time
 in this lab, we will stick to just one value, namely 1.8.
-Add this into your *inlist_project* under &controls
+Add this into your *inlist_project* under &controls:
 
 ```fortran
 mixing_length_alpha = 1.8d0
@@ -336,15 +332,13 @@ mixing_length_alpha = 1.8d0
 
 
 9. In the other labs today, you will learn how to run models that continue
-after the main-sequence evolution. When doing so, it is quite annoying to
-have to simulate the main-sequence again every time you tweak something in
-your inlist. Instead, we can tell MESA to save a model at the end of a
-main-sequence run so we can load that model in next lab. Add this to your
+after the main-sequence evolution. Instead of re-running the main-sequence
+evolution every time you tweak a setting, we can tell MESA to save a model at the end of a
+main-sequence run. In the next lab, we can then load that model. Add this to your
 ``%star_job`` and name your model:
 
 ```fortran
 save_model_when_terminate = .true.
-save_photo_when_terminate = .true.
 ! Give a name to the model file to be saved including your parameter values, e.g.
 ! 'M{your_M}_Z{your_Z}_fov{your_f_overshoot}_f0ov{your_f0_overshoot}.mod'
 save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
@@ -545,6 +539,16 @@ profile_columns_file = 'my_profile_columns.list'
 <summary>Show answer</summary>
 Add <code>profile_interval = 10</code> to your inlist's <code>&controls</code> section to save profiles more frequently. You could also enable <code>write_profile_when_terminate = .true.</code> to guarantee a profile at the end of the run.
 </details>
+
+
+**Bonus Question**: How many profiles can MESA write over the course of a run? Why should you
+
+<details>
+<summary>Show answer</summary>
+While the history output only needs to write one row of values at each history output step, the profiles consist of many columns and thus take up considerable disk space. Therefore, MESA puts a limit on how many profiles it can write (100 by default). If the run keeps going after the maximum has been reached, the oldest profiles are overwritten.
+</details>
+
+
 ---
 
 ## SESSION 2
@@ -556,12 +560,11 @@ main-sequence model. That's great! However, so far we have
 limited ourselves to simply adding in pre-chosen parameter values,
 choices of tables etc. In real scientific applications, you should
 always consider the impact of these settings, for instance by
-trying a few different values. In particular, there are a number
-numerical schemes and poorly calibrated physical parameters for
+trying a few different values. In particular, there are a number of
+numerical schemes and uncertain physical parameters for
 which you should think carefully about the appropriate value.
 You already encountered some of these today, namely the
-mixing length parameter $\alpha_{MLT}$ and the mixing by
-overshooting.
+mixing length parameter $\alpha_{MLT}$ and convective overshooting.
 
 In this session, we'll explore the impact of overshooting in
 your model. Through your experiments and the lecturer's
@@ -581,7 +584,7 @@ different parameters together.
 and put your name next to one set of parameters to claim it as yours.
 Modify your inlist accordingly.
 
-Given that there are more parameter sets than students here so you are able to test different parameters if time is permitting, though focus should be on completing this task and fully understanding it. Also, the bonus tasks in this lab are concerning running this set of parameters in a batch.
+Since there are more parameter sets available than there are students, you can test different parameters if time allows. However, the main focus should be on completing this task and fully understanding it. Additionally, the bonus tasks in this lab involve running this set of parameters in a batch.
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
 you should leave the overshoot scheme as an empty string, i.e.

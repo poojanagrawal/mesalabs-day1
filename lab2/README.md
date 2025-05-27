@@ -171,15 +171,19 @@ in which we only have the controls that we want to edit for
 both files. To do that, we can add in the *controls* 
 section of the *inlist_project* file the following lines::
 
+```
   ! adding an external file where we can add additional controls
     read_extra_controls_inlist(1) = .true.
     extra_controls_inlist_name(1) = 'inlist_extra'
+```
     
 and in the *pgstar* section in *inlist_pgstar*::
 
+```
   ! adding an external file where we can add additional controls
     read_extra_pgstar_inlist(1) = .true.
     extra_pgstar_inlist_name(1) = 'inlist_extra'
+```
     
 This tells MESA to also read controls and pgstar inputs from
 the file *inlist_extra*. So far this file does not exist, so 
@@ -191,6 +195,7 @@ terminal::
 To tell MESA where to read the new controls, we need to add 
 in *inlist_extra* a controls and a pgstar section::
 
+```
 	&controls
 	  ! Here we can add our controls
 	   
@@ -200,6 +205,14 @@ in *inlist_extra* a controls and a pgstar section::
 	  ! Here we can edit stuff related to pgstar
 	  
 	/ ! end of star_job namelist
+
+```
+
+Running different models until Terminal Age Core Helium Burning (TACHeB)
+=====================================
+
+Core helium burning without core overshooting
+--------------------------------------
 	
 As a first run, we want to calculate the 5Msun model until
 core helium depletion without including core overshoot. To 
@@ -208,19 +221,18 @@ lets create for each run a separate output folder for the
 LOGS and the png files. To change the default storage folders
 we can add in the *controls* section in the *inlist_extra*::
 
+```
   ! change the LOGS directory
     log_directory = 'output_no_overshoot/LOGS'
+```
 
 and in the *pgstar* section in the *inlist_extra*::
 
+```
   ! change the png directory
     Grid1_file_dir = 'output_no_overshoot/png' 
-    
-Running different models until TACHeB
-=====================================
+```
 
-Core helium burning without core overshooting
---------------------------------------
     
 Before we start running the model without core overshooting
 during core helium burning. Think about what you would expect.
@@ -230,8 +242,10 @@ and why do you think so?
 Finally it is time to run the model! Go to your terminal,
 load and run MESA::
 
+```
 	./clean && ./mk
 	./rn
+```
 	
 Look at your pgstar output. Especially at the upper right
 plot depicting how much the convective core grows in mass.
@@ -252,6 +266,7 @@ namely f_ov = 0.3 and f0_ov = 0.005. In lab1, we added
 overshooting on the top of the hydrogen burning core by 
 using the following lines::
 
+```
   ! mixing
      overshoot_scheme(1) = 'step'
      overshoot_zone_type(1) = 'burn_H'
@@ -259,6 +274,7 @@ using the following lines::
      overshoot_bdy_loc(1) = 'top'
      overshoot_f(1) = 0.3
      overshoot_f0(1) = 0.005
+```
 
 Lets copy these lines and add them in the *controls* section 
 in *inlist_extra*. Can you figure out how we need to modify

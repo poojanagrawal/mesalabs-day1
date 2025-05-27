@@ -33,6 +33,9 @@
     read_extra_controls_inlist(1) = .true.
     extra_controls_inlist_name(1) = 'inlist_project'
 
+    read_extra_controls_inlist(2) = .true.
+    extra_controls_inlist_name(2) = 'inlist_extra'
+
 / ! end of controls namelist
 
 
@@ -40,5 +43,8 @@
 
     read_extra_pgstar_inlist(1) = .true.
     extra_pgstar_inlist_name(1) = 'inlist_pgstar'
+
+    read_extra_pgstar_inlist(2) = .true.
+    extra_pgstar_inlist_name(2) = 'inlist_extra'
 
 / ! end of pgstar namelist

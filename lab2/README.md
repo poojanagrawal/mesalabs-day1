@@ -93,7 +93,7 @@ Add to your *star_job* section in the *inlist_project* the following lines::
 ```
 ! loading the pre-saved 5Msun model
     load_saved_model = .true.
-    load_model_filename = 'M5_Z0014_fov030_f0ov0005.mod'
+    load_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 ```
 
 </details>
@@ -255,10 +255,6 @@ plot depicting how much the convective core grows in mass.
 How does the core evolve? Was it as you expected? Can you 
 figure out why the core behaves as it does?
 
-* HINT_1: Compared to the first lab, we added additional physics related to mixing. Can you identify the new mixing regions in the Kippenhahn diagram in the lower left plot? Can they have an impact on the core mass?
-
-* SOLUTION: How to formulate this so that it is understandable? leading to an increase in its mass.
-
 Core helium burning with strong step overshooting
 -----------------------------------------------
 
@@ -359,7 +355,6 @@ mass grows and receeds again. That is strange. At the model
 numbers where these pulses occur, can you see something happening
 in the structure of the star in the Kippenhahn diagram?
 
-* SOLUTION: 
 <details>
 <summary>Show answer</summary>
 
@@ -373,6 +368,8 @@ the formation of with the formation of the convective region forming when reachi
 It is not clear if this of physical or numerical nature. One thing that we have been ignoring sofar 
 in our threatment of overshooting is the impact of a chemical gradient as the one between the helium 
 burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region.
+Resolving where the convective boundary lies is way beyond the scope of our lab, but we encourage 
+you to explore other mixing options. 
 
 
 </details>
@@ -384,33 +381,53 @@ In MESA while modeling overshooting, one can account for a stabilizing
 composition gradient in the calculations using the Brunt-Vaisala frequency.
 This is turned on in MESA by default::
 
+```
    calculate_Brunt_B = .true.
    calculate_Brunt_N2 = .true.
+```
 
-However, the threshold is set to ``0d0``. For our calculations, lets 
+However, the threshold is set to ``0d0``. For our calculations, let's 
 set this threshold to a higher value to prevent to overshoot in regions
 with a strong chemical gradient. In your *controls* section in your 
 *inlist_extra* add::
 
+```
     overshoot_brunt_B_max = 1d-1   
+```
     
 and change the output directories to::
 
+```
   ! change the LOGS directory
     log_directory = 'output_overshoot_brunt/LOGS'
+```
     
 and::
 
+```
   ! change the png directory
     Grid1_file_dir = 'output_overshoot_brunt/png'
+```
 
 Lets have a look, what MESA will tell us::
 
+```
 	./rn
+```
 	
 Look again at the plot showing the growth of the convective
 core mass. How does it compare to to the model with the 
 strong overshooting and the model without overshooting? Do you 
 have an idea why these differences appear?
 
-* SOLUTION: The new included physics quickly remove the growth of the core by overshooting due to the strong chemical gradient between the core and the H-burning shell. When the stabilizing gradient is hit, overshooting is suppressed and the only mixing process between the core and the envelope is semiconvection. Therefore, the final convective mass of the helium core of this star is quite similar to that one of the model without overshooting.
+<details>
+<summary>Show answer</summary>
+
+The new included physics quickly remove the growth of the core by overshooting 
+due to the strong chemical gradient between the core and the H-burning shell. 
+When the stabilizing gradient is hit, overshooting is suppressed. Therefore, 
+the final convective mass of the helium core of this star is quite similar 
+to that one of the model without overshooting.
+
+
+</details>

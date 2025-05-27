@@ -1,5 +1,5 @@
 
-# Monday MaxiLab 1: Overshooting during core helium burning (CHeB)
+# Monday MaxiLab 2: Overshooting during core helium burning (CHeB)
 
 
 ### Preparation
@@ -139,7 +139,7 @@ Replace the lines::
 ```
 ! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
-    xa_central_lower_limit(1) = 1d-3
+    xa_central_lower_limit(1) = 1d-6
 ```
 
 with 
@@ -168,29 +168,32 @@ files are saved. Because it can be quite messy, adding and
 editing the various parameters in the *inlist_project* and 
 *inlist_pgstar* at the same time, lets create a new inlist, 
 in which we only have the controls that we want to edit for
-both files. To do that, we can add in the *controls* 
-section of the *inlist_project* file the following lines::
+both files. To do that, we can modify the *inlist* file. In 
+the *controls* section, add the following lines::
 
 ```
   ! adding an external file where we can add additional controls
-    read_extra_controls_inlist(1) = .true.
-    extra_controls_inlist_name(1) = 'inlist_extra'
+    read_extra_controls_inlist(2) = .true.
+    extra_controls_inlist_name(2) = 'inlist_extra'
 ```
+
+This allows MESA to read *inlist_project* first, and then *inlist_extra*. 
     
-and in the *pgstar* section in *inlist_pgstar*::
+Similarly, in the *pgstar* section in *inlist*, add::
 
 ```
   ! adding an external file where we can add additional controls
-    read_extra_pgstar_inlist(1) = .true.
-    extra_pgstar_inlist_name(1) = 'inlist_extra'
+    read_extra_pgstar_inlist(2) = .true.
+    extra_pgstar_inlist_name(2) = 'inlist_extra'
 ```
     
-This tells MESA to also read controls and pgstar inputs from
-the file *inlist_extra*. So far this file does not exist, so 
-lets create it. In Linux you can do that by typing in your 
+So far the file *inlist_extra* does not exist, so 
+lets create it. You can do that by typing in your 
 terminal::
 
+```
 	touch inlist_extra
+```
 	
 To tell MESA where to read the new controls, we need to add 
 in *inlist_extra* a controls and a pgstar section::
@@ -256,7 +259,7 @@ figure out why the core behaves as it does?
 
 * SOLUTION: How to formulate this so that it is understandable? leading to an increase in its mass.
 
-Core helium burning with weak step overshooting
+Core helium burning with strong step overshooting
 -----------------------------------------------
 
 Now lets add some overshooting on top of the helium burning
@@ -276,44 +279,65 @@ using the following lines::
      overshoot_f0(1) = 0.005
 ```
 
-Lets copy these lines and add them in the *controls* section 
+Let's add similar lines in the *controls* section 
 in *inlist_extra*. Can you figure out how we need to modify
 them to tell MESA that we want a second overshooting region
 on top of the helium burning core?
 
-* HINT_1: Since the first overshooting scheme is already used in the first set ``(1)`` we need to change them to ``(2)`` for all controls.
+<details>
+<summary>Show hint 1</summary>
 
-* HINT_2: Are the locations, types and boundaries of the overshooting zone still correct? Can you find on the website other options where to allow overshooting? Check the controls for overshooting on `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`.
+Since the first overshooting scheme is already used in the first set ``(1)`` we need to change them to ``(2)``
+for all controls.
 
-* SOLUTION: In the end you should have in the *controls* section of your *inlist_extra* lines that are similar to::
+</details>
 
-  ! mixing
+<details>
+<summary>Show hint 2</summary>
+
+Are the locations, types and boundaries of the overshooting zone still correct? 
+Can you find on the website other options where to allow overshooting? 
+Check the controls for overshooting on [here](https://docs.mesastar.org/en/24.08.1/reference/controls.html). 
+
+</details>
+
+<details>
+<summary>Show answer</summary>
+
+In the end you should have in the *controls* section of your *inlist_extra* lines that are similar to::
+```
+! mixing
      overshoot_scheme(2) = 'step'
      overshoot_zone_type(2) = 'burn_He'
      overshoot_zone_loc(2) = 'core'
      overshoot_bdy_loc(2) = 'top'
-     overshoot_f(2) = 0.1
+     overshoot_f(2) = 0.3
      overshoot_f0(2) = 0.005
+```
+
+</details>
 
 Before we start the model, remember to change the output files
 such that we are not overwriting the outputs from the last run.
 We can do that in the *inlist_extra* by overwriting the directory
 commands with::
 
+```
   ! change the LOGS directory
     log_directory = 'output_overshoot/LOGS'
     
   ! change the png directory
     Grid1_file_dir = 'output_overshoot/png' 
+```
 
 What do you expect to happen now? Will the core grow, stay at
-the same level, or receed? What happens to the semiconvective
-layers that were on top of the convective core? Will they still
-be there?
+the same level, or receed? 
 
 Okay we are ready to go, lets run the model::
 
+```
 	./rn
+```
 	
 Look again at how the convective core grows in mass. Does it
 fit your expectations? Compare the maximum mass of the 
@@ -322,7 +346,12 @@ you can have a look at your pgstar files saved in
 ``output_no_overshoot/png``. Are the maximum masses similar
 or different and why?
 
-* SOLUTION: Overshooting is very efficient in mixing additional fuel into the core, leading to a growth.
+<details>
+<summary>Show answer</summary>
+
+Overshooting is very efficient in mixing additional fuel into the core, leading to a growth.
+
+</details>
 
 If you look at the upper right plot, showing the evolution 
 of the growing core, you should see some pulses where the core
@@ -330,8 +359,23 @@ mass grows and receeds again. That is strange. At the model
 numbers where these pulses occur, can you see something happening
 in the structure of the star in the Kippenhahn diagram?
 
-* SOLUTION: You should see that a convective region forms directly on top of the overshooting region. That is strange, isn't it? The convective core reaches into layers with a strong chemical gradient. If this happens, convective region forms on top of the core and is stable against overshooting, pushing down the overshooting and the core mass. This is a well-known problem that is encountered during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries is challenging and has to do with the Nabla_rad profile changing during the evolution leading to the formation of with the formation of the convective region forming when reaching a local minimum. It is not clear if this of physical or numerical nature. One thing that we have been ignoring sofar in our threatment of overshooting is the impact of a chemical gradient as the one between the helium burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region.
+* SOLUTION: 
+<details>
+<summary>Show answer</summary>
 
+You should see that a convective region forms directly on top of the overshooting region. 
+That is strange, isn't it? The convective core reaches into layers with a strong chemical gradient. 
+If this happens, convective region forms on top of the core and is stable against overshooting, 
+pushing down the overshooting and the core mass. This is a well-known problem that is encountered 
+during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries 
+is challenging and has to do with the Nabla_rad profile changing during the evolution leading to 
+the formation of with the formation of the convective region forming when reaching a local minimum. 
+It is not clear if this of physical or numerical nature. One thing that we have been ignoring sofar 
+in our threatment of overshooting is the impact of a chemical gradient as the one between the helium 
+burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region.
+
+
+</details>
 
 Limiting core overshooting in regions with strong chemical gradients
 --------------------------------------------------------------------

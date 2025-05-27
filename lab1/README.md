@@ -260,6 +260,11 @@ have to run your model all the way to the TAMS. You can interupt
 it using ctrl+C if you're on Linux and Cmd+C if you're on Mac.
 
 
+*If you got badly stuck* and cannot get your inlist to run, you can
+[download what your inlist_project is supposed to contain here](lab1/completed_inlists/inlist_project1)
+so you can continue with limited delay.
+
+
 ### Upgrading the physics
 
 7. *inlist_project* is currently mostly empty, meaning most
@@ -360,6 +365,10 @@ into your terminal. When the run is finished, double check if
 the new file 'M5_Z0014_fov030_f0ov0005_TAMS.mod' is in your work
 directory.
 
+*If you got badly stuck* and cannot get your inlist to run, you can
+[download what your inlist_project is supposed to contain here](lab1/completed_inlists/inlist_project2)
+so you can continue with limited delay.
+
 
 ### Customising output
 
@@ -374,7 +383,8 @@ these and how to edit your *inlist_pgstar* in
 [this documentation page](https://docs.mesastar.org/en/24.08.1/reference/pgstar.html).
 
 For this lab, we have prepared a specialised
-*inlist_pgstar* for you. Download that *inlist_pgstar* here [TO DO]
+*inlist_pgstar* for you. Download that *inlist_pgstar*
+[here](lab1/completed_inlists/inlist_pgstar_initial)
 and move it into your MESA work directory.
 
 Run your model again to see what the new pgstar plots look like.
@@ -549,6 +559,13 @@ While the history output only needs to write one row of values at each history o
 </details>
 
 
+*If you got badly stuck* and cannot get your inlist to run, you can
+[download what your inlist_project is supposed to contain here](lab1/completed_inlists/inlist_project3)
+so you can continue with limited delay. Similarly, here are
+[the completed inlist_pgstar](lab1/completed_inlists/inlist_pgstar),
+[the completed history columns list](lab1/completed_inlists/my_history_columns)
+and [the completed profile columns list](lab1/completed_inlists/my_profile_columns)
+
 ---
 
 ## SESSION 2
@@ -649,6 +666,11 @@ From this final line, record the following values in the second page of the spre
 - star_age/1e6 (to convert to Myr)
 
 These values will allow us to analyze how different overshooting parameters affect stellar evolution.
+
+*If you got badly stuck* and cannot get your inlist to run, you can
+[download what your inlist_project is supposed to contain here](lab1/completed_inlists/inlist_project4)
+so you can continue with limited delay.
+
 
 21. Now let's wrap up this lab by reading your MESA output in using Python
 and making some custom plots.

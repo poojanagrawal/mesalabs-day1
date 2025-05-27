@@ -72,23 +72,22 @@ Can you go to the MESA website and search for commands that allow
 us to load a saved model?
 
 <details>
-<summary>HINT_1</summary>
+<summary>Show hint 1</summary>
 
-Look in the *star_job* panel under *References and Defaults*: 
-[here](https://docs.mesastar.org/en/24.08.1/reference/star_job.html)
+Look in the *star_job* panel under *References and Defaults* in the  
+[MESA documentation](https://docs.mesastar.org/en/24.08.1/reference/star_job.html)
 
 </details>
 
 <details>
-<summary>HINT_2</summary>
+<summary>Show hint 2</summary>
 
 Can you find on the website any content that is related to **load** something?
 
 </details>
 
-* 
 <details>
-<summary>SOLUTION</summary>
+<summary>Show answer</summary>
 
 Add to your *star_job* section in the *inlist_project* the following lines::
 ```
@@ -110,14 +109,14 @@ issues when loading and running the model.
 The first controls that can be removed are, the ones defining 
 the initial conditions at the beginning of the evolution::
 	
+```
   ! starting specifications
+
     initial_mass = 5 ! in Msun units
 
-  ! Set initial fractions according to Galactic enrichtment law
-  ! Primordial helium abundance (Aver et al. 2021)
-  ! Galactic enrichment ratio. Calibrated by requiring that for solar (Xini, Yini, Zini) = (0.710, 0.276, 0.014), NP+12
     initial_z = 0.014 ! initial metal mass fraction
-    initial_y = 0.276002 ! = 0.2453d0 + 2.193d0 * initial_z
+
+```
     
 Moreover, we should change our stopping condition. In Lab 1, we
 were only interested in the evolution until the TAMS. But now we
@@ -125,24 +124,41 @@ want to go to the end of core helium burning (CHeB), which we
 will define as core helium mass fraction < 1d-5. Replace the 
 old stopping condition by the new one.
 
-* HINT_1: Look in the *controls* panel under *References and Defaults* here: `https://docs.mesastar.org/en/24.08.1/reference/controls.html <https://docs.mesastar.org/en/24.08.1/reference/controls.html>`
+<details>
+<summary>Show hint 1</summary>
 
-* SOLUTION: Replace the lines::
-  
-  ! stop when the center mass fraction of h1 drops below this limit
+Look in the *controls* panel under *References and Defaults* in the 
+[MESA documentation](https://docs.mesastar.org/en/24.08.1/reference/controls.html)
+
+</details>
+
+<details>
+<summary>Show answer</summary>
+
+Replace the lines::
+```
+! stop when the center mass fraction of h1 drops below this limit
     xa_central_lower_limit_species(1) = 'h1'
     xa_central_lower_limit(1) = 1d-3
+```
 
-with::
+with 
 
-  ! stop when the center mass fraction of he4 drops below this limit
+```
+! stop when the center mass fraction of he4 drops below this limit
     xa_central_lower_limit_species(1) = 'he4'
     xa_central_lower_limit(1) = 1d-5
+```
 
-Alternatively, you can use the following shortcut:
-
-  ! stop at the end of core helium burning 
+Alternatively, you can use the following shortcut::
+```
+! stop at the end of core helium burning 
     stop_at_phase_TACHeB = .true.
+```
+
+</details>
+
+  
 
 In principle your model should now be able to run until helium is
 depleted in the core. However, we are missing one important physical

@@ -24,11 +24,11 @@ notice you are falling behind on schedule.
 - Learn how to initialize a new MESA run directory from the default templates and understand the directory structure.
 
 **2. Modifying the input physics and saving your final model**
-- *\~30 minutes*
+- *\~20 minutes*
 - Adjust the inlist files to define key input physics, like overshooting and metallicity. Save the resulting model.
 
 **3. Monitoring the run and customizing output**
-- *\~40 minutes*
+- *\~30 minutes*
 - Use `pgstar` and log file outputs to visualize evolution.
 
 
@@ -286,7 +286,7 @@ In the panel on the left, navigate to **Reference and Defaults > controls**. On 
 <details>
 <summary>Show answer</summary>
 
-Broadly speaking, you can add mass loss by either setting a negative value to the field `mass_change` or with some `wind_scheme`.
+By default, there is no mass loss due to winds. You can add mass loss by setting a negative value to the field `mass_change` or with some `wind_scheme`.
 
 </details>
 

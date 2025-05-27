@@ -1,6 +1,7 @@
 
 # Monday MaxiLab 2: Overshooting during core helium burning (CHeB)
 
+>> Add an overview of lab2 (similar to lab 1).
 
 ### Preparation
 
@@ -14,8 +15,11 @@ You can do this by hand or run in your terminal::
 	cp -r lab1 lab2
 ```
 
+>> add a line for students who weren't able to complete the run and can download the solution (link lab1 folder on github)
+
+
 Before we start modifying the inlists such that we can model the 
-further evolution of our 5Msun star, lets clean up the directory
+further evolution of our 5 Msun star, let us clean up the directory
 and delete not needed files from our previous runs, such as the 
 directories LOGS, photos, and png::
 
@@ -24,13 +28,13 @@ directories LOGS, photos, and png::
 	rm -r LOGS photos png
 ```
 
-In the previous Lab1 we have calculated a 5Msun model with 
+In lab1 we have calculated a 5 Msun model with 
 step overshooting having f=0.030 and f0=0.005 until core-hydrogen
 depletion. The model should be saved as ``M5_Z0014_fov030_f0ov0005_TAMS.mod``
 and should be still in your lab2 folder. To save computation time, 
 and to avoid calculating the evolution to the TAMS several times,
-we will load the saved model every time when we will explore 
-different physical settings. 
+we will be loading this saved model every time to explore 
+different input settings. 
 
 inlist_project: star_job
 ------------------------
@@ -91,7 +95,7 @@ Can you find on the website any content that is related to **load** something?
 
 Add to your *star_job* section in the *inlist_project* the following lines::
 ```
-! loading the pre-saved 5Msun model
+! loading the pre-saved 5 Msun model
     load_saved_model = .true.
     load_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 ```
@@ -158,6 +162,8 @@ Alternatively, you can use the following shortcut::
 
 </details>
 
+>> very nice
+
     
 adding a new inlist file: inlist_extra
 --------------------------------------
@@ -166,7 +172,7 @@ In the next step, we want to vary the input parameters of our
 model calculations and the output files where the LOGS and png
 files are saved. Because it can be quite messy, adding and
 editing the various parameters in the *inlist_project* and 
-*inlist_pgstar* at the same time, lets create a new inlist, 
+*inlist_pgstar* at the same time, let us create a new inlist, 
 in which we only have the controls that we want to edit for
 both files. To do that, we can modify the *inlist* file. In 
 the *controls* section, add the following lines::
@@ -188,7 +194,7 @@ Similarly, in the *pgstar* section in *inlist*, add::
 ```
     
 So far the file *inlist_extra* does not exist, so 
-lets create it. You can do that by typing in your 
+let us create it. You can do that by typing in your 
 terminal::
 
 ```
@@ -216,11 +222,11 @@ Running different models until Terminal Age Core Helium Burning (TACHeB)
 
 Core helium burning without core overshooting
 --------------------------------------
-	
+  
 As a first run, we want to calculate the 5Msun model until
 core helium depletion without including core overshoot. To 
 be able to compare the output between the different models,
-lets create for each run a separate output folder for the 
+let us create for each run a separate output folder for the 
 LOGS and the png files. To change the default storage folders
 we can add in the *controls* section in the *inlist_extra*::
 
@@ -246,21 +252,21 @@ Finally it is time to run the model! Go to your terminal,
 load and run MESA::
 
 ```
-	./clean && ./mk
-	./rn
+  ./clean && ./mk
+  ./rn
 ```
-	
+  
 Look at your pgstar output. Especially at the upper right
 plot depicting how much the convective core grows in mass.
 How does the core evolve? Was it as you expected? Can you 
 figure out why the core behaves as it does?
 
-Core helium burning with strong step overshooting
+Core helium burning with step overshooting
 -----------------------------------------------
 
-Now lets add some overshooting on top of the helium burning
+Now let us add some overshooting on top of the helium burning
 core to see how it impacts the evolution. As a first model, 
-lets start with a strong step overshooting as used in lab1,
+let us start with a strong step overshooting as used in lab1,
 namely f_ov = 0.3 and f0_ov = 0.005. In lab1, we added 
 overshooting on the top of the hydrogen burning core by 
 using the following lines::
@@ -275,10 +281,13 @@ using the following lines::
      overshoot_f0(1) = 0.005
 ```
 
-Let's add similar lines in the *controls* section 
+Let us add similar lines in the *controls* section 
 in *inlist_extra*. Can you figure out how we need to modify
 them to tell MESA that we want a second overshooting region
 on top of the helium burning core?
+
+>> Okay, the wording is misleading here. We are not adding a second overshooting region. In lab1, we added overshooting only for hydrogen burning core, so by default lab2 has no overshooting enabled for core helium burning regions. Therefore, we are adding a second set of overshoot controls (but only one overshoot region) for convective zones with helium burning (specifically helium burning core). 
+Please modify the above text and hint 1 to clarify this.
 
 <details>
 <summary>Show hint 1</summary>
@@ -329,12 +338,12 @@ commands with::
 What do you expect to happen now? Will the core grow, stay at
 the same level, or receed? 
 
-Okay we are ready to go, lets run the model::
+Okay we are ready to go, let us run the model::
 
 ```
-	./rn
+  ./rn
 ```
-	
+  
 Look again at how the convective core grows in mass. Does it
 fit your expectations? Compare the maximum mass of the 
 convective core to the case without overshooting. To do that
@@ -359,26 +368,40 @@ in the structure of the star in the Kippenhahn diagram?
 <summary>Show answer</summary>
 
 You should see that a convective region forms directly on top of the overshooting region. 
+
+>> specify which panel 
+
 That is strange, isn't it? The convective core reaches into layers with a strong chemical gradient. 
 If this happens, convective region forms on top of the core and is stable against overshooting, 
 pushing down the overshooting and the core mass. This is a well-known problem that is encountered 
-during CHeB in low and intermediate mass stars. Here, the modeling of the convective boundaries 
-is challenging and has to do with the Nabla_rad profile changing during the evolution leading to 
-the formation of with the formation of the convective region forming when reaching a local minimum. 
-It is not clear if this of physical or numerical nature. One thing that we have been ignoring sofar 
-in our threatment of overshooting is the impact of a chemical gradient as the one between the helium 
-burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region.
-Resolving where the convective boundary lies is way beyond the scope of our lab, but we encourage 
-you to explore other mixing options. 
+during CHeB in low- and intermediate-mass stars. 
 
+>> change paragraphs here. it's a bit daunting otherwise
+
+In general, modeling of the convective boundaries in stars
+is a challenging task (add ref). The issue in hand has to do with the how radiative temperature gradient ($nabla_{rad}$) changes during the evolution, leading to 
+the formation of $^$ with the formation of the convective region forming when reaching a local minimum. 
+
+>> I was trying to modify the above setence but it seems to be missing a term (where I have added $^$. Can you give it another go?
+
+It is not clear if this phenomenon is physical or numerical. 
+Resolving where the convective boundary lies is beyond the scope of our lab, but we encourage you to explore other mixing options. 
+
+
+>> Very good job in tackling this very technical explanation. I have made modifications to simplify it a bit more. I have also moved some text to the start of the next section.
 
 </details>
 
-Limiting core overshooting in regions with strong chemical gradients
+Bonus Task: Limiting core overshooting in regions with strong chemical gradients
 --------------------------------------------------------------------
+
+One thing that we have been ignoring sofar in our treatment of overshooting is the role of a chemical gradient as the one between the helium burning core and the envelope as an additional stabilizing force, reducing the size of the overshooting region. 
 
 In MESA while modeling overshooting, one can account for a stabilizing 
 composition gradient in the calculations using the Brunt-Vaisala frequency.
+
+>> add a line about what is brunt-vaisala frequency.
+
 This is turned on in MESA by default::
 
 ```
@@ -386,14 +409,16 @@ This is turned on in MESA by default::
    calculate_Brunt_N2 = .true.
 ```
 
-However, the threshold is set to ``0d0``. For our calculations, let's 
-set this threshold to a higher value to prevent to overshoot in regions
+However, the threshold is set to ``0d0``. For our calculations, let us 
+set this threshold to a higher value to prevent overshoot in regions
 with a strong chemical gradient. In your *controls* section in your 
 *inlist_extra* add::
 
 ```
     overshoot_brunt_B_max = 1d-1   
 ```
+    
+ >> explain what exactly changing overshoot_brunt_B_max from 0 to 0.1 does
     
 and change the output directories to::
 
@@ -423,11 +448,11 @@ have an idea why these differences appear?
 <details>
 <summary>Show answer</summary>
 
-The new included physics quickly remove the growth of the core by overshooting 
+The newly included physics quickly removes the growth of the core by overshooting 
 due to the strong chemical gradient between the core and the H-burning shell. 
-When the stabilizing gradient is hit, overshooting is suppressed. Therefore, 
-the final convective mass of the helium core of this star is quite similar 
+When the stabilizing gradient is hit, overshooting is suppressed. 
+Therefore, the final convective mass of the helium core of this star is quite similar 
 to that one of the model without overshooting.
 
-
 </details>
+

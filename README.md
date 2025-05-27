@@ -1,1 +1,0 @@
-# mesalabs-day1

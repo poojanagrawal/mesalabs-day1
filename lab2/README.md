@@ -158,29 +158,6 @@ Alternatively, you can use the following shortcut::
 
 </details>
 
-  
-
-In principle your model should now be able to run until helium is
-depleted in the core. However, we are missing one important physical
-component: Massive stars will evolve into red supergiants (RSG) or 
-Wolf-Rayet (WR) stars where the current wind mass-loss rates 
-are no longer applicable. MESA has different options to choose
-pre-included mass-loss recipes for the different evolutionary
-phases, as well as contains a general recipe that uses a set
-of predefined mass-loss recipes called the *Dutch* recipe. For
-simplicity let us use the *Dutch* mass-loss recipe, for your 
-science case you might want to choose a different one. To switch
-the mass-loss recipe, we can simply replace the following lines::
-
-  ! wind 
-    hot_wind_scheme = 'Vink'
-    Vink_scaling_factor = 0.3d0 ! --> Puls, J., (2015, IAU3017 proceeding), Bjorklund et al. 2020
-
-by these lines::
-
-  ! wind
-    hot_wind_scheme = 'Dutch'
-    Dutch_scaling_factor = 1d0
     
 adding a new inlist file: inlist_extra
 --------------------------------------

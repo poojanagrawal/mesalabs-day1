@@ -110,7 +110,7 @@ given values:
 
 
 ```fortran
-initial_m = 5d0
+initial_mass = 5d0
 initial_z = 0.014d0
 ```
 

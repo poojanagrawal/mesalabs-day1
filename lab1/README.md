@@ -2,6 +2,8 @@
 
 [PDF](pdf/README.pdf)
 
+>> this pdf is outdated. Either update it or remove it. 
+
 # Monday MaxiLab 1: Modelling core overshooting in main-sequence stars
 
 In this lab, you will learn how to set up a MESA model from scratch,
@@ -36,13 +38,14 @@ notice you are falling behind on schedule.
 
 **4. Adapting the input parameters**
 - *\~10 minutes*
-- Make further changes to the inlist (e.g. adjust mass, overshoot params, timestep) and observe effects.
+- Make more changes to the inlist, e.g. adjust mass, overshooting parameters, and timesteps and visualize the impact.
 
-> *(You can also tweak your `pgstar` plots more here)*
+> *(You can further tweak your `pgstar` plots at this point)*
 
 **5. Making your own plots**
 - *\~20 minutes*
-- Extract and visualize data from `history.data` and `profile.data` using Python, matplotlib, or pgstar.
+- Extract and visualize data from `history.data` and `profile.data` using Python programming language.
+
 
 **6. BONUS: Automatically run multiple MESA models sequentially**
 - *\~20+ minutes*
@@ -50,9 +53,9 @@ notice you are falling behind on schedule.
 
 ---
 
-In this lab, we will examine how overshooting of a convective core
-affects a star's evolution together. In particular, we will examine
-how the numerical simplifications in this modelling may affect the model.
+In this session, we will examine how overshooting of a convective core
+affects a star's evolution. We will also examine
+how the numerical simplifications impact the evolution of a star.
 In doing so, we will learn how to find reasonable values for
 model parameters, namely the initial mass of the star $M_\rm{ini}$,
 its initial metal mass fraction $Z$, the overshooting scheme, overshoot
@@ -60,13 +63,15 @@ parameter $f_\rm{ov}$ which describes how far from the core the overshoot
 can reach and $f_0$ which describes how deep in the convection zones the
 model switches from mixing by convection to overshoot.
 
+
+>> I love how f and f0 have been descibed above paragraph. Nice and simple. I will recommend moving above paragraph to session 1 heading below (between session 1 heading and setting up your MESA work directory sub heading.
 ---
 
 ## SESSION 1
 
 ### Setting up your MESA work directory
 
-1. We will start from the mostly empty default MESA work directory and
+1. We will start from the default MESA work directory and
 slowly build it up until we have a properly fleshed-out main-sequence
 model. Make a new empty directory called lab1, go into
 the empty directory and copy over the default MESA work directory:
@@ -77,12 +82,15 @@ the empty directory and copy over the default MESA work directory:
     cp $MESA_DIR/star/work/* .
 ```
 
+>> I think one can copy work directory directly to lab1 without explicty creating it first ``cp -r $MESA_DIR/star/work lab1  ``. I would suggest the latter as it will reduce the steps and therefore time (not by a lot but as it is our labs are long). 
+
+
 Do a quick ``ls`` to check what is included in this default work directory.
 You'll see a number of executables, namely _clean_, _mk_, _re_ and
 _rn_. You can look at the summary at the start of this README to see what
 these executables do. The subdirectories _make_ and _src_ contain the
 Makefile and extra code to include, but you don't have to look into that
-today. For now, let's take a look at the inlists _inlist_,
+today. For now, let us take a look at the inlists _inlist_,
 *inlist_pgstar* and *inlist_project*. These files describe what you want
 MESA to do. In particular MESA will always look for _inlist_. Using your
 favourite text editor, take a look at what is in _inlist_.
@@ -91,10 +99,11 @@ What this _inlist_ essentially does is redirect MESA to the other two
 inlist files for all the real content, with *inlist_project* containing
 most of the fields describing how the MESA run should go and
 *inlist_pgstar* describing what visuals MESA should produce. For now,
-let's focus on *inlist_project*.
+let us focus on *inlist_project*.
 
+>> Very good!
 
-2. To start, let's run a very simple main-sequence model of a star with
+2. Let us start with a very simple main-sequence model of a star with
 an initial mass of 5 solar masses and metallicity of 0.014 with some
 strong step-wise mixing due to core overshooting. To do so, open
 *inlist_project* and find and change the following parameters to the
@@ -116,7 +125,7 @@ ZBase = 0.014d0
 ```
 
 3. Next, to add the core overshooting, we need to add in some new fields, shown below.
-Before you try to do so, have a look at the questions below.
+But before you do so, have a look at the questions below.
 
 ```fortran
 overshoot_zone_type(1) = 'burn_H'
@@ -127,16 +136,16 @@ overshoot_f(1) = 0.30d0
 overshoot_f0(1) = 0.005d0
 ```
 
-**Question**: The first three `overshoot_` fields describe where the overshooting should take place. Go into [the MESA documentation](https://docs.mesastar.org/en/latest/reference/controls.html) and look up what each of these fields means.  
+**Question**: The first three `overshoot_` fields describe where the overshooting should happen. Go into [the MESA documentation](https://docs.mesastar.org/en/latest/reference/controls.html) and look up what each of these fields means.  
 
 
 <details>
 <summary>Show answer</summary>
 
-`overshoot_zone_type` lets you only activate overshooting around
-regions where certain types of burning takes place. `overshoot_zone_loc` then
-tells MESA whether this convection zone should surround the core
-and `overshoot_bdy_loc` whether the overshoot should occur only above or under
+`overshoot_zone_type` lets you control overshooting around
+regions where certain types of burning takes place. 
+`overshoot_zone_loc` then tells MESA whether this overshoot zone should surround the convection region in the core or in the shell
+and `overshoot_bdy_loc` whether the overshoot should occur above or below 
  the relevant convection zone(s).
 
 </details>
@@ -160,15 +169,15 @@ As such, we recommend copy-pasting the six lines above under "! mixing".
 <details>
 <summary>Show answer</summary>
 
-All these `overshoot_` are actually arrays and `(1)` indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different overshooting settings for each zone.
+All these `overshoot_` are actually arrays and `(1)` indicates the first element of that array. This way, each element can represent a different overshooting zone so you can use different overshooting settings for different convcetion zones.
 
 </details>
 
-
+>> Neat!
 
 4. Before you run your model, you should consider when the model is
 terminated. Since we want to simulate the main-sequence evolution,
-we should place our stopping condition around the terminal age
+we should place our stopping condition at the terminal age
 main-sequence (TAMS). Look under ``! when to stop`` in ``&controls``
 of your *inlist_project*.
 
@@ -227,7 +236,7 @@ model on a Hertzsprung-Russell diagram and one the internal temperature
 and density profiles. These help you keep a close eye on your model
 and can help you identify problems and potential improvements.
 
-For now, let's focus on the terminal output. One important field for our
+For now, let us focus on the terminal output. One important field for our
 purposes is the central hydrogen fraction (``H_cntr``), which tells
 you how far along the main-sequence evolution your model is. Note
 that it initially changes extremely slowly. This is because MESA starts
@@ -237,7 +246,7 @@ years.
 
 
 
-6. Before running our main model, let's make two adjustments to speed up the MESA run:
+6. Before running our main model, let us make two adjustments to speed up the MESA run:
 
 MESA starts by creating a pre-main-sequence model (before nuclear burning begins) and by default performs 300 relaxation steps to ensure it's stable. For our educational purposes, we can reduce this to save time:
 
@@ -262,18 +271,16 @@ your changes to the inlist did what they are supposed to. You don't
 have to run your model all the way to the TAMS. You can interupt
 it using ctrl+C if you're on Linux and Cmd+C if you're on Mac.
 
+>> I will recommend removing the above paragraph for time reasons.
 
 ### Upgrading the physics
 
 7. *inlist_project* is currently mostly empty, meaning most
 settings are using MESA's default values. You should always check
-whether these are appropriate for your models. As an example, since
-this lab concerns fairly massive stars, mass loss by winds may play
-a considerable role.
+whether these are appropriate for your models. As an example, realistic stars can lose a fair amount of mass through winds. 
 
-
-Check the documentation of `&controls` to see what the default mass
-loss is.
+Check the documentation of `&controls` to see what the default wind mass
+loss model is.
 
 <details>
 <summary>Show hint</summary>
@@ -310,11 +317,13 @@ Dutch_scaling_factor = 1d0
 </details>
 
 
+>> looks good. maybe add a line to say what is a wind scaling factor.
+
 8. MESA uses the mixing-length theory (MLT) to describe the
 transport by convection. This theory relies on a scaling factor
-$\alpha_{MLT}$ which is in general quite poorly calibrated.
-As such, you should check what MESA's default value of this
-$\alpha_{MLT}$ parameter is.
+$\alpha_{MLT}$ which is a fairly uncertain parameter in stellar evolution.
+You should check what is the MESA's default value of this
+$\alpha_{MLT}$ parameter.
 
 <details>
 <summary>Show hint</summary>
@@ -333,14 +342,11 @@ Add this into your *inlist_project* under &controls
 ```fortran
 mixing_length_alpha = 1.8d0
 ```
+>> Add a line about mixing scheme and how this alpha is often specific to a scheme.
+I will cover a bit more in the slides.
 
-
-9. In the other labs today, you will learn how to run models that continue
-after the main-sequence evolution. When doing so, it is quite annoying to
-have to simulate the main-sequence again every time you tweak something in
-your inlist. Instead, we can tell MESA to save a model at the end of a
-main-sequence run so we can load that model in next lab. Add this to your
-``%star_job`` and name your model:
+9. In the other labs today, you will learn how to evolve stars beyond
+main sequence. Instead of re-running the main-sequence evolution then, we can tell MESA to save a model at the end of our current main-sequence run.  We can load that model in next lab. Add this to your ``%star_job`` and name your model:
 
 ```fortran
 save_model_when_terminate = .true.
@@ -350,6 +356,9 @@ save_photo_when_terminate = .true.
 save_model_filename = 'M5_Z0014_fov030_f0ov0005_TAMS.mod'
 ```
 
+>> Do we need to save a photo? I don't think so. Maybe remove the save photo part. This will only confuse students. Plus we don't talk about photo anywhere or how is it different to a model. I will discuss this briefly but only at the beginning of lab 2.
+
+
 10. Despite how much you already added into your *inlist_project*,
 there are still many empty headers. Indeed, when building
 an inlist for your real science cases, you should still look
@@ -358,7 +367,7 @@ spatial and temporal resolution, and much more.
 However, for the sake of time and not making this lab too
 repetitive, we'll stop here.
 
-Now let's run the model again! To do so, enter
+Now let us run the model again! To do so, enter
 ```bash
 ./rn
 ```
@@ -366,10 +375,11 @@ into your terminal. When the run is finished, double check if
 the new file 'M5_Z0014_fov030_f0ov0005_TAMS.mod' is in your work
 directory.
 
+>> good.
 
 ### Customising output
 
-10. Now let's turn to these animated plots, often called
+10. Now let us turn to these animated plots, often called
 the pgstar plots. These are incredible useful in understanding what
 is going on in your model while its running, helping you spot
 potential problems early. Therefore, it is worthwhile to customise
@@ -384,9 +394,9 @@ For this lab, we have prepared a specialised
 and move it into your MESA work directory.
 
 Run your model again to see what the new pgstar plots look like.
-You don't have to wait for the run to be finished. Remember that
+You do not have to wait for the run to be finished. Remember that
 you can interrupt it using ctrl+C if you're on Linux and Cmd+C if
-you're on Mac.
+you are on Mac.
 
 For some of you, this new panel may be very small or bigger than your screen.
 This is because the width of the pgstar window is dependent on your system and
@@ -403,6 +413,9 @@ Grid1_win_aspect_ratio = 0.7
 You can edit *inlist_pgstar* while the model is running
 and it will immediately update your plots.
 </details>
+>> why the edit inlist part hidden inside the hint? It SHOULD be oustide as it is an important distinction from other inlists. Also move the `You do not have to wait for the run to be finished. Remember that
+you can interrupt it using ctrl+C if you're on Linux and Cmd+C if
+you are on Mac.` to the end.
 
 
 11. We have merged all the plots in one panel for a better overview.
@@ -440,7 +453,7 @@ In your pgstar window, look at the plot in the **top right corner**.
 This panel is showing how model properties change over time, currently using model number as the x-axis (In many cases, the absolute age of the star doesn’t matter. Since age correlates closely with model number, and model number is easier to interpret, we often use it as a proxy).
 Since we're studying core overshooting effects, we'd like to modify this panel to show the evolution of the core mass instead of the default value.
 
-To customize what's displayed in MESA plots, we first need to understand what data is being tracked. When MESA runs, it creates a `LOGS` directory containing two main types of output files:
+To customize what is displayed in MESA plots, we first need to understand what data is being tracked. When MESA runs, it creates a `LOGS` directory containing two main types of output files:
 
 - `history.data`: Records global stellar properties at each timestep
 - `profile*.data`: Captures the star's internal structure at specific timesteps
@@ -462,7 +475,7 @@ This gives you a comprehensive view of what MESA can track.
 
 For our overshooting study, we're interested in the stellar core properties.
 The convective core mass is already included in the defaults.
-Let's add the star's radius to the history output by finding and uncommenting the `radius` field in the appropriate section.
+Let us add the star's radius to the history output by finding and uncommenting the `radius` field in the appropriate section.
 
 
 Once you have uncommented the relevant lines, you need to tell MESA  that you want to include the output columns in _my_history_columns.list_. To do so, add the following line into your *inlist_project* under ``&star_job`` :
@@ -471,7 +484,7 @@ Once you have uncommented the relevant lines, you need to tell MESA  that you wa
 history_columns_file = 'my_history_columns.list'
 ```
 
-Finally, let's consider how often MESA writes this history output.
+Finally, let us consider how often MESA writes this history output.
 
 **Bonus Question**: How often does MESA write its history output by default?
 
@@ -483,7 +496,7 @@ Alternatively, you may have spotted `history_interval` in the documentation, whi
 
 </details>
 
-As we don't need that many history columns, it's reasonable to write them at
+As we don not need that many history columns, it is reasonable to write them at
 every step. Do so by setting in your `&controls`
 
 ```bash
@@ -493,7 +506,7 @@ history_interval = 1
 
 13. Configuring the History Plot
 
-Now let's customize the History Panel in the pgstar window. This panel shows how stellar properties evolve over time.
+Now let us customize the History Panel in the pgstar window. This panel shows how stellar properties evolve over time.
 
 1. Open `inlist_pgstar` in your text editor
 2. Find the section that defines the History Panel (search for "History_Panels1")
@@ -518,6 +531,8 @@ burning_regions 20
 These settings tell MESA to track up to 20 distinct mixing and nuclear burning regions within the star, which enables the creation of Kippenhahn diagrams and other detailed evolutionary plots.
 
 Run your model briefly to confirm your pgstar window now displays the updated plot configuration.
+
+>> Make sure that we have max three runs in this session; one with almost all default settings, one for the 5Msun tams model and one for the pgplot. While you suggest that students can terminate the run with ctrl+c, I am not sure how many will actually do it.
 
 14. Profile Data (optional)
 
@@ -545,11 +560,16 @@ profile_columns_file = 'my_profile_columns.list'
 <summary>Show answer</summary>
 Add <code>profile_interval = 10</code> to your inlist's <code>&controls</code> section to save profiles more frequently. You could also enable <code>write_profile_when_terminate = .true.</code> to guarantee a profile at the end of the run.
 </details>
+
+
+>> you can also add another question about the max profiles and what happens when this number is exceeded. How mesa chooses which profiles to overwrite?
+
+
 ---
 
 ## SESSION 2
 
-### Trying different the overshoot settings
+### Trying different overshoot settings
 
 You now know how to navigate your work directory and build up a
 main-sequence model. That's great! However, so far we have
@@ -557,13 +577,12 @@ limited ourselves to simply adding in pre-chosen parameter values,
 choices of tables etc. In real scientific applications, you should
 always consider the impact of these settings, for instance by
 trying a few different values. In particular, there are a number
-numerical schemes and poorly calibrated physical parameters for
+of numerical schemes and uncertain physical parameters for
 which you should think carefully about the appropriate value.
 You already encountered some of these today, namely the
-mixing length parameter $\alpha_{MLT}$ and the mixing by
-overshooting.
+mixing length parameter $\alpha_{MLT}$ and convective overshooting.
 
-In this session, we'll explore the impact of overshooting in
+In this session, we will explore the impact of overshooting in
 your model. Through your experiments and the lecturer's
 discussion of everyone's result, you will learn how you
 can find reasonable values and settings for overshooting
@@ -581,7 +600,7 @@ different parameters together.
 and put your name next to one set of parameters to claim it as yours.
 Modify your inlist accordingly.
 
-Given that there are more parameter sets than students here so you are able to test different parameters if time is permitting, though focus should be on completing this task and fully understanding it. Also, the bonus tasks in this lab are concerning running this set of parameters in a batch.
+Since there are more parameter sets available than there are students, you can test different parameters if time allows. However, the main focus should be on completing this task and fully understanding it. Additionally, the bonus tasks in this lab involve running this set of parameters in a batch.
 
 If you selected the **'no overshoot'** scheme from the spreadsheet,
 you should leave the overshoot scheme as an empty string, i.e.
@@ -634,7 +653,7 @@ This keeps all your runs organized with descriptive names that make it easy to i
 particularly the mixing panel. Compare it with those of the
 other people at your table.
 
-20. After your model finishes running, we'll extract key parameters at the Terminal Age Main Sequence (TAMS).
+20. After your model finishes running, we will extract key parameters at the Terminal Age Main Sequence (TAMS).
 
 Open the final history.data file in your new LOGS directory with a text editor. The TAMS is represented by the final line in this file - this is where the central hydrogen has been depleted to the threshold we set (1d-6).
 
@@ -647,14 +666,20 @@ From this final line, record the following values in the second page of the spre
 
 These values will allow us to analyze how different overshooting parameters affect stellar evolution.
 
-21. Now let's wrap up this lab by reading your MESA output in using Python
+>> Can you give students a script/code to extract these values? It's not easy to read history data by eye especially after adding burning and mixing regions. The values can also be read from the log files/screen output which are easier to read. 
+
+21. Now let us wrap up this lab by reading your MESA output in using Python
 and making some custom plots.
+
+>> What are these plots? Are students supposed to make plots here or are you referring to the group plots to be made by TAs? Either explain it or remove the last point (suggested-remove). 
+
+
 
 ---
 
 ## BONUS: Batch Parameter Studies with MESA
 
-If you've completed the main lab activities and have time remaining, explore the automated parameter study framework in the [`batch_runs/`](./batch_runs) directory. This framework enables systematic exploration of overshooting effects across multiple stellar models.
+If you have completed the main lab activities and you can explore the automated parameter study framework in the [`batch_runs/`](./batch_runs) directory. This framework enables systematic exploration of overshooting effects across multiple stellar models.
 
 ### Why Run Batch Studies?
 
